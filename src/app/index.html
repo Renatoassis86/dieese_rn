@@ -259,104 +259,37 @@
     </div>
 </section>
 
-<!-- ══════════ INDICADORES DINÂMICOS ══════════ -->
-<section class="section-indicadores" id="indicadores">
-    <div class="container">
-        <p class="kicker centered">— INDICADORES SELECIONADOS —</p>
-        <h2 class="ind-title">Dados em números</h2>
-        <p class="ind-sub">Evolução histórica e comparativo do Programa de Aquisição de Alimentos no Rio Grande do Norte e no Nordeste.</p>
-
-        <!-- KPI Cards animados -->
-        <div class="kpi-row">
-            <div class="kpi-card">
-                <span class="kpi-val" data-target="48.8">0</span>
-                <span class="kpi-unit">Mi R$</span>
-                <span class="kpi-label">Total investido no RN (2024)</span>
-            </div>
-            <div class="kpi-card">
-                <span class="kpi-val" data-target="6840">0</span>
-                <span class="kpi-unit">agricultores</span>
-                <span class="kpi-label">Beneficiários no RN (2024)</span>
-            </div>
-            <div class="kpi-card">
-                <span class="kpi-val" data-target="167">0</span>
-                <span class="kpi-unit">municípios</span>
-                <span class="kpi-label">Municípios atendidos</span>
-            </div>
-            <div class="kpi-card">
-                <span class="kpi-val" data-target="5240">0</span>
-                <span class="kpi-unit">R$</span>
-                <span class="kpi-label">Ticket médio por agricultor</span>
-            </div>
-        </div>
-
-        <!-- Gráficos -->
-        <div class="charts-grid">
-
-            <!-- Gráfico 1: Linha - Série Histórica -->
-            <div class="chart-box span-2">
-                <div class="chart-header">
-                    <h4>Evolução dos Recursos do PAA</h4>
-                    <span class="chart-meta">Rio Grande do Norte · 2011 a 2024 (R$ Milhões)</span>
-                </div>
-                <div class="chart-wrap"><canvas id="chartLinha"></canvas></div>
-                <p class="chart-source">Fonte: MDS/SAGI · API MiSocial</p>
-            </div>
-
-            <!-- Gráfico 2: Barras - Ranking NE -->
-            <div class="chart-box">
-                <div class="chart-header">
-                    <h4>Ticket Médio por Agricultor</h4>
-                    <span class="chart-meta">Nordeste · 2024 (R$)</span>
-                </div>
-                <div class="chart-wrap"><canvas id="chartRanking"></canvas></div>
-                <p class="chart-source">Fonte: MDS/SAGI · API MiSocial</p>
-            </div>
-
-            <!-- Gráfico 3: Donut - Modalidades -->
-            <div class="chart-box">
-                <div class="chart-header">
-                    <h4>Distribuição por Modalidade</h4>
-                    <span class="chart-meta">Rio Grande do Norte · 2024</span>
-                </div>
-                <div class="chart-wrap donut-wrap"><canvas id="chartModalidade"></canvas></div>
-                <p class="chart-source">Fonte: MDS/SAGI · API MiSocial</p>
-            </div>
-
-            <!-- Gráfico 4: Barras - Territórios -->
-            <div class="chart-box span-2">
-                <div class="chart-header">
-                    <h4>Agricultores por Território de Identidade</h4>
-                    <span class="chart-meta">Rio Grande do Norte · 2024</span>
-                </div>
-                <div class="chart-wrap"><canvas id="chartTerrit"></canvas></div>
-                <p class="chart-source">Fonte: MDS/SAGI · API MiSocial · Dicionário Territorial RN</p>
-            </div>
-
-        </div>
-    </div>
-</section>
-
 <!-- ══════════ ESTATÍSTICAS (placeholder) ══════════ -->
 <!-- ══════════ PAINEL DE INFORMAÇÕES (BI) ══════════ -->
 
-<section id="estatisticas" class="dark-section bi-teaser">
-    <div class="container teaser-flex">
-        <div class="teaser-content">
-            <p class="kicker-light">— PAINEL DE INFORMAÇÕES —</p>
-            <h2 class="teaser-title">Diagnóstico em Tempo Real</h2>
-            <p class="teaser-text">
-                Explore indicadores dinâmicos sobre a agricultura familiar e economia solidária no RN. 
-                Nossa plataforma permite a geração de quadros personalizados através de filtros territoriais, 
-                temporais e setoriais baseados diretamente nos dados do Supabase.
-            </p>
-            <a href="/static/dashboard.html" class="btn-primary-amber">🚀 Acessar Painel Completo</a>
-        </div>
-        <div class="teaser-visual">
-            <div class="geometric-video-frame-v2">
-                <video autoplay muted loop playsinline class="video-contain-full">
-                    <source src="/static/assets/video2.mp4" type="video/mp4">
-                </video>
+<!-- ══════════ PAINEL DE ESTATÍSTICAS (BI) ══════════ -->
+<section id="estatisticas" class="section-dark bi-stats-module">
+    <div class="container">
+        <div class="bi-stats-grid">
+            <div class="bi-stats-info text-left">
+                <p class="kicker kicker-light">— INTELIGÊNCIA DE DADOS —</p>
+                <h2 class="text-white">Diagnóstico Territorial & BI</h2>
+                <p class="stats-description">
+                    Utilize nossa inteligência de dados para gerar tabelas e indicadores dinâmicos. 
+                    O objetivo deste painel é subsidiar o planejamento institucional através de 
+                    diagnósticos personalizados por território de identidade, período e dimensão do estudo.
+                </p>
+                <div class="stats-features">
+                    <div class="feature-item">✓ Geração de Quadros Estatísticos</div>
+                    <div class="feature-item">✓ Filtros por 10 Territórios de RN</div>
+                    <div class="feature-item">✓ Exportação para Excel e CSV</div>
+                </div>
+                <a href="/static/dashboard.html" class="btn-primary-amber mt-4">🚀 Entrar no Painel de BI</a>
+            </div>
+            <div class="bi-stats-preview">
+                <div class="preview-card-glass">
+                    <img src="/static/assets/video2.mp4" alt="Visualização BI" style="display:none;"> <!-- Placeholder if video removed -->
+                    <div class="geometric-mask-v3">
+                         <video autoplay muted loop playsinline class="video-contain-full">
+                            <source src="/static/assets/video2.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -441,7 +374,7 @@
 </section>
 
 <!-- ══════════ ESTATÍSTICAS (placeholder) ══════════ -->
-<section class="section-dark" id="estatisticas-placeholder">
+<!-- REMOVED -->
     <div class="container text-center">
         <p class="kicker kicker-light">— ESTATÍSTICAS —</p>
         <h2 class="text-white">Geração de Tabelas e Indicadores</h2>

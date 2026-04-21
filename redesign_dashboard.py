@@ -1,4 +1,11 @@
-<!DOCTYPE html>
+"""
+Redesigning dashboard.html: removing video, cleaning header, and focusing on the BI module.
+"""
+import os
+
+DASHBOARD_PATH = 'src/app/dashboard.html'
+
+NEW_DASHBOARD = """<!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
@@ -247,4 +254,9 @@
         }
     </script>
 </body>
-</html>
+</html>"""
+
+with open(DASHBOARD_PATH, 'w', encoding='utf-8') as f:
+    f.write(NEW_DASHBOARD)
+
+print("Dashboard.html redesigned: Video removed, premium BI layout implemented.")
