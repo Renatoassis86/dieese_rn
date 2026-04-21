@@ -765,6 +765,27 @@ function renderBICharts(data) {
     console.log("BI Charts rendered with", data.length, "rows.");
 }
 
+
+// ── DROPDOWN PERSISTENCE ────────────────
+document.querySelectorAll('.dropdown').forEach(dd => {
+    const btn = dd.querySelector('.dropbtn');
+    btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        // Close others
+        document.querySelectorAll('.dropdown').forEach(other => {
+            if (other !== dd) other.classList.remove('open');
+        });
+        
+        dd.classList.toggle('open');
+    });
+});
+
+window.addEventListener('click', () => {
+    document.querySelectorAll('.dropdown').forEach(dd => dd.classList.remove('open'));
+});
+
 // ── IntersectionObserver (scroll trigger) ─
 const sectObs = new IntersectionObserver((entries) => {
     entries.forEach(entry => {

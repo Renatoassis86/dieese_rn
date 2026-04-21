@@ -657,3 +657,11 @@ a { text-decoration: none; }
 .bi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
 .bi-card { background: #f8fafc; padding: 2rem; border-radius: 15px; border: 1px solid #f1f5f9; }
 .bi-card h5 { margin-bottom: 1.5rem; font-weight: 800; color: var(--navy); }
+
+/* Dropdown fix */
+.dropdown.open .dropdown-content {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
+}
