@@ -610,3 +610,50 @@ a { text-decoration: none; }
 .contact-item { font-size: 0.85rem; color: #fff; margin-bottom: 0.4rem; }
 
 .footer-logo-img { height: 60px; width: auto; filter: brightness(0) invert(1); margin-bottom: 1rem; }
+
+/* ── HORIZONTAL FOOTER ────────────────── */
+.footer { border-top: 1px solid rgba(255,255,255,0.1); padding: 4rem 0 2rem; background: #07101a; }
+.h-footer-container { display: flex; flex-direction: column; gap: 3rem; }
+.h-footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 4rem; }
+.h-footer-brand p { font-size: 0.9rem; color: rgba(255,255,255,0.7); margin-top: 1rem; max-width: 400px; }
+.footer-logo-img-h { height: 45px; width: auto; filter: brightness(0) invert(1); }
+.link-group { display: flex; flex-direction: column; gap: 0.8rem; margin-bottom: 1.5rem; }
+.group-title { color: var(--amber); font-weight: 800; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; display: block; margin-bottom: 0.5rem; }
+.h-footer-links a { color: #fff; font-size: 0.9rem; opacity: 0.8; transition: 0.3s; }
+.h-footer-links a:hover { opacity: 1; color: var(--amber); }
+.h-footer-contact p { font-size: 0.85rem; margin-bottom: 0.5rem; }
+.h-footer-bottom { border-top: 1px solid rgba(255,255,255,0.05); padding-top: 2rem; text-align: center; }
+.h-footer-bottom p { font-size: 0.8rem; color: rgba(255,255,255,0.5); }
+
+/* ── BI MODULE STYLES ────────────────── */
+.bi-section { padding: 8rem 0; background: #0D1B2A; color: #fff; }
+.bi-title { font-size: 2.8rem; font-weight: 900; letter-spacing: -0.02em; margin: 1rem 0; }
+.bi-date { font-weight: 600; color: var(--amber); font-size: 0.9rem; opacity: 0.9; }
+
+.bi-nav-icons { display: flex; justify-content: center; gap: 4rem; margin-top: 3rem; margin-bottom: 4rem; }
+.bi-nav-item { cursor: pointer; text-align: center; opacity: 0.5; transition: 0.3s; }
+.bi-nav-item.active { opacity: 1; transform: translateY(-5px); }
+.bi-nav-item .bi-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+.bi-nav-item span { font-weight: 800; font-size: 0.9rem; text-transform: uppercase; }
+
+.bi-module { display: grid; grid-template-columns: 320px 1fr; background: #fff; border-radius: 20px; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.4); min-height: 650px; }
+.bi-sidebar { background: #f8fafc; padding: 2.5rem; border-right: 1px solid #e2e8f0; color: #1e293b; }
+.bi-sidebar h3 { font-size: 1.1rem; font-weight: 900; margin-bottom: 2rem; color: var(--navy); }
+.filter-group { margin-bottom: 1.5rem; }
+.filter-group label { display: block; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; margin-bottom: 0.5rem; color: #64748b; }
+.filter-group select { width: 100%; padding: 0.8rem; border-radius: 10px; border: 2px solid #e2e8f0; font-family: inherit; font-weight: 600; outline: none; transition: 0.3s; }
+.filter-group select:focus { border-color: var(--green); }
+.btn-apply { width: 100%; padding: 1.2rem; background: var(--navy); color: #fff; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; margin-top: 1rem; transition: 0.3s; }
+.btn-apply:hover { background: var(--green); transform: translateY(-2px); }
+
+.bi-content { background: #fff; padding: 0; display: flex; flex-direction: column; }
+.bi-status-bar { border-bottom: 1px solid #f1f5f9; padding: 1rem 2.5rem; display: flex; justify-content: space-between; align-items: center; background: #fdfdfd; font-size: 0.8rem; color: #64748b; }
+.bi-canvas { padding: 3rem; flex: 1; display: flex; flex-direction: column; }
+.canvas-empty { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: #94a3b8; }
+.canvas-empty p { max-width: 400px; margin-top: 1.5rem; font-weight: 600; }
+.loader-spinner { width: 40px; height: 40px; border: 4px solid #f1f5f9; border-top-color: var(--amber); border-radius: 50%; animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.bi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+.bi-card { background: #f8fafc; padding: 2rem; border-radius: 15px; border: 1px solid #f1f5f9; }
+.bi-card h5 { margin-bottom: 1.5rem; font-weight: 800; color: var(--navy); }
