@@ -1,0 +1,180 @@
+===============================================================================
+MANUAL DE INTEGRAÇÃO DE APIS - PROJETO OBSERVATÓRIO RURAL RN
+===============================================================================
+Este documento centraliza o detalhamento técnico, endpoints e regras de negócio
+das APIs utilizadas no pipeline de dados do projeto.
+Última modificação: 2026-04-21
+-------------------------------------------------------------------------------
+
+1. API PORTAL BRASILEIRO DE DADOS ABERTOS (DADOS.GOV.BR)
+-------------------------------------------------------
+Órgão Responsável: Controladoria Geral da União (CGU)
+Versão: 1.0 (Atualizada em 19/12/2024)
+Interface Swagger UI: https://dados.gov.br/swagger-ui/index.html
+Servidor (Base URL): https://dados.gov.br
+Tecnologia: REST / JSON
+Segurança: OAuth / Token de Acesso (Consumidor)
+Instruções para Token: https://dados.gov.br/dados/conteudo/como-acessar-a-api-do-portal-de-dados-abertos-com-o-perfil-de-consumidor
+
+DESCRIÇÃO:
+A API permite acessar informações sobre conjuntos de dados públicos disponíveis 
+na plataforma nacional. É a principal ferramenta para descoberta de datasets 
+e monitoramento de atualizações de bases estruturantes (como as da Conab).
+
+PRINCIPAIS OPERAÇÕES MAPEADAS:
+
+A. CONJUNTOS DE DADOS (DATASETS)
+   - GET /dados/api/publico/conjuntos-dados
+     Descrição: Lista conjuntos de dados disponíveis.
+   - GET /dados/api/publico/conjuntos-dados/{id}
+     Descrição: Detalha um conjunto de dados específico (id pode ser o slug).
+   - GET /dados/api/publico/conjuntos-dados/formatos
+     Descrição: Lista os formatos de arquivos disponíveis (CSV, XLSX, SQL, etc).
+
+B. ORGANIZAÇÕES (PUBLISHERS)
+   - GET /dados/api/publico/organizacao
+     Descrição: Lista órgãos federais, estaduais e municipais registrados.
+   - GET /dados/api/publico/organizacao/{id}
+     Descrição: Detalha uma organização e seus datasets publicados.
+
+C. RECURSOS (RESOURCES)
+   - Os recursos representam os arquivos físicos anexados aos datasets.
+   - A extração do "Resource ID" é necessária para compor a URL de download direto:
+     URL Padrão: https://dados.gov.br/recurso/baixar/{id_recurso}
+
+D. SOLICITAÇÕES E REÚSOS
+   - GET /dados/api/solicitacoes: Consulta pedidos de abertura de dados.
+   - GET /dados/api/publico/reusos: Lista aplicações que utilizam os dados.
+
+2. CONCEITOS E DICIONÁRIO DE METADADOS DO PORTAL
+-----------------------------------------------
+Para interpretar corretamente as respostas da API, utilizamos as definições 
+oficiais da CGU:
+
+A. HIERARQUIA DE DADOS
+   - Conjunto de Dados (Dataset): Coleção organizada de informações sobre um 
+     tema (ex: PAA - Entregas).
+   - Recursos (Resources): Arquivos individuais que compõem o conjunto 
+     (ex: entregas_2023.csv, entregas_2024.xlsx).
+
+B. METADADOS ESTRUTURANTES (PARA FILTRAGEM):
+   - Cobertura Espacial: Extensão geográfica (Ex: Federal, Estadual).
+   - Granularidade Espacial: Nível de detalhamento (Ex: Município, UF).
+   - Cobertura Temporal: Período de início e fim dos registros.
+   - Periodicidade de Atualização: Frequência esperada (Diária, Mensal, etc).
+
+C. METADADOS ANALÍTICOS (OPCIONAIS):
+   - Dados de Raça/Etnia e Gênero: Indicadores de diversidade na base.
+   - ODS: Relação com os Objetivos de Desenvolvimento Sustentável da ONU.
+
+D. LICENCIAMENTO (CONFORMIDADE):
+   - Creative Commons (Atribuição, CCZero): Uso livre com ou sem atribuição.
+   - ODbL (Open Data Commons): Exige compartilhamento igual das bases derivadas.
+
+NOTAS PARA ENGENHARIA DE DADOS:
+- A API segue o padrão OAS 3.1.
+- O limite de requisições deve ser observado para evitar bloqueios temporários.
+- Para o RN, devemos filtrar datasets com a tag #riograndedonorte ou organizações 
+  como a CONAB e MDS.
+
+-------------------------------------------------------------------------------
+
+3. MAPA DE APIS ESTRATÉGICAS (CONECTA GOV.BR)
+--------------------------------------------
+Abaixo, as APIs disponíveis na plataforma Conecta gov.br de alto interesse para 
+o Observatório Rural do RN, classificadas por utilidade:
+
+A. EIXO AGRICULTURA E GOVERNANÇA (PERFIL DO PRODUTOR)
+   - CAF (Cadastro Nacional da Agricultura Familiar): Substitui a antiga DAP.
+     * Endpoints: Consulta Organização Produtiva, Unidade Familiar (UFPA).
+   - SNCR (Sistema Nacional de Cadastro Rural): Dados de propriedades rurais.
+   - SIPRA: Consulta de beneficiários da Reforma Agrária.
+   - CTCA: Controle de Tensões e Conflitos Agrários.
+
+B. EIXO SOCIAL E VULNERABILIDADE (PERFIL DOS BENEFICIÁRIOS)
+   - CadÚnico (Serviços, Indicadores e Dados Familiares): Essencial para o 
+     cruzamento PAA x CadÚnico.
+   - BPC (Benefício de Prestação Continuada): Cruzamento de benefícios sociais.
+   - Faixa de Renda do Grupo Familiar: Refinamento do perfil socioeconômico.
+
+C. EIXO TERRITORIAL E REFERÊNCIA (INTEGRIDADE)
+   - Registro de Referência de Municípios: Chave mestra para geoprocessamento.
+   - Registro de Referência de Unidades Federativas (UF).
+   - Metadados Estatísticos do IBGE: Documentação de séries históricas.
+
+D. EIXO AMBIENTAL
+   - SICAR (Imóvel e Tema): Dados do Cadastro Ambiental Rural (CAR).
+
+RECOMENDAÇÃO TÉCNICA:
+A integração com estas APIs via Conecta gov.br segue padrões de segurança do 
+governo federal e deve ser planejada após a estabilização da Camada Silver do PAA.
+
+-------------------------------------------------------------------------------
+
+4. DETALHAMENTO TÉCNICO DOS ENDPOINTS (SWAGGER UI)
+-------------------------------------------------
+
+Abaixo os endpoints essenciais para a descoberta e extração de dados:
+
+A. LISTAGEM DE CONJUNTOS DE DADOS
+   - URL: `GET /dados/api/publico/conjuntos-dados`
+   - Parâmetros de Consulta (Query):
+     * `página` (Interger): Índice da página (paginação de 10 em 10).
+     * `nomeConjuntoDados` (String): Busca por palavras-chave (Ex: "paa").
+     * `idOrganizacao` (String): UUID do órgão publicador.
+     * `dadosAbertos` (Boolean): Filtro para arquivos de acesso livre.
+   - Resposta Útil: Extrair o campo `id` para consulta detalhada.
+
+B. DETALHE DO CONJUNTO E RECURSOS (RESOURCES)
+   - URL: `GET /dados/api/publico/conjuntos-dados/{id}`
+   - Objetivo: Obter metadados temporais e os links de download.
+   - Campos Chave no JSON de Resposta:
+     * `coberturaTemporalInicio/Fim`: Período que os dados abrangem.
+     * `recursos[]`: Lista de arquivos disponíveis.
+       - `id`: Identificador do recurso.
+       - `link`: URL direta para download (Ex: CSV/XLSX).
+       - `formato`: Tipo de mídia (CSV, XLSX, PDF).
+
+C. LISTAGEM DE ORGANIZAÇÕES
+   - URL: `GET /dados/api/publico/organizacao`
+   - Parâmetros: `página` (Integer), `nomeOrganizacao` (String).
+   - Objetivo: Mapear os UUIDs das organizações para filtros precisos.
+   - IDs Sugeridos para Teste:
+     * MDS: Busque por "Ministério do Desenvolvimento e Assistência Social".
+     * CONAB: Busque por "Companhia Nacional de Abastecimento".
+
+D. CABEÇALHOS (HEADERS) OBRIGATÓRIOS
+   - `Accept: application/json`
+   - `chave-api-dados-abertos: {SEU_TOKEN_AQUI}`
+
+-------------------------------------------------------------------------------
+
+5. DICIONÁRIO DE VARIÁVEIS (FONTE: MDS/SAGI)
+-------------------------------------------
+
+Abaixo as principais variáveis disponíveis no dataset `18a74a03-6238-449d-9445-1a23b6e8f1a8`:
+
+A. INDICADORES FINALÍSTICOS:
+   - ` agricultores_fornec_paa_i`: Qtd. de agricultores familiares fornecedores.
+   - `recur_pagos_agricul_paa_f`: Valor financeiro pago aos agricultores (R$).
+   - `codigo_ibge`: Código do município (7 dígitos).
+   - `anomes_s`: Mês e ano de referência (Formato: YYYYMM).
+
+B. SEGMENTAÇÃO POR SEXO:
+   - `paa_qtd_agricul_familiar_sexo_masculino_i`: Qtd. Homens.
+   - `paa_qtd_agricul_familiar_sexo_feminino_i`: Qtd. Mulheres.
+
+C. MODALIDADES DE EXECUÇÃO:
+   - `paa_qtd_agricul_familiar_modal_compra_doacao_simul_i`: Doação Simultânea.
+   - `paa_qtd_agricul_familiar_modal_incentivo_leite_i`: PAA-Leite.
+   - `paa_qtd_agricul_familiar_modal_compra_direta_i`: Compra Direta.
+
+D. LINKS DE ACESSO DIRETO (VIA SOLR):
+   - Execução Geral (Série Histórica): 
+     URL: `https://aplicacoes.mds.gov.br/sagi/servicos/misocial/?fq=anomes_s:20*&q=*:*&rows=1000000&sort=anomes_s%20desc,%20codigo_ibge%20asc&wt=csv&fl=codigo_ibge,anomes_s,agricultores_fornec_paa_i,recur_pagos_agricul_paa_f&fq=agricultores_fornec_paa_i:*`
+
+-------------------------------------------------------------------------------
+NOTAS PARA ENGENHARIA DE DADOS:
+- A API possui instabilidade em requisições sem o token de consumidor.
+- O campo `id` do conjunto de dados é imutável, permitindo o cacheamento de metadados.
+- Sempre valide o campo `formato` antes de iniciar o stream de download.

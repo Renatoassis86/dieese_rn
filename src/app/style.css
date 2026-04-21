@@ -1,0 +1,210 @@
+:root {
+    --primary: #2D5A27;
+    --primary-light: #4A8B3C;
+    --secondary: #D97706;
+    --accent: #1E293B;
+    --bg-light: #F8FAFC;
+    --white: #FFFFFF;
+    --glass: rgba(255, 255, 255, 0.9);
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background-color: var(--bg-light);
+    color: var(--accent);
+    line-height: 1.6;
+}
+
+/* Header & Navigation */
+.glass-header {
+    background: var(--glass);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 5%;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.logo h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.logo h1 span {
+    color: var(--secondary);
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+    align-items: center;
+}
+
+nav a {
+    text-decoration: none;
+    color: var(--accent);
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+nav a.active {
+    color: var(--primary);
+    border-bottom: 2px solid var(--primary);
+}
+
+.btn-download {
+    background: var(--primary);
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    transition: transform 0.3s;
+}
+
+.btn-download a {
+    color: var(--white);
+}
+
+.btn-download:hover {
+    transform: translateY(-2px);
+    background: var(--primary-light);
+}
+
+/* Hero Section */
+.hero {
+    height: 500px;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    padding: 0 5%;
+    color: var(--white);
+    border-radius: 0 0 40px 40px;
+}
+
+.hero-content h2 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    max-width: 600px;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
+    padding: 1.5rem;
+    border-radius: 20px;
+    display: inline-flex;
+    flex-direction: column;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.stat-card .value {
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.stat-card .trend {
+    font-weight: 600;
+    color: #4ADE80;
+}
+
+/* Data Section */
+.data-section {
+    padding: 4rem 5%;
+}
+
+.section-header {
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+.section-header h3 {
+    font-size: 2rem;
+    color: var(--primary);
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 2rem;
+}
+
+.card {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+}
+
+.chart-card {
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-placeholder {
+    flex-grow: 1;
+    display: flex;
+    align-items: flex-end;
+    gap: 1.5rem;
+    padding-top: 2rem;
+    border-bottom: 2px solid #E2E8F0;
+}
+
+.bar {
+    background: var(--primary-light);
+    width: 100%;
+    border-radius: 8px 8px 0 0;
+    transition: height 1s ease;
+}
+
+.interpretative-text p {
+    margin-bottom: 1rem;
+}
+
+.btn-more {
+    display: inline-block;
+    margin-top: 1rem;
+    color: var(--secondary);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+footer {
+    text-align: center;
+    padding: 3rem;
+    color: #64748B;
+}
+
+@media (max-width: 900px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+    .hero-content h2 {
+        font-size: 2.5rem;
+    }
+}

@@ -1,0 +1,11 @@
+duckdb
+sqlalchemy
+pandas
+python-dotenv
+requests
+beautifulsoup4
+pyarrow
+typing-extensions
+tqdm
+openpyxl
+lxml

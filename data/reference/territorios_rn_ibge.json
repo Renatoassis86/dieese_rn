@@ -1,0 +1,702 @@
+{
+  "Seridó": [
+    {
+      "nome": "A",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "B",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "C",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "C",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "C",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "C",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "C",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "E",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "F",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "J",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "J",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "J",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "I",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "L",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "O",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "P",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "S",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "S",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "RIACH",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "S",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "S",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "S",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "S",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "T",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "T",
+      "id": "NÃO ENCONTRADO"
+    }
+  ],
+  "Alto Oeste": [
+    {
+      "nome": "Á",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "A",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "A",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "A",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "C",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "D",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "E",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "F",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "F",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "J",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "J",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "L",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "L",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "M",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "M",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "M",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "P",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "P",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "P",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "P",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "R",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "R",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "R",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "S",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "S",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "S",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "T",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "T",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "V",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "V",
+      "id": "NÃO ENCONTRADO"
+    }
+  ],
+  "Agreste Litoral Sul": [
+    {
+      "nome": "A",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "B",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "B",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "C",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "E",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "G",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "J",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "L",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "L",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "L",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "M",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "M",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "Ní",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "N",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "P",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "P",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "S",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "S",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "S",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "S",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "T",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "Vá",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "V",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "V",
+      "id": "NÃO ENCONTRADO"
+    }
+  ],
+  "Mato Grande": [
+    {
+      "nome": "B",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "C",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "C",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "J",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "J",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "J",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "M",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "P",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "P",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "P",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "P",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "R",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "S",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "S",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "T",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "T",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "Vá",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "V",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "V",
+      "id": "NÃO ENCONTRADO"
+    }
+  ],
+  "Assú- Mossoró": [
+    {
+      "nome": "A",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "A",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "A",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "B",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "C",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "G",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "I",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "I",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "M",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "P",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "P",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "S",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "S",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "T",
+      "id": "NÃO ENCONTRADO"
+    }
+  ],
+  "Potengi": [
+    {
+      "nome": "B",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "B",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "I",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "L",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "R",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "R",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "S",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "S",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "S",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "S",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "S",
+      "id": "NÃO ENCONTRADO"
+    }
+  ],
+  "Trairi": [
+    {
+      "nome": "B",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "C",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "C",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "J",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "J",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "L",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "M",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "P",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "S",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "S",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "S",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "S",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "S",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "Sí",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "T",
+      "id": "NÃO ENCONTRADO"
+    }
+  ],
+  "Sertão Central Cabugi e Litoral Norte": [
+    {
+      "nome": "A",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "A",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "C",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "F",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "G",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "G",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "L",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "M",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "P",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "P",
+      "id": "NÃO ENCONTRADO"
+    }
+  ],
+  "Sertão do Apodi": [
+    {
+      "nome": "A",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "A",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "C",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "F",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "G",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "I",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "J",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "M",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "O",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "P",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "P",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "R",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "R",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "S",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "T",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "U",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "U",
+      "id": "NÃO ENCONTRADO"
+    }
+  ],
+  "Terras Potiguares": [
+    {
+      "nome": "E",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "M",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "N",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "P",
+      "id": "NÃO ENCONTRADO"
+    },
+    {
+      "nome": "S",
+      "id": "NÃO ENCONTRADO"
+    }
+  ]
+}
