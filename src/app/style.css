@@ -109,13 +109,23 @@ a { text-decoration: none; }
 /* Dropdown */
 .dropdown { position: relative; }
 .dropdown-content {
-    display: none; position: absolute; top: calc(100% + 6px); left: 0;
-    background: #fff; min-width: 210px;
-    border-radius: 14px; box-shadow: 0 16px 40px rgba(0,0,0,0.18);
-    overflow: hidden; border: 1px solid rgba(0,0,0,0.06);
-    animation: fadeDown 0.18s ease;
+    display: none; position: absolute; top: 90%; left: 0; padding-top: 15px; /* Creates an overlapping 'hit area' */
+    min-width: 210px; z-index: 1000;
+    transition: all 0.3s ease;
+}
+.dropdown-inner {
+    background: #fff; border-radius: 14px; 
+    box-shadow: 0 16px 40px rgba(0,0,0,0.22);
+    overflow: hidden; border: 1px solid rgba(0,0,0,0.08);
+    animation: fadeDown 0.2s ease forwards;
 }
 .dropdown:hover .dropdown-content { display: block; }
+.dropdown-content a {
+    display: block; padding: 0.9rem 1.4rem;
+    font-size: 0.88rem; font-family: 'Open Sans', sans-serif;
+    color: var(--text-mid); border-bottom: 1px solid var(--border);
+    transition: all 0.2s;
+}
 .dropdown-content a {
     display: block; padding: 0.8rem 1.2rem;
     font-size: 0.85rem; font-family: 'Open Sans', sans-serif;
