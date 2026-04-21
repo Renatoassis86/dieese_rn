@@ -9,3 +9,10 @@ typing-extensions
 tqdm
 openpyxl
 lxml
+fastapi
+uvicorn
+jinja2
+pypdf
+python-docx
+matplotlib
+seaborn

@@ -1,33 +1,27 @@
-import sys
-from src.core.logger import get_logger
-from src.storage.database import DatabaseManager
+from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+import os
 
-logger = get_logger("paa_orchestrator")
+app = FastAPI(title="Observatório Rural RN")
 
-def run_pipeline():
-    """
-    Função principal para orquestrar o pipeline PAA RN.
-    """
-    logger.info("Iniciando Pipeline de Dados PAA - Observatório RN")
-    
-    try:
-        # FASE 3: Extração (Bronze)
-        # TODO: Chamar extrator
-        logger.info("Fase Bronze: Extração pendente de implementação (Fase 3)")
-        
-        # FASE 4: Transformação (Silver)
-        # TODO: Chamar transformador
-        logger.info("Fase Silver: Transformação pendente de implementação (Fase 4)")
-        
-        # FASE 5: Modelagem Dimensional (Gold)
-        # TODO: Gerar marts
-        logger.info("Fase Gold: Marts pendentes de implementação (Fase 5)")
-        
-        logger.info("Pipeline finalizado com sucesso.")
-        
-    except Exception as e:
-        logger.error(f"Erro crítico no pipeline: {e}", exc_info=True)
-        sys.exit(1)
+# Montar diretório de arquivos estáticos (CSS, JS, Imagens)
+# O caminho é relativo à localização do main.py
+static_dir = os.path.join(os.path.dirname(__file__), "src", "app")
 
-if __name__ == "__main__":
-    run_pipeline()
+if os.path.exists(static_dir):
+    app.mount("/static", StaticFiles(directory=static_dir), name="static")
+
+@app.get("/")
+async def read_index():
+    # Retorna o dashboard principal
+    index_path = os.path.join(static_dir, "index.html")
+    if os.path.exists(index_path):
+        return FileResponse(index_path)
+    return {"message": "DASHBOARD NÃO ENCONTRADO. Verifique src/app/index.html"}
+
+@app.get("/api/health")
+async def health_check():
+    return {"status": "online", "project": "Observatório Rural RN"}
+
+# Para rodar localmente: uvicorn main:app --reload
