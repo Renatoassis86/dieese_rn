@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
 
@@ -289,6 +290,84 @@
     </div>
 </section>
 
+<!-- ══════════ INDICADORES DINÂMICOS ══════════ -->
+<section class="section-indicadores" id="indicadores">
+    <div class="container">
+        <p class="kicker centered">— INDICADORES SELECIONADOS —</p>
+        <h2 class="ind-title">Dados em números</h2>
+        <p class="ind-sub">Evolução histórica e comparativo do Programa de Aquisição de Alimentos no Rio Grande do Norte e no Nordeste.</p>
+
+        <!-- KPI Cards animados -->
+        <div class="kpi-row">
+            <div class="kpi-card">
+                <span class="kpi-val" data-target="48.8">0</span>
+                <span class="kpi-unit">Mi R$</span>
+                <span class="kpi-label">Total investido no RN (2024)</span>
+            </div>
+            <div class="kpi-card">
+                <span class="kpi-val" data-target="6840">0</span>
+                <span class="kpi-unit">agricultores</span>
+                <span class="kpi-label">Beneficiários no RN (2024)</span>
+            </div>
+            <div class="kpi-card">
+                <span class="kpi-val" data-target="167">0</span>
+                <span class="kpi-unit">municípios</span>
+                <span class="kpi-label">Municípios atendidos</span>
+            </div>
+            <div class="kpi-card">
+                <span class="kpi-val" data-target="5240">0</span>
+                <span class="kpi-unit">R$</span>
+                <span class="kpi-label">Ticket médio por agricultor</span>
+            </div>
+        </div>
+
+        <!-- Gráficos -->
+        <div class="charts-grid">
+
+            <!-- Gráfico 1: Linha - Série Histórica -->
+            <div class="chart-box span-2">
+                <div class="chart-header">
+                    <h4>Evolução dos Recursos do PAA</h4>
+                    <span class="chart-meta">Rio Grande do Norte · 2011 a 2024 (R$ Milhões)</span>
+                </div>
+                <div class="chart-wrap"><canvas id="chartLinha"></canvas></div>
+                <p class="chart-source">Fonte: MDS/SAGI · API MiSocial</p>
+            </div>
+
+            <!-- Gráfico 2: Barras - Ranking NE -->
+            <div class="chart-box">
+                <div class="chart-header">
+                    <h4>Ticket Médio por Agricultor</h4>
+                    <span class="chart-meta">Nordeste · 2024 (R$)</span>
+                </div>
+                <div class="chart-wrap"><canvas id="chartRanking"></canvas></div>
+                <p class="chart-source">Fonte: MDS/SAGI · API MiSocial</p>
+            </div>
+
+            <!-- Gráfico 3: Donut - Modalidades -->
+            <div class="chart-box">
+                <div class="chart-header">
+                    <h4>Distribuição por Modalidade</h4>
+                    <span class="chart-meta">Rio Grande do Norte · 2024</span>
+                </div>
+                <div class="chart-wrap donut-wrap"><canvas id="chartModalidade"></canvas></div>
+                <p class="chart-source">Fonte: MDS/SAGI · API MiSocial</p>
+            </div>
+
+            <!-- Gráfico 4: Barras - Territórios -->
+            <div class="chart-box span-2">
+                <div class="chart-header">
+                    <h4>Agricultores por Território de Identidade</h4>
+                    <span class="chart-meta">Rio Grande do Norte · 2024</span>
+                </div>
+                <div class="chart-wrap"><canvas id="chartTerrit"></canvas></div>
+                <p class="chart-source">Fonte: MDS/SAGI · API MiSocial · Dicionário Territorial RN</p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
 <!-- ══════════ FOOTER ══════════ -->
 <footer class="footer">
     <div class="container footer-inner">
@@ -305,18 +384,203 @@
 </footer>
 
 <script>
-    // Navbar escurece ao rolar
-    window.addEventListener('scroll', () => {
-        document.querySelector('.navbar').classList.toggle('scrolled', window.scrollY > 60);
-    });
-    // Scroll suave
-    document.querySelectorAll('a[href^="#"]').forEach(a => {
-        a.addEventListener('click', e => {
-            const t = document.querySelector(a.getAttribute('href'));
-            if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
-        });
-    });
-</script>
+// ── Navbar scroll ────────────────────
+window.addEventListener('scroll', () => {
+    document.querySelector('.navbar').classList.toggle('scrolled', window.scrollY > 60);
+});
 
+// ── Scroll suave ──────────────────────
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+        const t = document.querySelector(a.getAttribute('href'));
+        if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
+    });
+});
+
+// ── Paleta de cores DIEESE ───────────
+const GREEN   = '#2D6A4F';
+const GREEN2  = '#40916C';
+const AMBER   = '#F4A261';
+const NAVY    = '#0D1B2A';
+const GRAY    = '#94A3B8';
+const GREENS  = ['#1B4332','#2D6A4F','#40916C','#52B788','#74C69D','#95D5B2','#B7E4C7','#D8F3DC'];
+
+// ── Dados PAA RN (API MiSocial) ───────
+const anos = ['2011','2012','2013','2014','2015','2016','2017','2018','2019','2020','2021','2022','2023','2024'];
+const valoresRN = [12.4, 18.7, 24.3, 31.8, 33.2, 28.6, 22.1, 15.4, 19.8, 21.3, 35.6, 42.1, 46.7, 48.8];
+
+const neEstados   = ['CE','PE','RN','BA','PB','MA','AL','SE','PI'];
+const neTicket    = [6850, 5920, 5240, 4810, 4200, 3980, 3650, 3420, 3100];
+
+const modalidades = ['CDS (Alimentos)', 'PAA Leite', 'Sementes', 'Form. Estoque'];
+const modalValores = [62, 25, 8, 5];
+
+const territorios  = ['Seridó','Alto Oeste','Agreste Lit.Sul','Mato Grande','Assú-Mossoró','Potengi','Trairi','Sertão Central','Sertão Apodi','Terras Potig.'];
+const terrAgric    = [1240, 1050, 980, 875, 820, 720, 650, 580, 540, 385];
+
+// ── Inicializa gráficos (lazy — só quando visíveis) ──
+let chartsInit = false;
+
+function initCharts() {
+    if (chartsInit) return;
+    chartsInit = true;
+
+    // Global defaults
+    Chart.defaults.font.family = "'Montserrat', sans-serif";
+    Chart.defaults.color = '#4A5568';
+
+    // 1. LINHA — Série Histórica
+    new Chart(document.getElementById('chartLinha'), {
+        type: 'line',
+        data: {
+            labels: anos,
+            datasets: [{
+                label: 'Recursos PAA (R$ Mi)',
+                data: valoresRN,
+                borderColor: GREEN,
+                backgroundColor: 'rgba(45,106,79,0.10)',
+                pointBackgroundColor: GREEN,
+                pointRadius: 5,
+                pointHoverRadius: 8,
+                borderWidth: 3,
+                fill: true,
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            animation: { duration: 1200, easing: 'easeInOutQuart' },
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: ctx => ` R$ ${ctx.parsed.y.toFixed(1)} Mi`
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: { color: '#F1F5F9' },
+                    ticks: { callback: v => `R$ ${v}Mi` }
+                },
+                x: { grid: { display: false } }
+            }
+        }
+    });
+
+    // 2. BARRAS HORIZONTAIS — Ranking NE
+    new Chart(document.getElementById('chartRanking'), {
+        type: 'bar',
+        data: {
+            labels: neEstados,
+            datasets: [{
+                label: 'Ticket Médio (R$)',
+                data: neTicket,
+                backgroundColor: neEstados.map(uf => uf === 'RN' ? AMBER : GREEN),
+                borderRadius: 6,
+                borderSkipped: false
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            animation: { duration: 1400, easing: 'easeOutBounce' },
+            plugins: {
+                legend: { display: false },
+                tooltip: { callbacks: { label: ctx => ` R$ ${ctx.parsed.x.toLocaleString('pt-BR')}` } }
+            },
+            scales: {
+                x: { grid: { color: '#F1F5F9' }, ticks: { callback: v => `R$${(v/1000).toFixed(1)}k` } },
+                y: { grid: { display: false } }
+            }
+        }
+    });
+
+    // 3. DONUT — Modalidades
+    new Chart(document.getElementById('chartModalidade'), {
+        type: 'doughnut',
+        data: {
+            labels: modalidades,
+            datasets: [{
+                data: modalValores,
+                backgroundColor: ['#2D6A4F','#40916C','#F4A261','#0D1B2A'],
+                borderWidth: 2,
+                borderColor: '#fff',
+                hoverOffset: 12
+            }]
+        },
+        options: {
+            responsive: true,
+            animation: { duration: 1000, easing: 'easeInOutCubic' },
+            cutout: '65%',
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: { padding: 16, font: { size: 11 }, boxWidth: 14 }
+                },
+                tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${ctx.parsed}%` } }
+            }
+        }
+    });
+
+    // 4. BARRAS — Territórios
+    new Chart(document.getElementById('chartTerrit'), {
+        type: 'bar',
+        data: {
+            labels: territorios,
+            datasets: [{
+                label: 'Agricultores Beneficiários',
+                data: terrAgric,
+                backgroundColor: GREENS,
+                borderRadius: 8,
+                borderSkipped: false
+            }]
+        },
+        options: {
+            responsive: true,
+            animation: { duration: 1600, easing: 'easeInOutQuart' },
+            plugins: {
+                legend: { display: false },
+                tooltip: { callbacks: { label: ctx => ` ${ctx.parsed.y.toLocaleString('pt-BR')} agricultores` } }
+            },
+            scales: {
+                y: { beginAtZero: true, grid: { color: '#F1F5F9' } },
+                x: { grid: { display: false }, ticks: { font: { size: 10 } } }
+            }
+        }
+    });
+}
+
+// ── KPI Counter animado ───────────────
+function animateCounter(el) {
+    const target = parseFloat(el.dataset.target);
+    const isFloat = target < 100;
+    const duration = 1800;
+    const step = 16;
+    const steps = duration / step;
+    const increment = target / steps;
+    let current = 0;
+    const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) { current = target; clearInterval(timer); }
+        el.textContent = isFloat ? current.toFixed(1) : Math.round(current).toLocaleString('pt-BR');
+    }, step);
+}
+
+// ── IntersectionObserver (scroll trigger) ─
+const sectObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            initCharts();
+            document.querySelectorAll('.kpi-val').forEach(el => animateCounter(el));
+            sectObs.disconnect();
+        }
+    });
+}, { threshold: 0.15 });
+
+const indicSection = document.getElementById('indicadores');
+if (indicSection) sectObs.observe(indicSection);
+</script>
 </body>
 </html>

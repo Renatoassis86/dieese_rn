@@ -313,6 +313,100 @@ a { text-decoration: none; }
 }
 .chip:hover { background: var(--green); }
 
+/* ══ INDICADORES DINÂMICOS (estilo DIEESE-RS) ══ */
+.section-indicadores {
+    background: var(--white);
+    padding: 6rem 0;
+    border-top: 4px solid var(--green);
+}
+
+.ind-title {
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    color: var(--navy); margin-top: 0.5rem; margin-bottom: 0.8rem;
+    text-align: center;
+}
+
+.ind-sub {
+    text-align: center; font-size: 1rem;
+    color: var(--text-mid); max-width: 640px;
+    margin: 0 auto 3.5rem; line-height: 1.8;
+}
+
+/* KPI Cards */
+.kpi-row {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem; margin-bottom: 4rem;
+}
+
+.kpi-card {
+    background: var(--navy);
+    border-radius: 20px; padding: 2rem 1.5rem;
+    text-align: center; display: flex; flex-direction: column;
+    align-items: center; gap: 0.3rem;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.kpi-card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(13,27,42,0.2); }
+
+.kpi-val {
+    font-family: 'Montserrat', sans-serif; font-weight: 900;
+    font-size: 2.6rem; color: var(--amber); line-height: 1;
+    display: block;
+}
+
+.kpi-unit {
+    font-family: 'Montserrat', sans-serif; font-weight: 600;
+    font-size: 0.78rem; color: rgba(255,255,255,0.55);
+    text-transform: uppercase; letter-spacing: 0.1em;
+}
+
+.kpi-label {
+    font-size: 0.82rem; color: rgba(255,255,255,0.75);
+    margin-top: 0.3rem; line-height: 1.4;
+}
+
+/* Grid de gráficos (similar DIEESE-RS) */
+.charts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.8rem;
+}
+
+.chart-box {
+    background: var(--cream);
+    border-radius: 20px; padding: 1.8rem 2rem;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.3s;
+}
+.chart-box:hover { box-shadow: var(--shadow); }
+
+.chart-box.span-2 { grid-column: span 2; }
+
+.chart-header {
+    display: flex; flex-direction: column; gap: 0.25rem;
+    border-left: 4px solid var(--green); padding-left: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.chart-header h4 {
+    font-size: 1rem; color: var(--navy); font-weight: 700;
+}
+
+.chart-meta {
+    font-size: 0.78rem; color: var(--text-lt);
+    font-family: 'Open Sans', sans-serif;
+}
+
+.chart-wrap { position: relative; min-height: 260px; }
+.donut-wrap { min-height: 300px; }
+
+.chart-source {
+    font-size: 0.72rem; color: var(--text-lt);
+    margin-top: 1rem; font-style: italic;
+    border-top: 1px solid var(--border); padding-top: 0.6rem;
+}
+
 /* ══ FOOTER ══ */
 .footer { background: var(--navy); padding: 3rem 0; }
 .footer-inner {
