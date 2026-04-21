@@ -665,3 +665,18 @@ a { text-decoration: none; }
     visibility: visible !important;
     transform: translateY(0) !important;
 }
+
+/* ── DIMENSION ENRICHMENT ──────────────── */
+.dim-info-block { padding: 1rem 0; }
+.dim-title-large { font-size: 2.8rem; font-weight: 900; color: var(--navy); margin-bottom: 1.5rem; letter-spacing: -0.02em; }
+.dim-concept p { line-height: 1.8; color: #4A5568; font-size: 1.05rem; margin-bottom: 2rem; }
+.db-label { font-weight: 800; text-transform: uppercase; font-size: 0.75rem; color: var(--green); letter-spacing: 0.1em; margin-bottom: 1.2rem; }
+.db-button-grid { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; }
+.btn-db { padding: 0.8rem 1.4rem; background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 12px; font-family: inherit; font-weight: 700; color: #1e293b; cursor: pointer; transition: 0.3s; font-size: 0.85rem; }
+.btn-db:hover { border-color: var(--green); background: #fff; transform: translateY(-3px); }
+.db-details-container { margin-top: 1rem; }
+.db-details-box { background: #fff; border: 1px solid #e2e8f0; padding: 2rem; border-radius: 15px; border-left: 5px solid var(--amber); box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 1rem; animation: slideDown 0.3s ease-out; }
+.db-details-box h4 { margin-bottom: 0.8rem; font-weight: 800; color: var(--navy); }
+.db-details-box p { font-size: 0.95rem; line-height: 1.6; color: #64748b; }
+
+@keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }

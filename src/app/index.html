@@ -813,6 +813,18 @@ function exportToExcel() {
     });
 }
 
+
+// ── DB INFO TOGGLE ──────────────────────
+function toggleDBInfo(id) {
+    const box = document.getElementById(id);
+    const isVisible = box.style.display === 'block';
+    
+    // Hide all in same section first
+    box.parentElement.querySelectorAll('.db-details-box').forEach(el => el.style.display = 'none');
+    
+    if (!isVisible) box.style.display = 'block';
+}
+
 // ── IntersectionObserver (scroll trigger) ─
 const sectObs = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
