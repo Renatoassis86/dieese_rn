@@ -3,198 +3,320 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Observatório Rural RN — PAA</title>
-    <meta name="description" content="Diagnóstico socioeconômico do Programa de Aquisição de Alimentos no Rio Grande do Norte. Dados, territórios e indicadores para atores sociais.">
+    <title>Observatório da Agricultura Familiar do RN — DIEESE</title>
+    <meta name="description" content="Plataforma de diagnóstico socioeconômico da agricultura familiar e economia solidária do Rio Grande do Norte.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
 
-    <!-- ═══════════════════ NAVBAR ═══════════════════ -->
-    <header class="navbar">
-        <div class="navbar-inner">
-            <div class="logo">
-                <span class="logo-icon">🌱</span>
-                <div class="logo-text">
-                    <span class="logo-title">Observatório Rural</span>
-                    <span class="logo-sub">Rio Grande do Norte</span>
-                </div>
-            </div>
-
-            <nav>
-                <ul class="nav-links">
-                    <li class="dropdown">
-                        <a href="#" class="dropbtn">Institucional ▾</a>
-                        <div class="dropdown-content">
-                            <a href="#sobre">O Estudo</a>
-                            <a href="#sobre">Objetivos</a>
-                            <a href="#sobre">Quem Somos</a>
-                        </div>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropbtn">PAA Alimentos ▾</a>
-                        <div class="dropdown-content">
-                            <a href="#dados">Execução Financeira</a>
-                            <a href="#dados">Agricultores</a>
-                            <a href="#dados">Modalidades</a>
-                        </div>
-                    </li>
-                    <li><a href="#">PAA Leite</a></li>
-                    <li><a href="#">Territórios</a></li>
-                    <li><a href="#">Comparativo NE</a></li>
-                </ul>
-            </nav>
-
-            <div class="nav-actions">
-                <a href="#" class="btn-export">⬇ Exportar Excel</a>
-                <span class="whatsapp-btn">💬</span>
+<!-- ══════════ NAVBAR ══════════ -->
+<header class="navbar" id="top">
+    <div class="navbar-inner">
+        <div class="logo">
+            <span class="logo-icon">🌱</span>
+            <div class="logo-text">
+                <span class="logo-title">Observatório da Agricultura Familiar</span>
+                <span class="logo-sub">Rio Grande do Norte · DIEESE</span>
             </div>
         </div>
-    </header>
-
-    <!-- ═══════════════════ HERO — VÍDEO ═══════════════════ -->
-    <section class="hero-video-section" id="inicio">
-        <video autoplay muted loop playsinline class="hero-video">
-            <source src="/static/assets/agricultura.mp4" type="video/mp4">
-        </video>
-        <div class="hero-overlay">
-            <div class="hero-content">
-                <p class="hero-tag">— PROGRAMA DE AQUISIÇÃO DE ALIMENTOS —</p>
-                <h1 class="hero-title">Observatório Rural<br><span>Rio Grande do Norte</span></h1>
-                <p class="hero-sub">Diagnóstico socioeconômico da agricultura familiar potiguar.<br>Dados, indicadores e territórios para políticas públicas.</p>
-                <div class="hero-cta">
-                    <a href="#dados" class="btn-primary">Ver Indicadores</a>
-                    <a href="#sobre" class="btn-ghost">Saiba mais</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ═══════════════════ SOBRE O ESTUDO ═══════════════════ -->
-    <section class="section-sobre" id="sobre">
-        <div class="container">
-            <div class="sobre-grid">
-                <!-- Imagem ilustrativa arredondada -->
-                <div class="illust-card">
-                    <img src="/static/assets/c1.png" alt="Cooperativa Agrícola">
-                    <div class="illust-caption">Cooperativas de Agricultura Familiar — RN</div>
-                </div>
-                <!-- Texto -->
-                <div class="sobre-text">
-                    <p class="section-kicker">— O ESTUDO —</p>
-                    <h2>O que é o PAA?</h2>
-                    <p>O Programa de Aquisição de Alimentos (PAA) promove o acesso à alimentação e incentiva a agricultura familiar, comprando alimentos com dispensa de licitação e destinando-os a pessoas em situação de insegurança alimentar e nutricional.</p>
-                    <p>Este observatório analisa a execução do PAA no Rio Grande do Norte entre <strong>2011 e 2024</strong>, abrangendo todos os 10 territórios de identidade do estado.</p>
-                    <a href="#" class="btn-link">Conheça a metodologia →</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ═══════════════════ DADOS ═══════════════════ -->
-    <section class="section-dados" id="dados">
-        <div class="container">
-            <p class="section-kicker centered">— PAA ALIMENTOS —</p>
-            <h2 class="section-title centered">Execução Financeira no RN</h2>
-
-            <!-- BLOCO 1: Gráfico + Imagem -->
-            <div class="data-block">
-                <div class="chart-card">
-                    <h4>Evolução de Recursos 2011–2024 (R$)</h4>
-                    <div class="chart-bars">
-                        <div class="bar-group"><div class="bar-fill" style="height:35%"></div><span>2011</span></div>
-                        <div class="bar-group"><div class="bar-fill" style="height:55%"></div><span>2013</span></div>
-                        <div class="bar-group"><div class="bar-fill" style="height:80%"></div><span>2015</span></div>
-                        <div class="bar-group"><div class="bar-fill" style="height:60%"></div><span>2017</span></div>
-                        <div class="bar-group"><div class="bar-fill" style="height:45%"></div><span>2019</span></div>
-                        <div class="bar-group"><div class="bar-fill" style="height:70%"></div><span>2021</span></div>
-                        <div class="bar-group"><div class="bar-fill highlight" style="height:100%"></div><span>2024</span></div>
+        <nav>
+            <ul class="nav-links">
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Institucional ▾</a>
+                    <div class="dropdown-content">
+                        <a href="#sobre">O Projeto</a>
+                        <a href="#sobre">Objetivos</a>
+                        <a href="#sobre">Quem Somos</a>
+                        <a href="#sobre">Metodologia</a>
                     </div>
-                    <p class="chart-note">Fonte: MDS/SAGI — API MiSocial (2011-2024)</p>
-                </div>
-                <!-- Imagem arredondada -->
-                <div class="illust-card">
-                    <img src="/static/assets/c2.png" alt="Produção de Caju">
-                    <div class="illust-caption">Produção de caju — Agricultura familiar potiguar</div>
-                </div>
-            </div>
-
-            <!-- BLOCO 2: Imagem + Gráfico -->
-            <div class="data-block reverse">
-                <!-- Imagem arredondada -->
-                <div class="illust-card">
-                    <img src="/static/assets/c3.png" alt="Agricultora Familiar">
-                    <div class="illust-caption">Agricultora familiar — PAA Modalidade CDS</div>
-                </div>
-                <div class="chart-card">
-                    <h4>Agricultores Beneficiários por Território (2024)</h4>
-                    <div class="territory-list">
-                        <div class="territory-item"><span class="terr-name">Seridó</span><div class="terr-bar"><div class="terr-fill" style="width:85%"></div></div><span class="terr-val">1.240</span></div>
-                        <div class="territory-item"><span class="terr-name">Alto Oeste</span><div class="terr-bar"><div class="terr-fill" style="width:72%"></div></div><span class="terr-val">1.050</span></div>
-                        <div class="territory-item"><span class="terr-name">Mato Grande</span><div class="terr-bar"><div class="terr-fill" style="width:60%"></div></div><span class="terr-val">875</span></div>
-                        <div class="territory-item"><span class="terr-name">Agreste Lit. Sul</span><div class="terr-bar"><div class="terr-fill" style="width:55%"></div></div><span class="terr-val">800</span></div>
-                        <div class="territory-item"><span class="terr-name">Trairi</span><div class="terr-bar"><div class="terr-fill" style="width:40%"></div></div><span class="terr-val">580</span></div>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">PAA ▾</a>
+                    <div class="dropdown-content">
+                        <a href="#paa">Execução Financeira</a>
+                        <a href="#paa">Agricultores</a>
+                        <a href="#paa">Modalidades</a>
+                        <a href="#paa">PAA Leite</a>
                     </div>
-                    <p class="chart-note">Fonte: MDS/SAGI — API MiSocial (2024)</p>
-                </div>
-            </div>
-
-            <!-- BLOCO 3: Gráfico + Imagem -->
-            <div class="data-block">
-                <div class="chart-card">
-                    <h4>Comparativo Nordeste — Ticket Médio por Agricultor (2024)</h4>
-                    <div class="ne-rank">
-                        <div class="ne-item"><span class="ne-pos">1°</span><span class="ne-uf">CE</span><span class="ne-val">R$ 6.850</span></div>
-                        <div class="ne-item"><span class="ne-pos">2°</span><span class="ne-uf">PE</span><span class="ne-val">R$ 5.920</span></div>
-                        <div class="ne-item highlight"><span class="ne-pos">3°</span><span class="ne-uf">RN</span><span class="ne-val">R$ 5.240</span></div>
-                        <div class="ne-item"><span class="ne-pos">4°</span><span class="ne-uf">BA</span><span class="ne-val">R$ 4.810</span></div>
-                        <div class="ne-item"><span class="ne-pos">5°</span><span class="ne-uf">PB</span><span class="ne-val">R$ 4.200</span></div>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Cooperativismo ▾</a>
+                    <div class="dropdown-content">
+                        <a href="#coop">Cooperativas</a>
+                        <a href="#coop">Associações</a>
+                        <a href="#coop">Economia Solidária</a>
                     </div>
-                    <p class="chart-note">Fonte: MDS/SAGI — Benchmark Nordeste (2024)</p>
-                </div>
-                <div class="illust-card">
-                    <img src="/static/assets/c4.png" alt="Pesca Artesanal">
-                    <div class="illust-caption">Pesca artesanal — Economia solidária no RN</div>
-                </div>
-            </div>
-
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Trabalho & Gênero ▾</a>
+                    <div class="dropdown-content">
+                        <a href="#trabalho">Mercado de Trabalho</a>
+                        <a href="#genero">Mulheres na AF</a>
+                    </div>
+                </li>
+                <li><a href="#cadeias">Cadeias Produtivas</a></li>
+                <li><a href="#territorios">Territórios</a></li>
+            </ul>
+        </nav>
+        <div class="nav-actions">
+            <a href="#" class="btn-export">⬇ Exportar Dados</a>
         </div>
-    </section>
+    </div>
+</header>
 
-    <!-- ═══════════════════ FOOTER ═══════════════════ -->
-    <footer class="footer">
-        <div class="container footer-inner">
-            <div class="footer-logo">
-                <span>🌱 Observatório Rural RN</span>
-                <p>Desenvolvido pelo DIEESE em parceria com a Secretaria do Trabalho do RN</p>
-            </div>
-            <div class="footer-links">
-                <a href="#">Metodologia</a>
-                <a href="#">Fontes de Dados</a>
-                <a href="#">Contato</a>
+<!-- ══════════ HERO — VÍDEO ══════════ -->
+<section class="hero-video-section" id="inicio">
+    <video autoplay muted loop playsinline class="hero-video">
+        <source src="/static/assets/agricultura.mp4" type="video/mp4">
+    </video>
+    <div class="hero-overlay">
+        <div class="hero-content">
+            <p class="hero-tag">— DIEESE · SECRETARIA DO TRABALHO RN —</p>
+            <h1 class="hero-title">Observatório da<br>Agricultura Familiar<br><span>Rio Grande do Norte</span></h1>
+            <p class="hero-sub">Diagnóstico socioeconômico territorial da agricultura familiar e economia solidária potiguar — dados, indicadores e políticas públicas.</p>
+            <div class="hero-cta">
+                <a href="#dimensoes" class="btn-primary">Explorar Dimensões</a>
+                <a href="#sobre" class="btn-ghost">Sobre o Projeto</a>
             </div>
         </div>
-    </footer>
+    </div>
+</section>
 
-    <script>
-        // Scroll suave para âncoras
-        document.querySelectorAll('a[href^="#"]').forEach(a => {
-            a.addEventListener('click', e => {
-                const target = document.querySelector(a.getAttribute('href'));
-                if (target) {
-                    e.preventDefault();
-                    target.scrollIntoView({ behavior: 'smooth' });
-                }
-            });
+<!-- ══════════ SOBRE O PROJETO ══════════ -->
+<section class="section-light" id="sobre">
+    <div class="container">
+        <div class="text-center mb-5">
+            <p class="kicker">— O PROJETO —</p>
+            <h2>Um observatório a serviço dos atores sociais do campo</h2>
+            <p class="subtitle">O Observatório da Agricultura Familiar do Rio Grande do Norte é uma plataforma técnica que sistematiza, analisa e apresenta dados sobre a agricultura familiar, o cooperativismo, o mercado de trabalho rural, as políticas públicas e as cadeias produtivas do estado — subsidiando oficinas, planejamento e incidência política.</p>
+        </div>
+        <div class="pillars-grid">
+            <div class="pillar-card">
+                <span class="pillar-icon">📊</span>
+                <h4>Dados confiáveis</h4>
+                <p>APIs e bases oficiais: MDS/SAGI, IBGE, MTE/RAIS, SNCOOP, CADSOL.</p>
+            </div>
+            <div class="pillar-card">
+                <span class="pillar-icon">🗺️</span>
+                <h4>Recorte territorial</h4>
+                <p>10 Territórios de Identidade do RN como unidade de análise.</p>
+            </div>
+            <div class="pillar-card">
+                <span class="pillar-icon">🤝</span>
+                <h4>Para os atores sociais</h4>
+                <p>Linguagem acessível, oficinas participativas e relatórios técnicos.</p>
+            </div>
+            <div class="pillar-card">
+                <span class="pillar-icon">🔬</span>
+                <h4>Rigor metodológico</h4>
+                <p>Produção do DIEESE em parceria com a Secretaria do Trabalho/RN.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════ DIMENSÕES ══════════ -->
+<section class="section-dark" id="dimensoes">
+    <div class="container text-center">
+        <p class="kicker kicker-light">— DIMENSÕES DO ESTUDO —</p>
+        <h2 class="text-white">O que este observatório analisa</h2>
+        <p class="subtitle text-muted">Cinco grandes eixos de análise, cada um com bases de dados, indicadores e territorialização específicos.</p>
+    </div>
+</section>
+
+<!-- ══════════ DIM 1: PAA ══════════ -->
+<section class="dim-section" id="paa">
+    <div class="container dim-grid">
+        <div class="dim-illust">
+            <div class="illust-wrap">
+                <img src="/static/assets/dim_paa.png" alt="Programa de Aquisição de Alimentos">
+                <div class="illust-caption">PAA · Programa de Aquisição de Alimentos</div>
+            </div>
+        </div>
+        <div class="dim-content">
+            <p class="kicker">— DIMENSÃO 1 —</p>
+            <h2>Programa de Aquisição<br>de Alimentos (PAA)</h2>
+            <p>O PAA é a principal política pública de compras institucionais da agricultura familiar. O observatório analisa a execução financeira, os agricultores beneficiários, as modalidades (CDS, Leite, Sementes) e o impacto territorial no RN de <strong>2011 a 2024</strong>.</p>
+            <div class="dim-bases">
+                <h5>Bases de dados utilizadas</h5>
+                <div class="base-tag">📡 MDS/SAGI · API MiSocial</div>
+                <div class="base-tag">📡 Portal Dados Abertos (dados.gov.br)</div>
+                <div class="base-tag">📡 CONAB · Compêndio de Execução</div>
+            </div>
+            <div class="dim-metrics">
+                <div class="metric-item"><span class="metric-val">2011–2024</span><span class="metric-label">Série histórica</span></div>
+                <div class="metric-item"><span class="metric-val">167</span><span class="metric-label">Municípios</span></div>
+                <div class="metric-item"><span class="metric-val">5</span><span class="metric-label">Modalidades</span></div>
+            </div>
+            <a href="#" class="btn-primary-sm">Acessar dados ✓</a>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════ DIM 2: COOPERATIVISMO ══════════ -->
+<section class="dim-section dim-alt" id="coop">
+    <div class="container dim-grid reversed">
+        <div class="dim-content">
+            <p class="kicker">— DIMENSÃO 2 —</p>
+            <h2>Cooperativismo e<br>Associativismo Solidário</h2>
+            <p>Análise das cooperativas e associações da agricultura familiar no RN: quantidade, porte, área de atuação, capacidade de geração de renda e vínculos com políticas públicas de economia solidária.</p>
+            <div class="dim-bases">
+                <h5>Bases de dados utilizadas</h5>
+                <div class="base-tag">📡 SNCOOP · Sistema Nacional de Cooperativismo</div>
+                <div class="base-tag">📡 CADSOL · Cadastro Nacional Eco. Solidária</div>
+                <div class="base-tag">📡 IBGE · Censo Agropecuário 2017</div>
+            </div>
+            <div class="dim-metrics">
+                <div class="metric-item"><span class="metric-val">167</span><span class="metric-label">Municípios</span></div>
+                <div class="metric-item"><span class="metric-val">10</span><span class="metric-label">Territórios</span></div>
+            </div>
+            <span class="badge-dev">🚧 Em desenvolvimento</span>
+        </div>
+        <div class="dim-illust">
+            <div class="illust-wrap">
+                <img src="/static/assets/dim_coop.png" alt="Cooperativismo">
+                <div class="illust-caption">Organização coletiva · Cooperativas do RN</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════ DIM 3: MULHERES ══════════ -->
+<section class="dim-section" id="genero">
+    <div class="container dim-grid">
+        <div class="dim-illust">
+            <div class="illust-wrap">
+                <img src="/static/assets/dim_mulheres.png" alt="Mulheres na Agricultura Familiar">
+                <div class="illust-caption">Mulheres · Protagonismo na agricultura familiar</div>
+            </div>
+        </div>
+        <div class="dim-content">
+            <p class="kicker">— DIMENSÃO 3 —</p>
+            <h2>Mulheres na Agricultura<br>Familiar</h2>
+            <p>Recorte de gênero sobre a participação feminina nas políticas públicas da agricultura familiar: acesso ao PAA, liderança em cooperativas, DAP (Declaração de Aptidão ao PRONAF) e mercado de trabalho rural.</p>
+            <div class="dim-bases">
+                <h5>Bases de dados utilizadas</h5>
+                <div class="base-tag">📡 MDS/SAGI · Recorte de Gênero PAA</div>
+                <div class="base-tag">📡 MTE/RAIS · Vínculos empregatícios</div>
+                <div class="base-tag">📡 IBGE · Censo Agro 2017</div>
+            </div>
+            <div class="dim-metrics">
+                <div class="metric-item"><span class="metric-val">%</span><span class="metric-label">Participação feminina</span></div>
+                <div class="metric-item"><span class="metric-val">DAP</span><span class="metric-label">Titularidade feminina</span></div>
+            </div>
+            <span class="badge-dev">🚧 Em desenvolvimento</span>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════ DIM 4: MERCADO DE TRABALHO ══════════ -->
+<section class="dim-section dim-alt" id="trabalho">
+    <div class="container dim-grid reversed">
+        <div class="dim-content">
+            <p class="kicker">— DIMENSÃO 4 —</p>
+            <h2>Mercado de Trabalho<br>Rural</h2>
+            <p>Análise dos vínculos formais de emprego no setor agropecuário e agroindústria alimentar no RN, com base na RAIS/CAGED. Identifica setores, remuneração média, sazonalidade e territórios com maior geração de emprego formal no campo.</p>
+            <div class="dim-bases">
+                <h5>Bases de dados utilizadas</h5>
+                <div class="base-tag">📡 MTE · RAIS (Relação Anual de Informações)</div>
+                <div class="base-tag">📡 MTE · CAGED (mov. mensal)</div>
+                <div class="base-tag">📡 IBGE · PNAD Contínua</div>
+            </div>
+            <div class="dim-metrics">
+                <div class="metric-item"><span class="metric-val">2010–2023</span><span class="metric-label">Série histórica</span></div>
+                <div class="metric-item"><span class="metric-val">CNAE</span><span class="metric-label">Setor agropecuário</span></div>
+            </div>
+            <span class="badge-dev">🚧 Em desenvolvimento</span>
+        </div>
+        <div class="dim-illust">
+            <div class="illust-wrap">
+                <img src="/static/assets/dim_trabalho.png" alt="Mercado de Trabalho Rural">
+                <div class="illust-caption">Trabalho formal · Agroindústria familiar no RN</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════ DIM 5: CADEIAS PRODUTIVAS ══════════ -->
+<section class="dim-section" id="cadeias">
+    <div class="container dim-grid">
+        <div class="dim-illust">
+            <div class="illust-wrap">
+                <img src="/static/assets/dim_cadeias.png" alt="Cadeias Produtivas">
+                <div class="illust-caption">Cadeias produtivas · Produtos da AF no RN</div>
+            </div>
+        </div>
+        <div class="dim-content">
+            <p class="kicker">— DIMENSÃO 5 —</p>
+            <h2>Mapeamento de<br>Cadeias Produtivas</h2>
+            <p>Diagnóstico das principais cadeias produtivas da agricultura familiar no RN: cajucultura, fruticultura, caprinocultura, pesca artesanal, apicultura e beneficiamento de alimentos. Identifica gargalos, potencialidades e vínculos com o mercado.</p>
+            <div class="dim-bases">
+                <h5>Bases de dados utilizadas</h5>
+                <div class="base-tag">📡 IBGE · PAM / PPM / PEVS</div>
+                <div class="base-tag">📡 IBGE · Censo Agropecuário 2017</div>
+                <div class="base-tag">📡 SEBRAE · Estudos Setoriais RN</div>
+            </div>
+            <div class="dim-metrics">
+                <div class="metric-item"><span class="metric-val">12+</span><span class="metric-label">Cadeias mapeadas</span></div>
+                <div class="metric-item"><span class="metric-val">RN</span><span class="metric-label">Especificidade territorial</span></div>
+            </div>
+            <span class="badge-dev">🚧 Em desenvolvimento</span>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════ TERRITÓRIOS ══════════ -->
+<section class="section-light" id="territorios">
+    <div class="container text-center">
+        <p class="kicker">— TERRITÓRIOS DE IDENTIDADE —</p>
+        <h2>10 Territórios, uma realidade plural</h2>
+        <p class="subtitle">Todos os indicadores do observatório são estratificados pelos 10 Territórios de Identidade do RN, permitindo comparações e diagnósticos específicos para cada realidade.</p>
+        <div class="territory-chips">
+            <span class="chip">Seridó</span>
+            <span class="chip">Alto Oeste</span>
+            <span class="chip">Agreste Litoral Sul</span>
+            <span class="chip">Mato Grande</span>
+            <span class="chip">Assú-Mossoró</span>
+            <span class="chip">Potengi</span>
+            <span class="chip">Trairi</span>
+            <span class="chip">Sertão Central Cabugi</span>
+            <span class="chip">Sertão do Apodi</span>
+            <span class="chip">Terras Potiguares</span>
+        </div>
+        <span class="badge-dev mt-2">🚧 Mapas interativos em desenvolvimento</span>
+    </div>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer class="footer">
+    <div class="container footer-inner">
+        <div class="footer-logo">
+            <span>🌱 Observatório da Agricultura Familiar · RN</span>
+            <p>DIEESE · Secretaria do Trabalho do Rio Grande do Norte · 2024</p>
+        </div>
+        <div class="footer-links">
+            <a href="#">Metodologia</a>
+            <a href="#">Fontes de Dados</a>
+            <a href="#">Contato</a>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // Navbar escurece ao rolar
+    window.addEventListener('scroll', () => {
+        document.querySelector('.navbar').classList.toggle('scrolled', window.scrollY > 60);
+    });
+    // Scroll suave
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', e => {
+            const t = document.querySelector(a.getAttribute('href'));
+            if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
         });
-
-        // Navbar escurece ao rolar
-        window.addEventListener('scroll', () => {
-            const nav = document.querySelector('.navbar');
-            nav.classList.toggle('scrolled', window.scrollY > 80);
-        });
-    </script>
+    });
+</script>
 
 </body>
 </html>
