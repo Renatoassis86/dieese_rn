@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Observatório da Agricultura Familiar do RN — DIEESE</title>
-    <meta name="description" content="Plataforma de diagnóstico socioeconômico da agricultura familiar e economia solidária do Rio Grande do Norte.">
+    <title>Diagnóstico Socioeconômico dos Empreendimentos Rurais de Economia Solidária — RN · DIEESE</title>
+    <meta name="description" content="Diagnóstico socioeconômico dos empreendimentos rurais de economia solidária do Rio Grande do Norte. Banco de dados, georreferenciamento e visualizações como instrumento de planejamento.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/style.css">
@@ -59,11 +59,9 @@
                 </li>
                 <li><a href="#cadeias">Cadeias Produtivas</a></li>
                 <li><a href="#territorios">Territórios</a></li>
+                <li><a href="#estatisticas" class="nav-stat">📊 Estatísticas</a></li>
             </ul>
         </nav>
-        <div class="nav-actions">
-            <a href="#" class="btn-export">⬇ Exportar Dados</a>
-        </div>
     </div>
 </header>
 
@@ -75,7 +73,7 @@
     <div class="hero-overlay">
         <div class="hero-content">
             <p class="hero-tag">— DIEESE · SECRETARIA DO TRABALHO RN —</p>
-            <h1 class="hero-title">Observatório da<br>Agricultura Familiar<br><span>Rio Grande do Norte</span></h1>
+            <h1 class="hero-title">Diagnóstico Socioeconômico dos<br>Empreendimentos Rurais<br><span>de Economia Solidária</span></h1>
             <p class="hero-sub">Diagnóstico socioeconômico territorial da agricultura familiar e economia solidária potiguar — dados, indicadores e políticas públicas.</p>
             <div class="hero-cta">
                 <a href="#dimensoes" class="btn-primary">Explorar Dimensões</a>
@@ -368,17 +366,72 @@
     </div>
 </section>
 
-<!-- ══════════ FOOTER ══════════ -->
+<!-- ══════════ ESTATÍSTICAS (placeholder) ══════════ -->
+<section class="section-dark" id="estatisticas">
+    <div class="container text-center">
+        <p class="kicker kicker-light">— ESTATÍSTICAS —</p>
+        <h2 class="text-white">Geração de Tabelas e Indicadores</h2>
+        <p class="subtitle text-muted">Utilize filtros para gerar quadros, tabelas e gráficos personalizados por território, período e dimensão do estudo. Dados integrados via Supabase para consultas em tempo real.</p>
+        <span class="badge-dev mt-2">🚧 Módulo de filtros e exportação XLSX em desenvolvimento</span>
+    </div>
+</section>
+
+<!-- ══════════ FOOTER DIEESE ══════════ -->
 <footer class="footer">
-    <div class="container footer-inner">
-        <div class="footer-logo">
-            <span>🌱 Observatório da Agricultura Familiar · RN</span>
-            <p>DIEESE · Secretaria do Trabalho do Rio Grande do Norte · 2024</p>
+    <div class="container">
+        <div class="footer-top">
+            <!-- Logo e descrição -->
+            <div class="footer-brand">
+                <div class="footer-logo-mark">
+                    <img src="https://www.dieese.org.br/images/logoDieese.png" alt="DIEESE" class="dieese-logo-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                    <div class="dieese-logo-fallback" style="display:none">
+                        <span class="dieese-sigla">DIEESE</span>
+                    </div>
+                </div>
+                <p class="footer-desc">Departamento Intersindical de Estatística e Estudos Socioeconômicos</p>
+                <p class="footer-address">Rua Aurora, 957 — 1º andar · Santa Ifigênia<br>CEP 01209-001 · São Paulo — SP · Brasil</p>
+            </div>
+
+            <!-- Navegação do site -->
+            <div class="footer-nav-col">
+                <h5>Institucional</h5>
+                <a href="#sobre">O Projeto</a>
+                <a href="#sobre">Objetivos</a>
+                <a href="#sobre">Quem Somos</a>
+                <a href="#sobre">Metodologia</a>
+            </div>
+            <div class="footer-nav-col">
+                <h5>Dimensões</h5>
+                <a href="#paa">PAA</a>
+                <a href="#coop">Cooperativismo</a>
+                <a href="#genero">Mulheres na AF</a>
+                <a href="#trabalho">Mercado de Trabalho</a>
+                <a href="#cadeias">Cadeias Produtivas</a>
+            </div>
+            <div class="footer-nav-col">
+                <h5>Plataforma</h5>
+                <a href="#territorios">Territórios</a>
+                <a href="#indicadores">Indicadores</a>
+                <a href="#estatisticas">Estatísticas</a>
+            </div>
+
+            <!-- Contatos -->
+            <div class="footer-contact">
+                <h5>Contato</h5>
+                <p>📞 (11) 3874-5366</p>
+                <p>📧 <a href="mailto:en@dieese.org.br">en@dieese.org.br</a></p>
+                <div class="footer-social">
+                    <a href="https://www.instagram.com/daboradieese/" target="_blank" title="Instagram" class="social-icon">📷</a>
+                    <a href="https://www.facebook.com/Daboradieese" target="_blank" title="Facebook" class="social-icon">📘</a>
+                    <a href="https://twitter.com/daboradieese" target="_blank" title="Twitter/X" class="social-icon">🐦</a>
+                    <a href="https://www.youtube.com/@daboradieese" target="_blank" title="YouTube" class="social-icon">🎬</a>
+                </div>
+            </div>
         </div>
-        <div class="footer-links">
-            <a href="#">Metodologia</a>
-            <a href="#">Fontes de Dados</a>
-            <a href="#">Contato</a>
+
+        <div class="footer-bottom">
+            <p>© 2024–2026 DIEESE · Escritório Regional Rio Grande do Norte · Todos os direitos reservados</p>
+            <p>Plataforma desenvolvida no âmbito do convênio com a Secretaria do Trabalho, da Habitação e da Assistência Social — Governo do RN</p>
         </div>
     </div>
 </footer>

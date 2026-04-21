@@ -92,6 +92,20 @@ a { text-decoration: none; }
 }
 .nav-links > li > a:hover { color: #fff; background: rgba(255,255,255,0.08); }
 
+/* Aba Estatísticas destaque */
+.nav-stat {
+    background: var(--amber) !important;
+    color: var(--navy) !important;
+    font-weight: 700 !important;
+    border-radius: 8px !important;
+    padding: 0.45rem 1rem !important;
+    transition: background 0.25s, transform 0.2s !important;
+}
+.nav-stat:hover {
+    background: var(--amber-dk) !important;
+    transform: translateY(-1px) !important;
+}
+
 /* Dropdown */
 .dropdown { position: relative; }
 .dropdown-content {
@@ -407,23 +421,107 @@ a { text-decoration: none; }
     border-top: 1px solid var(--border); padding-top: 0.6rem;
 }
 
-/* ══ FOOTER ══ */
-.footer { background: var(--navy); padding: 3rem 0; }
-.footer-inner {
-    display: flex; justify-content: space-between; align-items: center;
-    flex-wrap: wrap; gap: 1.5rem;
+/* ══ FOOTER DIEESE ══ */
+.footer {
+    background: var(--navy);
+    padding: 4rem 0 0;
+    color: rgba(255,255,255,0.65);
 }
-.footer-logo span {
-    display: block; font-family: 'Montserrat', sans-serif;
-    font-weight: 700; color: #fff; margin-bottom: 0.3rem;
+
+.footer-top {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 1fr 1fr 1.2fr;
+    gap: 2.5rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
 }
-.footer-logo p { font-size: 0.82rem; color: rgba(255,255,255,0.45); }
-.footer-links { display: flex; gap: 2rem; }
-.footer-links a {
-    color: rgba(255,255,255,0.5); font-size: 0.85rem;
-    transition: color 0.3s;
+
+.footer-brand { display: flex; flex-direction: column; gap: 0.8rem; }
+
+.footer-logo-mark { margin-bottom: 0.5rem; }
+
+.dieese-logo-img {
+    height: 48px; width: auto;
+    filter: brightness(0) invert(1);
 }
-.footer-links a:hover { color: #fff; }
+
+.dieese-sigla {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900; font-size: 1.6rem;
+    color: var(--white); letter-spacing: 0.08em;
+}
+
+.footer-desc {
+    font-size: 0.85rem; line-height: 1.6;
+    color: rgba(255,255,255,0.60);
+}
+
+.footer-address {
+    font-size: 0.78rem; line-height: 1.7;
+    color: rgba(255,255,255,0.40);
+}
+
+.footer-nav-col { display: flex; flex-direction: column; gap: 0.5rem; }
+
+.footer-nav-col h5 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700; font-size: 0.82rem;
+    color: var(--white); letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+
+.footer-nav-col a {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.50);
+    transition: color 0.2s, padding-left 0.2s;
+}
+.footer-nav-col a:hover { color: var(--white); padding-left: 0.3rem; }
+
+.footer-contact { display: flex; flex-direction: column; gap: 0.5rem; }
+
+.footer-contact h5 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700; font-size: 0.82rem;
+    color: var(--white); letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+
+.footer-contact p {
+    font-size: 0.85rem; color: rgba(255,255,255,0.55);
+}
+
+.footer-contact a {
+    color: var(--amber); transition: color 0.2s;
+}
+.footer-contact a:hover { color: var(--white); }
+
+.footer-social { display: flex; gap: 0.8rem; margin-top: 0.6rem; }
+
+.social-icon {
+    display: flex; align-items: center; justify-content: center;
+    width: 38px; height: 38px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 50%;
+    font-size: 1.1rem;
+    transition: background 0.25s, transform 0.2s;
+}
+.social-icon:hover {
+    background: var(--green);
+    transform: translateY(-3px);
+}
+
+.footer-bottom {
+    padding: 1.5rem 0;
+    text-align: center;
+}
+
+.footer-bottom p {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.30);
+    line-height: 1.6;
+}
 
 /* ══ RESPONSIVO ══ */
 @media (max-width: 1024px) {
@@ -436,8 +534,14 @@ a { text-decoration: none; }
     .hero-content { margin-left: 0; }
     .pillars-grid { grid-template-columns: 1fr 1fr; }
     .illust-wrap { max-width: 100%; aspect-ratio: 3/2; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+    .kpi-row { grid-template-columns: 1fr 1fr; }
+    .charts-grid { grid-template-columns: 1fr; }
+    .chart-box.span-2 { grid-column: span 1; }
 }
 @media (max-width: 540px) {
     .pillars-grid { grid-template-columns: 1fr; }
     .hero-title { font-size: 2.2rem; }
+    .footer-top { grid-template-columns: 1fr; }
+    .kpi-row { grid-template-columns: 1fr; }
 }
