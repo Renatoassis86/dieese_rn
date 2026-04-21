@@ -394,6 +394,7 @@
                     </select>
                 </div>
                 <button class="btn-apply" onclick="applyFilters()">Gerar Diagnóstico ✓</button>
+                <button class="btn-apply btn-excel" onclick="exportToExcel()" style="background:#1D6F42; margin-top: 10px;">💾 Exportar Base (CSV/Excel)</button>
             </div>
 
             <!-- Área de Conteúdo Pro Max -->
@@ -785,6 +786,32 @@ document.querySelectorAll('.dropdown').forEach(dd => {
 window.addEventListener('click', () => {
     document.querySelectorAll('.dropdown').forEach(dd => dd.classList.remove('open'));
 });
+
+
+// ── EXCEL EXPORT ───────────────────────
+function exportToExcel() {
+    const terr = document.getElementById('filter-territory').value;
+    const year = document.getElementById('filter-year').value;
+    
+    alert(`Preparando exportação do PAA - Filtros: ${terr}, ${year}. O arquivo será gerado e baixado.`);
+    
+    window.API.fetchFilteredPAA({ year, territory: terr }).then(data => {
+        if (data.length === 0) return alert("Sem dados para exportar.");
+        
+        let csv = "ano,mes,municipio,valor_executado,beneficiarios\n";
+        data.forEach(d => {
+            csv += `${d.ano},${d.mes},${d.nome_municipio},${d.val_executado},${d.qtd_beneficiados}\n`;
+        });
+        
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.setAttribute("download", `paa_rn_export_${year}_${terr}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    });
+}
 
 // ── IntersectionObserver (scroll trigger) ─
 const sectObs = new IntersectionObserver((entries) => {
