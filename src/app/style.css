@@ -680,3 +680,11 @@ a { text-decoration: none; }
 .db-details-box p { font-size: 0.95rem; line-height: 1.6; color: #64748b; }
 
 @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ── FOOTER EXPANSION ────────────────── */
+.h-footer-top { display: grid; grid-template-columns: 1fr 2.5fr; gap: 4rem; }
+.h-footer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; }
+.footer-social-icons { display: flex; gap: 1.5rem; margin-top: 1.5rem; }
+.footer-social-icons a { color: #fff; font-size: 1.4rem; opacity: 0.7; transition: 0.3s; }
+.footer-social-icons a:hover { opacity: 1; color: var(--amber); transform: translateY(-3px); }
+.link-group a { display: block; margin-bottom: 0.5rem; font-size: 0.85rem; }
