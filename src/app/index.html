@@ -3,149 +3,198 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Observatório Rural RN - PAA</title>
+    <title>Observatório Rural RN — PAA</title>
+    <meta name="description" content="Diagnóstico socioeconômico do Programa de Aquisição de Alimentos no Rio Grande do Norte. Dados, territórios e indicadores para atores sociais.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header class="glass-header">
-        <div class="logo">
-            <span class="logo-icon">🚜</span>
-            <h1>Observatório Rural <span>RN</span></h1>
-        </div>
-        <nav>
-            <ul class="nav-links">
-                <li class="dropdown">
-                    <a href="#" class="dropbtn">Institucional ▾</a>
-                    <div class="dropdown-content">
-                        <a href="#">O Estudo</a>
-                        <a href="#">Objetivos</a>
-                        <a href="#">Quem Somos</a>
-                    </div>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropbtn">PAA Alimentos ▾</a>
-                    <div class="dropdown-content">
-                        <a href="#">Execução Financeira</a>
-                        <a href="#">Agricultores</a>
-                        <a href="#">Modalidades</a>
-                    </div>
-                </li>
-                <li><a href="#">PAA Leite</a></li>
-                <li><a href="#">Territórios</a></li>
-                <li><a href="#">Comparativo NE</a></li>
-            </ul>
-        </nav>
-        <div class="header-actions">
-            <span class="search-icon">🔍</span>
-            <div class="btn-download"><a href="/static/ranking_nordeste_2024.xlsx">Excel</a></div>
+
+    <!-- ═══════════════════ NAVBAR ═══════════════════ -->
+    <header class="navbar">
+        <div class="navbar-inner">
+            <div class="logo">
+                <span class="logo-icon">🌱</span>
+                <div class="logo-text">
+                    <span class="logo-title">Observatório Rural</span>
+                    <span class="logo-sub">Rio Grande do Norte</span>
+                </div>
+            </div>
+
+            <nav>
+                <ul class="nav-links">
+                    <li class="dropdown">
+                        <a href="#" class="dropbtn">Institucional ▾</a>
+                        <div class="dropdown-content">
+                            <a href="#sobre">O Estudo</a>
+                            <a href="#sobre">Objetivos</a>
+                            <a href="#sobre">Quem Somos</a>
+                        </div>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropbtn">PAA Alimentos ▾</a>
+                        <div class="dropdown-content">
+                            <a href="#dados">Execução Financeira</a>
+                            <a href="#dados">Agricultores</a>
+                            <a href="#dados">Modalidades</a>
+                        </div>
+                    </li>
+                    <li><a href="#">PAA Leite</a></li>
+                    <li><a href="#">Territórios</a></li>
+                    <li><a href="#">Comparativo NE</a></li>
+                </ul>
+            </nav>
+
+            <div class="nav-actions">
+                <a href="#" class="btn-export">⬇ Exportar Excel</a>
+                <span class="whatsapp-btn">💬</span>
+            </div>
         </div>
     </header>
 
-    <section class="carousel-container">
-        <div class="carousel-track">
-            <div class="carousel-slide"><img src="/static/assets/c1.png" alt="Agroindústria"></div>
-            <div class="carousel-slide"><img src="/static/assets/c2.png" alt="Caju"></div>
-            <div class="carousel-slide"><img src="/static/assets/c3.png" alt="Agricultura Familiar"></div>
-            <div class="carousel-slide"><img src="/static/assets/c4.png" alt="Pesca Artesanal"></div>
-        </div>
-        <div class="carousel-controls">
-            <span class="prev">&#10094;</span>
-            <span class="next">&#10095;</span>
-        </div>
-        <div class="carousel-indicators">
-            <span class="dot active"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
+    <!-- ═══════════════════ HERO — VÍDEO ═══════════════════ -->
+    <section class="hero-video-section" id="inicio">
+        <video autoplay muted loop playsinline class="hero-video">
+            <source src="/static/assets/agricultura.mp4" type="video/mp4">
+        </video>
+        <div class="hero-overlay">
+            <div class="hero-content">
+                <p class="hero-tag">— PROGRAMA DE AQUISIÇÃO DE ALIMENTOS —</p>
+                <h1 class="hero-title">Observatório Rural<br><span>Rio Grande do Norte</span></h1>
+                <p class="hero-sub">Diagnóstico socioeconômico da agricultura familiar potiguar.<br>Dados, indicadores e territórios para políticas públicas.</p>
+                <div class="hero-cta">
+                    <a href="#dados" class="btn-primary">Ver Indicadores</a>
+                    <a href="#sobre" class="btn-ghost">Saiba mais</a>
+                </div>
+            </div>
         </div>
     </section>
 
-    <main>
-        <section class="hero" style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('/static/assets/hero.png');">
-            <div class="hero-content">
-                <h2>Programa de Aquisição de Alimentos</h2>
-                <p>Diagnóstico Socioeconômico e Execução Financeira no Rio Grande do Norte</p>
-                <div class="hero-stats">
-                    <div class="stat-card">
-                        <span class="label">Total Investido (2024)</span>
-                        <span class="value">R$ 48,8 Mi</span>
-                        <span class="trend up">↑ 24% vs 2023</span>
-                    </div>
+    <!-- ═══════════════════ SOBRE O ESTUDO ═══════════════════ -->
+    <section class="section-sobre" id="sobre">
+        <div class="container">
+            <div class="sobre-grid">
+                <!-- Imagem ilustrativa arredondada -->
+                <div class="illust-card">
+                    <img src="/static/assets/c1.png" alt="Cooperativa Agrícola">
+                    <div class="illust-caption">Cooperativas de Agricultura Familiar — RN</div>
+                </div>
+                <!-- Texto -->
+                <div class="sobre-text">
+                    <p class="section-kicker">— O ESTUDO —</p>
+                    <h2>O que é o PAA?</h2>
+                    <p>O Programa de Aquisição de Alimentos (PAA) promove o acesso à alimentação e incentiva a agricultura familiar, comprando alimentos com dispensa de licitação e destinando-os a pessoas em situação de insegurança alimentar e nutricional.</p>
+                    <p>Este observatório analisa a execução do PAA no Rio Grande do Norte entre <strong>2011 e 2024</strong>, abrangendo todos os 10 territórios de identidade do estado.</p>
+                    <a href="#" class="btn-link">Conheça a metodologia →</a>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section class="data-section">
-            <div class="section-header">
-                <h3>Execução por Território de Identidade</h3>
-                <p>Análise estratificada da política pública no RN</p>
-            </div>
-            
-            <div class="dashboard-grid">
-                <!-- Gráfico Mockup -->
-                <div class="card chart-card">
-                    <h4>Evolução de Recursos (2011-2024)</h4>
-                    <div class="chart-placeholder">
-                        <div class="bar" style="height: 40%"></div>
-                        <div class="bar" style="height: 60%"></div>
-                        <div class="bar" style="height: 85%"></div>
-                        <div class="bar" style="height: 50%"></div>
-                        <div class="bar" style="height: 90%"></div>
+    <!-- ═══════════════════ DADOS ═══════════════════ -->
+    <section class="section-dados" id="dados">
+        <div class="container">
+            <p class="section-kicker centered">— PAA ALIMENTOS —</p>
+            <h2 class="section-title centered">Execução Financeira no RN</h2>
+
+            <!-- BLOCO 1: Gráfico + Imagem -->
+            <div class="data-block">
+                <div class="chart-card">
+                    <h4>Evolução de Recursos 2011–2024 (R$)</h4>
+                    <div class="chart-bars">
+                        <div class="bar-group"><div class="bar-fill" style="height:35%"></div><span>2011</span></div>
+                        <div class="bar-group"><div class="bar-fill" style="height:55%"></div><span>2013</span></div>
+                        <div class="bar-group"><div class="bar-fill" style="height:80%"></div><span>2015</span></div>
+                        <div class="bar-group"><div class="bar-fill" style="height:60%"></div><span>2017</span></div>
+                        <div class="bar-group"><div class="bar-fill" style="height:45%"></div><span>2019</span></div>
+                        <div class="bar-group"><div class="bar-fill" style="height:70%"></div><span>2021</span></div>
+                        <div class="bar-group"><div class="bar-fill highlight" style="height:100%"></div><span>2024</span></div>
                     </div>
+                    <p class="chart-note">Fonte: MDS/SAGI — API MiSocial (2011-2024)</p>
                 </div>
-
-                <!-- Texto Interpretativo -->
-                <div class="card info-card">
-                    <h4>Análise Técnica</h4>
-                    <div class="interpretative-text">
-                        <p>O Programa de Aquisição de Alimentos no RN apresenta uma trajetória de recuperação robusta em 2024. O investimento total de <strong>R$ 48,8 milhões</strong> reflete o fortalecimento da modalidade Compra com Doação Simultânea (CDS).</p>
-                        <p>Comparativamente ao Nordeste, o RN ocupa a 4ª posição em Ticket Médio por Agricultor, indicando uma boa eficiência na distribuição de recursos em territórios como o Mato Grande e Agreste Potiguar.</p>
-                        <a href="#" class="btn-more">Ver Detalhes por Município</a>
-                    </div>
+                <!-- Imagem arredondada -->
+                <div class="illust-card">
+                    <img src="/static/assets/c2.png" alt="Produção de Caju">
+                    <div class="illust-caption">Produção de caju — Agricultura familiar potiguar</div>
                 </div>
             </div>
-        </section>
-    </main>
 
-    <footer>
-        <p>Desenvolvido por Antigravity para DIEESE / Observatório Rural RN</p>
+            <!-- BLOCO 2: Imagem + Gráfico -->
+            <div class="data-block reverse">
+                <!-- Imagem arredondada -->
+                <div class="illust-card">
+                    <img src="/static/assets/c3.png" alt="Agricultora Familiar">
+                    <div class="illust-caption">Agricultora familiar — PAA Modalidade CDS</div>
+                </div>
+                <div class="chart-card">
+                    <h4>Agricultores Beneficiários por Território (2024)</h4>
+                    <div class="territory-list">
+                        <div class="territory-item"><span class="terr-name">Seridó</span><div class="terr-bar"><div class="terr-fill" style="width:85%"></div></div><span class="terr-val">1.240</span></div>
+                        <div class="territory-item"><span class="terr-name">Alto Oeste</span><div class="terr-bar"><div class="terr-fill" style="width:72%"></div></div><span class="terr-val">1.050</span></div>
+                        <div class="territory-item"><span class="terr-name">Mato Grande</span><div class="terr-bar"><div class="terr-fill" style="width:60%"></div></div><span class="terr-val">875</span></div>
+                        <div class="territory-item"><span class="terr-name">Agreste Lit. Sul</span><div class="terr-bar"><div class="terr-fill" style="width:55%"></div></div><span class="terr-val">800</span></div>
+                        <div class="territory-item"><span class="terr-name">Trairi</span><div class="terr-bar"><div class="terr-fill" style="width:40%"></div></div><span class="terr-val">580</span></div>
+                    </div>
+                    <p class="chart-note">Fonte: MDS/SAGI — API MiSocial (2024)</p>
+                </div>
+            </div>
+
+            <!-- BLOCO 3: Gráfico + Imagem -->
+            <div class="data-block">
+                <div class="chart-card">
+                    <h4>Comparativo Nordeste — Ticket Médio por Agricultor (2024)</h4>
+                    <div class="ne-rank">
+                        <div class="ne-item"><span class="ne-pos">1°</span><span class="ne-uf">CE</span><span class="ne-val">R$ 6.850</span></div>
+                        <div class="ne-item"><span class="ne-pos">2°</span><span class="ne-uf">PE</span><span class="ne-val">R$ 5.920</span></div>
+                        <div class="ne-item highlight"><span class="ne-pos">3°</span><span class="ne-uf">RN</span><span class="ne-val">R$ 5.240</span></div>
+                        <div class="ne-item"><span class="ne-pos">4°</span><span class="ne-uf">BA</span><span class="ne-val">R$ 4.810</span></div>
+                        <div class="ne-item"><span class="ne-pos">5°</span><span class="ne-uf">PB</span><span class="ne-val">R$ 4.200</span></div>
+                    </div>
+                    <p class="chart-note">Fonte: MDS/SAGI — Benchmark Nordeste (2024)</p>
+                </div>
+                <div class="illust-card">
+                    <img src="/static/assets/c4.png" alt="Pesca Artesanal">
+                    <div class="illust-caption">Pesca artesanal — Economia solidária no RN</div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ═══════════════════ FOOTER ═══════════════════ -->
+    <footer class="footer">
+        <div class="container footer-inner">
+            <div class="footer-logo">
+                <span>🌱 Observatório Rural RN</span>
+                <p>Desenvolvido pelo DIEESE em parceria com a Secretaria do Trabalho do RN</p>
+            </div>
+            <div class="footer-links">
+                <a href="#">Metodologia</a>
+                <a href="#">Fontes de Dados</a>
+                <a href="#">Contato</a>
+            </div>
+        </div>
     </footer>
 
     <script>
-        const track = document.querySelector('.carousel-track');
-        const dots = document.querySelectorAll('.dot');
-        let index = 0;
-
-        function updateCarousel() {
-            track.style.transform = `translateX(-${index * 25}%)`;
-            dots.forEach((dot, i) => {
-                dot.classList.toggle('active', i === index);
-            });
-        }
-
-        document.querySelector('.next').addEventListener('click', () => {
-            index = (index + 1) % 4;
-            updateCarousel();
-        });
-
-        document.querySelector('.prev').addEventListener('click', () => {
-            index = (index - 1 + 4) % 4;
-            updateCarousel();
-        });
-
-        dots.forEach((dot, i) => {
-            dot.addEventListener('click', () => {
-                index = i;
-                updateCarousel();
+        // Scroll suave para âncoras
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', e => {
+                const target = document.querySelector(a.getAttribute('href'));
+                if (target) {
+                    e.preventDefault();
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
             });
         });
 
-        // Auto slide
-        setInterval(() => {
-            index = (index + 1) % 4;
-            updateCarousel();
-        }, 5000);
+        // Navbar escurece ao rolar
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('.navbar');
+            nav.classList.toggle('scrolled', window.scrollY > 80);
+        });
     </script>
+
 </body>
 </html>
