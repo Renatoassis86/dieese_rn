@@ -25,57 +25,98 @@ body {
 /* Header & Navigation */
 .glass-header {
     background: var(--glass);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(15px);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.5rem 5%;
+    padding: 1rem 5%;
     position: sticky;
     top: 0;
-    z-index: 100;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    z-index: 1000;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
 }
 
 .logo h1 {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     font-weight: 700;
     color: var(--primary);
 }
 
-.logo h1 span {
-    color: var(--secondary);
-}
-
-nav ul {
+.nav-links {
     display: flex;
     list-style: none;
-    gap: 2rem;
+    gap: 1.5rem;
     align-items: center;
 }
 
-nav a {
+.nav-links a {
     text-decoration: none;
     color: var(--accent);
-    font-weight: 500;
-    transition: color 0.3s;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 0.5rem 0.8rem;
+    border-radius: 6px;
+    transition: all 0.3s ease;
 }
 
-nav a.active {
+.nav-links a:hover, .dropbtn:hover {
     color: var(--primary);
-    border-bottom: 2px solid var(--primary);
+    background: rgba(45, 90, 39, 0.05);
+}
+
+/* Dropdown Logic */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: var(--white);
+    min-width: 180px;
+    box-shadow: var(--shadow);
+    z-index: 1;
+    border-radius: 12px;
+    overflow: hidden;
+    top: 100%;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.dropdown-content a {
+    color: var(--accent);
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 0.9rem;
+}
+
+.dropdown-content a:hover {
+    background-color: var(--bg-light);
+    color: var(--primary);
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.search-icon {
+    font-size: 1.2rem;
+    cursor: pointer;
+    opacity: 0.6;
 }
 
 .btn-download {
     background: var(--primary);
     padding: 0.6rem 1.2rem;
-    border-radius: 8px;
-    transition: transform 0.3s;
+    border-radius: 10px;
 }
 
 .btn-download a {
@@ -200,7 +241,12 @@ footer {
     color: #64748B;
 }
 
-@media (max-width: 900px) {
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 1100px) {
     .dashboard-grid {
         grid-template-columns: 1fr;
     }
