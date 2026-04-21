@@ -24,6 +24,13 @@ async def read_index():
         return FileResponse(index_path)
     return {"message": "DASHBOARD NÃO ENCONTRADO. Verifique src/app/index.html"}
 
+@app.get("/logo.png")
+async def get_logo():
+    logo_path = os.path.join(os.path.dirname(__file__), "src", "app", "logo.png")
+    if os.path.exists(logo_path):
+        return FileResponse(logo_path)
+    return FileResponse(os.path.join(os.path.dirname(__file__), "public", "logo.png"))
+
 @app.get("/api/health")
 async def health_check():
     return {"status": "online", "project": "Observatório Rural RN"}
