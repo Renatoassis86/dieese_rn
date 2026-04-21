@@ -440,15 +440,8 @@ a { text-decoration: none; }
 
 .footer-logo-mark { margin-bottom: 0.5rem; }
 
-.dieese-logo-img {
-    height: 48px; width: auto;
-    filter: brightness(0) invert(1);
-}
-
-.dieese-sigla {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 900; font-size: 1.6rem;
-    color: var(--white); letter-spacing: 0.08em;
+.dieese-logo-svg {
+    height: 40px; width: auto;
 }
 
 .footer-desc {
