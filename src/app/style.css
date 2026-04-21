@@ -688,3 +688,20 @@ a { text-decoration: none; }
 .footer-social-icons a { color: #fff; font-size: 1.4rem; opacity: 0.7; transition: 0.3s; }
 .footer-social-icons a:hover { opacity: 1; color: var(--amber); transform: translateY(-3px); }
 .link-group a { display: block; margin-bottom: 0.5rem; font-size: 0.85rem; }
+
+/* ── BI VIDEO & FONT FIX ──────────────── */
+.light-desc { color: rgba(255,255,255,0.7) !important; display: inline-block; margin-top: 1rem; }
+
+.bi-video-container { display: flex; justify-content: center; margin: 3rem 0; }
+.geometric-video-frame { 
+    width: 320px; 
+    height: 380px; 
+    border-radius: 40px; 
+    overflow: hidden; 
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    border: 5px solid rgba(255,255,255,0.1);
+}
+.video-geometric { width: 100%; height: 100%; object-fit: cover; }
+
+/* Font visibility in dark sections */
+#estatisticas .bi-header p { color: rgba(255,255,255,0.8); }
