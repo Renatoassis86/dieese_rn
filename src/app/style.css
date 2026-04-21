@@ -154,15 +154,15 @@ a { text-decoration: none; }
     display: flex; align-items: center;
     padding: 8rem 2rem 4rem;
 }
-.hero-content { max-width: 680px; margin-left: 8%; }
+.hero-content { max-width: 780px; margin-left: 6%; }
 .hero-tag {
     font-family: 'Montserrat', sans-serif; font-size: 0.75rem; font-weight: 700;
     letter-spacing: 0.18em; color: var(--amber); margin-bottom: 1.2rem;
     text-transform: uppercase; display: block;
 }
 .hero-title {
-    font-size: clamp(2rem, 3.8vw, 3.2rem); font-weight: 900;
-    color: #fff; line-height: 1.15; margin-bottom: 1rem;
+    font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 900;
+    color: #fff; line-height: 1.2; margin-bottom: 1rem;
 }
 .hero-title span { color: var(--amber); }
 
@@ -497,6 +497,12 @@ a { text-decoration: none; }
 
 .footer-contact p {
     font-size: 0.85rem; color: rgba(255,255,255,0.55);
+    display: flex; align-items: center; gap: 0.5rem;
+}
+
+.footer-contact p svg {
+    flex-shrink: 0;
+    color: var(--amber);
 }
 
 .footer-contact a {
