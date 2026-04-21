@@ -80,7 +80,21 @@ async function fetchPaaByTerritory() {
     }
 }
 
-window.API = { fetchPaaAnnual, fetchPaaByTerritory };
+window.API = {
+
+    async fetchPaaByTerritory() {
+        // Now using the centralized database view for precise aggregation
+        const { data } = await supabase.from('view_paa_territorios')
+            .select('*')
+            .eq('ano', 2024)
+            .order('total_beneficiados', { ascending: false });
+        
+        return (data || []).map(d => ({
+            nome: d.nome_territorio,
+            valor: d.total_beneficiados
+        }));
+    },
+ fetchPaaAnnual, fetchPaaByTerritory };
 
 /**
  * Fetch Filtered PAA Data for BI Canvas
@@ -112,4 +126,18 @@ async function fetchFilteredPAA(filters = {}) {
     }
 }
 
-window.API = { ...window.API, fetchFilteredPAA };
+window.API = {
+
+    async fetchPaaByTerritory() {
+        // Now using the centralized database view for precise aggregation
+        const { data } = await supabase.from('view_paa_territorios')
+            .select('*')
+            .eq('ano', 2024)
+            .order('total_beneficiados', { ascending: false });
+        
+        return (data || []).map(d => ({
+            nome: d.nome_territorio,
+            valor: d.total_beneficiados
+        }));
+    },
+ ...window.API, fetchFilteredPAA };
