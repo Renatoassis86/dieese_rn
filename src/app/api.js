@@ -1,10 +1,10 @@
 /**
  * API Integration: Supabase Connection for the Rural Observatory
- * Fetches real-time data for the dashboards.
+ * Optimized to use server-side views for performance and accuracy.
  */
 
 const SUPABASE_URL = "https://kyzcdpcmgiisllxmnhqn.supabase.co";
-const SUPABASE_KEY = "sb_publishable_DRWOVTb1-KWvTd35C_E18A_-L9RQtUJ"; // Anon/Publishable Key
+const SUPABASE_KEY = "sb_publishable_DRWOVTb1-KWvTd35C_E18A_-L9RQtUJ";
 
 const headers = {
     "apikey": SUPABASE_KEY,
@@ -12,30 +12,20 @@ const headers = {
 };
 
 /**
- * Fetch Aggregated PAA Data for the Line Chart
+ * Fetch Aggregated PAA Data for the Line Chart (Historical Series)
+ * Uses view_paa_anual to avoid API limits and guarantee accurate totals.
  */
 async function fetchPaaAnnual() {
-    // We group by year in the query or fetch and group in JS
-    // For performance, we fetch sum grouped by ano from a view or just the raw data if small
-    // Since it's only 10k rows, we can fetch an aggregate
-    const url = `${SUPABASE_URL}/rest/v1/rpc/get_paa_annual_summary`;
-    
-    // Fallback: If RPC doesn't exist, we use a complex select
-    const selectUrl = `${SUPABASE_URL}/rest/v1/paa_dados?select=ano,val_executado,qtd_beneficiados&sigla_uf=eq.RN`;
+    const url = `${SUPABASE_URL}/rest/v1/view_paa_anual?select=ano,total_valor`;
     
     try {
-        const response = await fetch(selectUrl, { headers });
+        const response = await fetch(url, { headers });
         const data = await response.json();
         
-        // Group by year in JS
-        const grouped = data.reduce((acc, curr) => {
-            acc[curr.ano] = (acc[curr.ano] || 0) + parseFloat(curr.val_executado);
-            return acc;
-        }, {});
-        
-        return Object.entries(grouped)
-            .sort((a,b) => a[0] - b[0])
-            .map(([ano, val]) => ({ ano, valor: val / 1000000 })); // Convert to Millions
+        return data.map(d => ({
+            ano: d.ano,
+            valor: parseFloat(d.total_valor) / 1000000 // Convert to Mi R$
+        }));
     } catch (e) {
         console.error("Error fetching annual PAA:", e);
         return [];
@@ -44,60 +34,28 @@ async function fetchPaaAnnual() {
 
 /**
  * Fetch PAA by Territory for the Bar Chart
+ * Uses view_paa_territorios filtered by current year.
  */
 async function fetchPaaByTerritory() {
-    // Join paa_dados with territorios_rn
-    // SELECT t.nome_territorio, SUM(p.qtd_beneficiados) ...
-    // Since Supabase REST doesn't support complex joins well without views,
-    // we fetch both and join in JS or create a view.
+    const url = `${SUPABASE_URL}/rest/v1/view_paa_territorios?ano=eq.2024&select=nome_territorio,total_beneficiados&order=total_beneficiados.desc`;
     
     try {
-        const [paaRes, terrRes] = await Promise.all([
-            fetch(`${SUPABASE_URL}/rest/v1/paa_dados?select=cod_municipio_ibge,qtd_beneficiados`, { headers }),
-            fetch(`${SUPABASE_URL}/rest/v1/territorios_rn?select=cod_municipio_ibge,nome_territorio`, { headers })
-        ]);
+        const response = await fetch(url, { headers });
+        const data = await response.json();
         
-        const paa = await paaRes.json();
-        const territories = await terrRes.json();
-        
-        const terrMap = territories.reduce((acc, curr) => {
-            acc[curr.cod_municipio_ibge] = curr.nome_territorio;
-            return acc;
-        }, {});
-        
-        const summary = paa.reduce((acc, curr) => {
-            const terr = terrMap[curr.cod_municipio_ibge] || "Outros";
-            acc[terr] = (acc[terr] || 0) + parseInt(curr.qtd_beneficiados);
-            return acc;
-        }, {});
-        
-        return Object.entries(summary)
-            .sort((a,b) => b[1] - a[1])
-            .map(([nome, valor]) => ({ nome, valor }));
+        return data.map(d => ({
+            nome: d.nome_territorio,
+            valor: parseInt(d.total_beneficiados)
+        }));
     } catch (e) {
         console.error("Error fetching territory PAA:", e);
         return [];
     }
 }
 
-window.API = {
-
-    async fetchPaaByTerritory() {
-        // Now using the centralized database view for precise aggregation
-        const { data } = await supabase.from('view_paa_territorios')
-            .select('*')
-            .eq('ano', 2024)
-            .order('total_beneficiados', { ascending: false });
-        
-        return (data || []).map(d => ({
-            nome: d.nome_territorio,
-            valor: d.total_beneficiados
-        }));
-    },
- fetchPaaAnnual, fetchPaaByTerritory };
-
 /**
  * Fetch Filtered PAA Data for BI Canvas
+ * Handles complex joins in the client or uses territorial views.
  */
 async function fetchFilteredPAA(filters = {}) {
     let url = `${SUPABASE_URL}/rest/v1/paa_dados?sigla_uf=eq.RN`;
@@ -106,16 +64,21 @@ async function fetchFilteredPAA(filters = {}) {
         url += `&ano=eq.${filters.year}`;
     }
     
-    // For territory, we need to handle the join logic in JS or fetch mapping
+    if (filters.limit) {
+        url += `&limit=${filters.limit}`;
+    } else {
+        url += `&limit=2000`; // Increase default limit for analysis
+    }
+
     try {
         const response = await fetch(url, { headers });
         let data = await response.json();
         
-        // If searching by territory
+        // Filter by territory if specified
         if (filters.territory && filters.territory !== 'todos') {
             const terrRes = await fetch(`${SUPABASE_URL}/rest/v1/territorios_rn?nome_territorio=eq.${filters.territory}`, { headers });
             const terrMapData = await terrRes.json();
-            const allowedIds = terrMapData.map(t => t.cod_municipio_ibge);
+            const allowedIds = terrMapData.map(t => t.cod_municipio_ibge.toString());
             data = data.filter(d => allowedIds.includes(d.cod_municipio_ibge.toString()));
         }
         
@@ -126,18 +89,25 @@ async function fetchFilteredPAA(filters = {}) {
     }
 }
 
+/**
+ * Global API Object
+ */
 window.API = {
-
-    async fetchPaaByTerritory() {
-        // Now using the centralized database view for precise aggregation
-        const { data } = await supabase.from('view_paa_territorios')
-            .select('*')
-            .eq('ano', 2024)
-            .order('total_beneficiados', { ascending: false });
+    fetchPaaAnnual,
+    fetchPaaByTerritory,
+    fetchFilteredPAA,
+    
+    async exportPAA() {
+        console.log("📥 Preparando exportação de dados...");
+        const data = await this.fetchFilteredPAA({ limit: 10000 });
+        const csv = "Ano;Municipio;Valor;Beneficiarios\n" + 
+            data.map(d => `${d.ano};${d.nome_municipio};${d.val_executado};${d.qtd_beneficiados}`).join("\n");
         
-        return (data || []).map(d => ({
-            nome: d.nome_territorio,
-            valor: d.total_beneficiados
-        }));
-    },
- ...window.API, fetchFilteredPAA };
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `paa_dados_rn_${new Date().toISOString().split('T')[0]}.csv`;
+        a.click();
+    }
+};
