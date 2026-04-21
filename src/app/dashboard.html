@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Observatório do Trabalho e de Políticas Sociais do RN — DIEESE</title>
+    <meta name="description" content="Observatório do Trabalho e de Políticas Sociais do Rio Grande do Norte. Diagnóstico socioeconômico dos empreendimentos rurais de economia solidária — banco de dados, georreferenciamento e visualizações.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="/static/api.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<style>
+    .dashboard-page { background: #0b141e; }
+    .standalone-nav { background: #0d1b2a; padding: 1.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .btn-back { color: #F4A261; text-decoration: none; font-weight: 900; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .nav-logo-small { height: 35px; }
+    .footer-mini { padding: 4rem 2rem; text-align: center; color: #718096; font-size: 0.8rem; border-top: 1px solid rgba(255,255,255,0.05); }
+</style>
+<body class="dashboard-page">
+    <nav class="navbar standalone-nav">
+        <div class="container" style="display:flex; justify-content: space-between; align-items: center;">
+            <a href="/" class="btn-back">⬅ Voltar ao Observatório</a>
+            <img src="/static/logo.png" alt="DIEESE" class="nav-logo-small">
+        </div>
+    </nav>
+
+    <section class="bi-section" id="estatisticas">
+    <div class="container">
+        <div class="bi-header text-center">
+            <p class="kicker">— ACESSO À INFORMAÇÃO —</p>
+            <h1 class="bi-title">PAINEL DE INFORMAÇÕES DO OBSERVATÓRIO</h1>
+            <p class="bi-date">ATUALIZADO EM ABRIL DE 2026</p>
+
+        <div class="bi-video-container">
+            <div class="geometric-video-frame">
+                <video autoplay muted loop playsinline class="video-geometric">
+                    <source src="/static/assets/video2.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+
+            
+            <div class="bi-nav-icons">
+                <div class="bi-nav-item active" onclick="switchBIMode('paa')">
+                    <div class="bi-icon">📈</div>
+                    <span>Principais Resultados</span>
+                </div>
+                <div class="bi-nav-item" onclick="switchBIMode('setorial')">
+                    <div class="bi-icon">⚙️</div>
+                    <span>Dados Setoriais</span>
+                </div>
+                <div class="bi-nav-item" onclick="switchBIMode('sobre')">
+                    <div class="bi-icon">📋</div>
+                    <span>Sobre o Painel</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="bi-module">
+            <!-- Sidebar de Filtros -->
+            <div class="bi-sidebar">
+                <h3>🔍 Filtros Global</h3>
+                <div class="filter-group">
+                    <label>Dimensão do Estudo</label>
+                    <select id="filter-dim">
+                        <option value="mercado">Mercado Institucional (PAA/PNAE)</option>
+                        <option value="ecosol">Economia Solidária</option>
+                        <option value="agro">Estrutura Agropecuária</option>
+                        <option value="trabalho">Trabalho e Renda</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Território de Identidade</label>
+                    <select id="filter-territory">
+                        <option value="todos">Todos os Territórios</option>
+                        <option value="Seridó">Seridó</option>
+                        <option value="Alto Oeste">Alto Oeste</option>
+                        <option value="Mato Grande">Mato Grande</option>
+                        <option value="Potengi">Potengi</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Período (Ano)</label>
+                    <select id="filter-year">
+                        <option value="todos">Série Histórica</option>
+                        <option value="2024">2024</option>
+                        <option value="2023">2023</option>
+                        <option value="2022">2022</option>
+                    </select>
+                </div>
+                <button class="btn-apply" onclick="applyFilters()">Gerar Diagnóstico ✓</button>
+                <button class="btn-apply btn-excel" onclick="exportToExcel()" style="background:#1D6F42; margin-top: 10px;">💾 Exportar Base (CSV/Excel)</button>
+            </div>
+
+            <!-- Área de Conteúdo Pro Max -->
+            <div class="bi-content">
+                <div class="bi-status-bar">
+                    <span>📍 Visualizando: <strong>Rio Grande do Norte</strong></span>
+                    <span id="bi-sync-status">🟢 Conectado ao Supabase</span>
+                </div>
+                
+                <div id="bi-placeholder" class="bi-canvas">
+                    <div class="canvas-empty">
+                        <div class="loader-spinner"></div>
+                        <p>Selecione as dimensões e clique em <strong>Gerar Diagnóstico</strong> para processar os quadros estatísticos.</p>
+                    </div>
+                </div>
+                
+                <div id="bi-charts" class="bi-canvas" style="display:none;">
+                    <div class="bi-grid">
+                        <div class="bi-card">
+                            <h5>Execução Financeira por Ano</h5>
+                            <canvas id="chartBI-Line"></canvas>
+                        </div>
+                        <div class="bi-card">
+                            <h5>Distribuição Territorial</h5>
+                            <canvas id="chartBI-Bar"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <footer class="footer-mini">
+        <p>&copy; 2024-2026 Observatório do Trabalho e de Políticas Sociais — DIEESE. Todos os recursos integrados via Supabase.</p>
+    </footer>
+
+    <script src="/static/api.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+</html>

@@ -339,104 +339,29 @@
 
 <!-- ══════════ ESTATÍSTICAS (placeholder) ══════════ -->
 <!-- ══════════ PAINEL DE INFORMAÇÕES (BI) ══════════ -->
-<section class="bi-section" id="estatisticas">
-    <div class="container">
-        <div class="bi-header text-center">
-            <p class="kicker">— ACESSO À INFORMAÇÃO —</p>
-            <h1 class="bi-title">PAINEL DE INFORMAÇÕES DO OBSERVATÓRIO</h1>
-            <p class="bi-date">ATUALIZADO EM ABRIL DE 2026</p>
 
-        <div class="bi-video-container">
-            <div class="geometric-video-frame">
-                <video autoplay muted loop playsinline class="video-geometric">
+<section id="estatisticas" class="dark-section bi-teaser">
+    <div class="container teaser-flex">
+        <div class="teaser-content">
+            <p class="kicker-light">— PAINEL DE INFORMAÇÕES —</p>
+            <h2 class="teaser-title">Diagnóstico em Tempo Real</h2>
+            <p class="teaser-text">
+                Explore indicadores dinâmicos sobre a agricultura familiar e economia solidária no RN. 
+                Nossa plataforma permite a geração de quadros personalizados através de filtros territoriais, 
+                temporais e setoriais baseados diretamente nos dados do Supabase.
+            </p>
+            <a href="/static/dashboard.html" class="btn-primary-amber">🚀 Acessar Painel Completo</a>
+        </div>
+        <div class="teaser-visual">
+            <div class="geometric-video-frame-v2">
+                <video autoplay muted loop playsinline class="video-contain-full">
                     <source src="/static/assets/video2.mp4" type="video/mp4">
                 </video>
             </div>
         </div>
-
-            
-            <div class="bi-nav-icons">
-                <div class="bi-nav-item active" onclick="switchBIMode('paa')">
-                    <div class="bi-icon">📈</div>
-                    <span>Principais Resultados</span>
-                </div>
-                <div class="bi-nav-item" onclick="switchBIMode('setorial')">
-                    <div class="bi-icon">⚙️</div>
-                    <span>Dados Setoriais</span>
-                </div>
-                <div class="bi-nav-item" onclick="switchBIMode('sobre')">
-                    <div class="bi-icon">📋</div>
-                    <span>Sobre o Painel</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="bi-module">
-            <!-- Sidebar de Filtros -->
-            <div class="bi-sidebar">
-                <h3>🔍 Filtros Global</h3>
-                <div class="filter-group">
-                    <label>Dimensão do Estudo</label>
-                    <select id="filter-dim">
-                        <option value="mercado">Mercado Institucional (PAA/PNAE)</option>
-                        <option value="ecosol">Economia Solidária</option>
-                        <option value="agro">Estrutura Agropecuária</option>
-                        <option value="trabalho">Trabalho e Renda</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label>Território de Identidade</label>
-                    <select id="filter-territory">
-                        <option value="todos">Todos os Territórios</option>
-                        <option value="Seridó">Seridó</option>
-                        <option value="Alto Oeste">Alto Oeste</option>
-                        <option value="Mato Grande">Mato Grande</option>
-                        <option value="Potengi">Potengi</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label>Período (Ano)</label>
-                    <select id="filter-year">
-                        <option value="todos">Série Histórica</option>
-                        <option value="2024">2024</option>
-                        <option value="2023">2023</option>
-                        <option value="2022">2022</option>
-                    </select>
-                </div>
-                <button class="btn-apply" onclick="applyFilters()">Gerar Diagnóstico ✓</button>
-                <button class="btn-apply btn-excel" onclick="exportToExcel()" style="background:#1D6F42; margin-top: 10px;">💾 Exportar Base (CSV/Excel)</button>
-            </div>
-
-            <!-- Área de Conteúdo Pro Max -->
-            <div class="bi-content">
-                <div class="bi-status-bar">
-                    <span>📍 Visualizando: <strong>Rio Grande do Norte</strong></span>
-                    <span id="bi-sync-status">🟢 Conectado ao Supabase</span>
-                </div>
-                
-                <div id="bi-placeholder" class="bi-canvas">
-                    <div class="canvas-empty">
-                        <div class="loader-spinner"></div>
-                        <p>Selecione as dimensões e clique em <strong>Gerar Diagnóstico</strong> para processar os quadros estatísticos.</p>
-                    </div>
-                </div>
-                
-                <div id="bi-charts" class="bi-canvas" style="display:none;">
-                    <div class="bi-grid">
-                        <div class="bi-card">
-                            <h5>Execução Financeira por Ano</h5>
-                            <canvas id="chartBI-Line"></canvas>
-                        </div>
-                        <div class="bi-card">
-                            <h5>Distribuição Territorial</h5>
-                            <canvas id="chartBI-Bar"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </section>
+
 <!-- ══════════ INDICADORES DINÂMICOS ══════════ -->
 <section class="section-indicadores" id="indicadores">
     <div class="container">
