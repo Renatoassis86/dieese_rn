@@ -161,10 +161,24 @@ a { text-decoration: none; }
     text-transform: uppercase; display: block;
 }
 .hero-title {
-    font-size: clamp(2.6rem, 4.5vw, 4rem); font-weight: 900;
-    color: #fff; line-height: 1.08; margin-bottom: 1.4rem;
+    font-size: clamp(2rem, 3.8vw, 3.2rem); font-weight: 900;
+    color: #fff; line-height: 1.15; margin-bottom: 1rem;
 }
 .hero-title span { color: var(--amber); }
+
+.hero-subtitle {
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(1rem, 1.8vw, 1.3rem);
+    font-weight: 600;
+    color: var(--amber);
+    margin-bottom: 1rem;
+    letter-spacing: 0.02em;
+    opacity: 0.92;
+    border-left: 3px solid var(--amber);
+    padding-left: 0.8rem;
+    line-height: 1.5;
+}
+
 .hero-sub {
     font-size: 1.05rem; color: rgba(255,255,255,0.80);
     margin-bottom: 2.4rem; max-width: 520px; line-height: 1.85;
