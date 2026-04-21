@@ -619,8 +619,8 @@ a { text-decoration: none; }
 .footer-logo-img-h { height: 45px; width: auto; filter: brightness(0) invert(1); }
 .link-group { display: flex; flex-direction: column; gap: 0.8rem; margin-bottom: 1.5rem; }
 .group-title { color: var(--amber); font-weight: 800; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; display: block; margin-bottom: 0.5rem; }
-.h-footer-links a { color: #fff; font-size: 0.9rem; opacity: 0.8; transition: 0.3s; }
-.h-footer-links a:hover { opacity: 1; color: var(--amber); }
+.link-group a { color: #ffffff !important; opacity: 0.7; border-bottom: none;  font-size: 0.9rem; opacity: 0.8; transition: 0.3s; }
+.link-group a:hover { opacity: 1; color: var(--amber); }
 .h-footer-contact p { font-size: 0.85rem; margin-bottom: 0.5rem; }
 .h-footer-bottom { border-top: 1px solid rgba(255,255,255,0.05); padding-top: 2rem; text-align: center; }
 .h-footer-bottom p { font-size: 0.8rem; color: rgba(255,255,255,0.5); }
@@ -705,3 +705,5 @@ a { text-decoration: none; }
 
 /* Font visibility in dark sections */
 #estatisticas .bi-header p { color: rgba(255,255,255,0.8); }
+
+.footer p, .footer span { color: #ffffff !important; opacity: 0.8; }

@@ -4,6 +4,10 @@ from fastapi.responses import FileResponse
 import os
 
 app = FastAPI(title="Observatório Rural RN")
+public_dir = os.path.join(os.path.dirname(__file__), "public")
+if os.path.exists(public_dir):
+    app.mount("/public", StaticFiles(directory=public_dir), name="public")
+
 
 # Montar diretório de arquivos estáticos (CSS, JS, Imagens)
 # O caminho é relativo à localização do main.py
