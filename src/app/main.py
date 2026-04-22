@@ -4,43 +4,57 @@ from fastapi.staticfiles import StaticFiles
 import os
 
 app = FastAPI()
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# Definitive fix for Vercel static file delivery:
-# We mount directories and provide specific routes for root files
-if os.path.exists("public"):
-    app.mount("/public", StaticFiles(directory="public"), name="public")
-if os.path.exists("assets"):
-    app.mount("/assets", StaticFiles(directory="assets"), name="assets")
+# Precise static mapping for Vercel
+# This ensures that even if CWD changes, Vercel finds the assets
+assets_path = os.path.join(BASE_DIR, "assets")
+public_path = os.path.join(BASE_DIR, "public")
+
+if os.path.exists(assets_path):
+    app.mount("/assets", StaticFiles(directory=assets_path), name="assets")
+if os.path.exists(public_path):
+    app.mount("/public", StaticFiles(directory=public_path), name="public")
 
 @app.get("/")
 async def read_root():
-    return FileResponse("index.html")
+    return FileResponse(os.path.join(BASE_DIR, "index.html"))
 
 @app.get("/style.css")
 async def read_css():
-    return FileResponse("style.css")
+    return FileResponse(os.path.join(BASE_DIR, "style.css"))
 
 @app.get("/api.js")
 async def read_js():
-    return FileResponse("api.js")
+    return FileResponse(os.path.join(BASE_DIR, "api.js"))
 
 @app.get("/logo.png")
 async def read_logo():
-    if os.path.exists("logo.png"):
-        return FileResponse("logo.png")
+    # Try multiple locations for the logo to ensure visibility
+    paths = [
+        os.path.join(BASE_DIR, "logo.png"),
+        os.path.join(public_path, "logo.png"),
+        os.path.join(BASE_DIR, "src", "app", "logo.png")
+    ]
+    for p in paths:
+        if os.path.exists(p):
+            return FileResponse(p)
     return HTMLResponse("Logo not found", status_code=404)
 
 @app.get("/dashboard")
 async def read_dashboard():
-    return FileResponse("dashboard.html")
+    return FileResponse(os.path.join(BASE_DIR, "dashboard.html"))
 
-@app.get("/static/dashboard.html")
-async def legacy_dashboard():
-    return FileResponse("dashboard.html")
-
-# Catch-all for any other static files in the root
+# Comprehensive catch-all with absolute path resolution
 @app.get("/{file_path:path}")
 async def catch_all(file_path: str):
-    if os.path.exists(file_path):
-        return FileResponse(file_path)
-    return HTMLResponse("Not found", status_code=404)
+    full_path = os.path.join(BASE_DIR, file_path)
+    if os.path.exists(full_path) and os.path.isfile(full_path):
+        return FileResponse(full_path)
+    
+    # Fallback to src/app if file_path is relative to root
+    src_path = os.path.join(BASE_DIR, "src", "app", file_path)
+    if os.path.exists(src_path) and os.path.isfile(src_path):
+        return FileResponse(src_path)
+        
+    return HTMLResponse(f"Not found: {file_path}", status_code=404)
