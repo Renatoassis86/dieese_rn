@@ -784,22 +784,28 @@ a { text-decoration: none; }
     transform: translateX(5px) rotate(-10deg);
 }
 
-/* ── CIRCULAR VIDEO MASK ── */
+/* ── PREMIUM VIDEO CONTAINER ── */
 .geometric-mask-v3 {
     width: 100%;
-    max-width: 450px;
-    height: 450px;
-    border-radius: 40px 40px 120px 120px; /* Cidade Viva teardrop-ish shape */
+    max-width: 500px;
+    height: 480px;
+    border-radius: 30px; /* Clean premium rounded rectangle */
     overflow: hidden;
-    border: 8px solid rgba(255,255,255,0.05);
-    box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 40px 80px rgba(0,0,0,0.5);
     margin: 0 auto;
-    background: var(--navy-mid);
+    background: #000;
+}
+
+.geometric-mask-v3 video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block; /* Avoid inline gaps */
 }
 
 @media (max-width: 768px) {
     .geometric-mask-v3 {
-        width: 300px;
         height: 300px;
     }
 }
