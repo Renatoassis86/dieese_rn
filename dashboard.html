@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <link rel="icon" type="image/png" href="logo.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de BI - Observatório Rural RN</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="api.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<style>
+    :root { --navy-deep: #07101a; --glass: rgba(255, 255, 255, 0.03); }
+    body.dashboard-page { background: var(--navy-deep); color: #fff; margin: 0; }
+    .standalone-nav { background: rgba(13, 27, 42, 0.8); backdrop-filter: blur(10px); padding: 1rem 0; border-bottom: 1px solid rgba(255,255,255,0.1); sticky; top: 0; z-index: 1000; }
+    .btn-back { color: #f4a261; text-decoration: none; font-weight: 800; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 0.5rem; }
+    .logo-container { height: 40px; }
+    
+    .bi-full-header { padding: 4rem 0 2rem; text-align: center; }
+    .bi-main-title { font-size: 2.4rem; font-weight: 900; color: #fff; margin-bottom: 0.5rem; letter-spacing: -0.01em; }
+    .bi-subtitle { font-size: 0.95rem; color: #718096; max-width: 600px; margin: 0 auto; line-height: 1.6; }
+
+    .bi-container-wide { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+    .bi-glass-wrapper { 
+        display: grid; grid-template-columns: 320px 1fr; gap: 0; 
+        background: rgba(255,255,255,0.02); border-radius: 24px; 
+        border: 1px solid rgba(255,255,255,0.08); overflow: hidden;
+        box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+    }
+    
+    .bi-sidebar-premium { background: rgba(255,255,255,0.03); padding: 2.5rem; border-right: 1px solid rgba(255,255,255,0.08); }
+    .sidebar-h3 { font-size: 1rem; font-weight: 900; margin-bottom: 2rem; color: #f4a261; text-transform: uppercase; letter-spacing: 0.1em; }
+    
+    .form-group-bi { margin-bottom: 1.8rem; }
+    .form-group-bi label { display: block; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: #718096; margin-bottom: 0.6rem; letter-spacing: 0.05em; }
+    .select-bi { width: 100%; background: #0d1b2a; color: #fff; border: 1px solid rgba(255,255,255,0.2); padding: 0.9rem; border-radius: 12px; font-weight: 600; cursor: pointer; transition: 0.3s; }
+    .select-bi:focus { border-color: #f4a261; outline: none; box-shadow: 0 0 15px rgba(244, 162, 97, 0.2); }
+    
+    .btn-bi-main { width: 100%; padding: 1.2rem; background: #f4a261; color: #07101a; border: none; border-radius: 12px; font-weight: 900; cursor: pointer; transition: 0.3s; text-transform: uppercase; margin-top: 1rem; }
+    .btn-bi-main:hover { background: #fff; transform: translateY(-3px); }
+    .btn-bi-export { width: 100%; padding: 1rem; background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; font-weight: 700; cursor: pointer; margin-top: 0.8rem; font-size: 0.8rem; }
+    .btn-bi-export:hover { background: rgba(255,255,255,0.05); }
+
+    .bi-content-area { padding: 0; background: #fff; } /* Keeping white background for charts and tables for visibility */
+    .bi-top-bar { padding: 1rem 2.5rem; border-bottom: 1px solid #edf2f7; display: flex; justify-content: space-between; align-items: center; background: #f8fafc; font-size: 0.8rem; color: #4a5568; }
+    .sync-status { color: #2d6a4f; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; }
+    .dot-pulse { width: 8px; height: 8px; background: #2d6a4f; border-radius: 50%; animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+
+    .bi-canvas-premium { padding: 3rem; min-height: 600px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #2d3748; }
+    .loader-wrap { text-align: center; }
+    .spinner-bi { width: 40px; height: 40px; border: 4px solid #f1f5f9; border-top-color: #f4a261; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 1rem; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .bi-grid-premium { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; width: 100%; }
+    .bi-chart-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 20px; padding: 2rem; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+    .bi-chart-card h5 { font-size: 1.1rem; font-weight: 900; margin-bottom: 1.5rem; color: #0d1b2a; }
+
+    .footer-dashboard { padding: 4rem 0; text-align: center; color: #718096; font-size: 0.75rem; border-top: 1px solid rgba(255,255,255,0.05); }
+    
+    @media (max-width: 1100px) {
+        .bi-glass-wrapper { grid-template-columns: 1fr; }
+        .bi-sidebar-premium { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .bi-grid-premium { grid-template-columns: 1fr; }
+    }
+</style>
+<body class="dashboard-page">
+    <nav class="standalone-nav">
+        <div class="container" style="display:flex; justify-content: space-between; align-items: center;">
+            <a href="/" class="btn-back"><i class="fas fa-arrow-left"></i> Voltar ao Observatório</a>
+            <img src="logo.png" alt="DIEESE" style="height:35px;">
+        </div>
+    </nav>
+
+    <header class="bi-full-header">
+        <div class="container">
+            <p class="kicker kicker-light">— MÉTRICAS E INDICADORES —</p>
+            <h1 class="bi-main-title">Painel de Informações do Observatório</h1>
+            <p class="bi-subtitle">Acesso dinâmico à base de dados socioeconômicos para geração de tabelas, indicadores e diagnósticos territoriais qualificados.</p>
+        </div>
+    </header>
+
+    <main class="bi-container-wide">
+        <div class="bi-glass-wrapper">
+            <aside class="bi-sidebar-premium">
+                <h3 class="sidebar-h3">🔍 Parâmetros</h3>
+                
+                <div class="form-group-bi">
+                    <label>Dimensão do Estudo</label>
+                    <select id="filter-dim" class="select-bi">
+                        <option value="mercado">Mercado Institucional (PAA/PNAE)</option>
+                        <option value="ecosol">Economia Solidária</option>
+                        <option value="agro">Estrutura Agropecuária</option>
+                        <option value="trabalho">Trabalho e Renda</option>
+                    </select>
+                </div>
+
+                <div class="form-group-bi">
+                    <label>Território de Identidade</label>
+                    <select id="filter-territory" class="select-bi">
+                        <option value="todos">Todos os Territórios</option>
+                        <option value="Alto Oeste">Alto Oeste</option>
+                        <option value="Seridó">Seridó</option>
+                        <option value="Assú-Mossoró">Assú-Mossoró</option>
+                        <option value="Sertão do Apodi">Sertão do Apodi</option>
+                        <option value="Mato Grande">Mato Grande</option>
+                        <option value="Potengi">Potengi</option>
+                        <option value="Trairi">Trairi</option>
+                        <option value="Agreste Litoral Sul">Agreste Litoral Sul</option>
+                        <option value="Terras Potiguares">Terras Potiguares</option>
+                        <option value="Sertão Central Cabugi">Sertão Central Cabugi</option>
+                    </select>
+                </div>
+
+                <div class="form-group-bi">
+                    <label>Ano de Referência</label>
+                    <select id="filter-year" class="select-bi">
+                        <option value="todos">Série Histórica Completa</option>
+                        <option value="2024">2024 (Consolidado)</option>
+                        <option value="2023">2023</option>
+                        <option value="2022">2022</option>
+                    </select>
+                </div>
+
+                <button class="btn-bi-main" onclick="applyFilters()">Gerar Diagnóstico ✓</button>
+                <button class="btn-bi-export" onclick="exportToExcel()"><i class="fas fa-file-excel"></i> Exportar Dados (XLSX)</button>
+            </aside>
+
+            <section class="bi-content-area">
+                <div class="bi-top-bar">
+                    <span>🌍 Território: <strong id="current-scope">Rio Grande do Norte (Geral)</strong></span>
+                    <span class="sync-status"><div class="dot-pulse"></div> Supabase: Online</span>
+                </div>
+
+                <div id="bi-placeholder" class="bi-canvas-premium">
+                    <div class="loader-wrap">
+                        <i class="fas fa-chart-pie" style="font-size: 3rem; color: #e2e8f0; margin-bottom: 1.5rem;"></i>
+                        <p style="color: #64748b; font-weight: 600;">Selecione os filtros e clique em Gerar Diagnóstico para processar as informações.</p>
+                    </div>
+                </div>
+
+                <div id="bi-charts" class="bi-canvas-premium" style="display:none; width: 100%;">
+                    <div class="bi-grid-premium">
+                        <div class="bi-chart-card">
+                            <h5>Crescimento Financeiro</h5>
+                            <canvas id="chartBI-Line"></canvas>
+                        </div>
+                        <div class="bi-chart-card">
+                            <h5>Concentração por Município</h5>
+                            <canvas id="chartBI-Bar"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer-dashboard">
+        <p>&copy; 2024-2026 Observatório do Trabalho e de Políticas Sociais — DIEESE. Sistema de Dados Integrados.</p>
+    </footer>
+
+    <script src="api.js"></script>
+    <script>
+        let biLine, biBar;
+
+        async function applyFilters() {
+            const dim = document.getElementById('filter-dim').value;
+            const terr = document.getElementById('filter-territory').value;
+            const year = document.getElementById('filter-year').value;
+            
+            document.getElementById('current-scope').textContent = terr === 'todos' ? 'Rio Grande do Norte (Geral)' : terr;
+
+            const placeholder = document.getElementById('bi-placeholder');
+            const chartArea = document.getElementById('bi-charts');
+            
+            placeholder.style.display = 'flex';
+            chartArea.style.display = 'none';
+            placeholder.innerHTML = '<div class="spinner-bi"></div><p>Sincronizando com Supabase...</p>';
+
+            const data = await window.API.fetchFilteredPAA({ year, territory: terr });
+            
+            if (!data || data.length === 0) {
+                placeholder.innerHTML = '<p>⚠️ Nenhum dado encontrado para os filtros selecionados.</p>';
+                return;
+            }
+
+            placeholder.style.display = 'none';
+            chartArea.style.display = 'block';
+            renderBICharts(data);
+        }
+
+        function renderBICharts(data) {
+            const years = [...new Set(data.map(d => d.ano))].sort();
+            const annualSum = years.map(y => 
+                data.filter(d => d.ano === y).reduce((acc, curr) => acc + parseFloat(curr.val_executado), 0) / 1000000
+            );
+
+            if (biLine) biLine.destroy();
+            biLine = new Chart(document.getElementById('chartBI-Line'), {
+                type: 'line',
+                data: {
+                    labels: years,
+                    datasets: [{
+                        label: 'Investimento (Mi R$)',
+                        data: annualSum,
+                        borderColor: '#2D6A4F',
+                        backgroundColor: 'rgba(45, 106, 79, 0.05)',
+                        tension: 0.4,
+                        fill: true,
+                        borderWidth: 3
+                    }]
+                },
+                options: { responsive: true, plugins: { legend: { display: false } } }
+            });
+
+            const munData = {};
+            data.forEach(d => {
+                munData[d.nome_municipio] = (munData[d.nome_municipio] || 0) + parseFloat(d.val_executado);
+            });
+            const topMun = Object.entries(munData).sort((a,b) => b[1]-a[1]).slice(0, 8);
+
+            if (biBar) biBar.destroy();
+            biBar = new Chart(document.getElementById('chartBI-Bar'), {
+                type: 'bar',
+                data: {
+                    labels: topMun.map(m => m[0]),
+                    datasets: [{
+                        data: topMun.map(m => m[1] / 1000),
+                        backgroundColor: '#F4A261',
+                        borderRadius: 8
+                    }]
+                },
+                options: { 
+                    indexAxis: 'y', 
+                    responsive: true,
+                    plugins: { 
+                        legend: { display: false },
+                        tooltip: { callbacks: { label: ctx => `R$ ${ctx.parsed.x.toFixed(1)} mil` } }
+                    } 
+                }
+            });
+        }
+
+        function exportToExcel() {
+            window.API.exportPAA(); // Using the logic from main index
+        }
+    </script>
+</body>
+</html>
