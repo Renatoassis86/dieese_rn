@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAA — Mercado Institucional | Observatório RN</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root {
+            --paa-primary: #2D6A4F;
+            --paa-secondary: #F4A261;
+            --paa-dark: #0D1B2A;
+            --paa-light: #F8F9FA;
+        }
+
+        body { font-family: 'Open Sans', sans-serif; background: var(--paa-light); color: var(--paa-dark); margin: 0; }
+        
+        .hero-paa {
+            height: 100vh;
+            background: linear-gradient(rgba(13, 27, 42, 0.7), rgba(13, 27, 42, 0.7)), url('assets/hero_paa.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            padding: 0 20px;
+        }
+
+        .hero-paa h1 { font-family: 'Montserrat', sans-serif; font-size: 3.5rem; font-weight: 800; margin-bottom: 1rem; }
+        .hero-paa p { font-size: 1.25rem; max-width: 800px; margin: 0 auto 2rem; opacity: 0.9; }
+
+        .storytelling-section {
+            padding: 100px 0;
+            background: white;
+        }
+
+        .story-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .story-text h2 { font-family: 'Montserrat', sans-serif; color: var(--paa-primary); font-size: 2.2rem; margin-bottom: 1.5rem; }
+        .story-text p { line-height: 1.8; color: #444; margin-bottom: 2rem; }
+
+        .btn-enter-bi {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 35px;
+            background: var(--paa-primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            transition: 0.3s;
+            box-shadow: 0 10px 25px rgba(45, 106, 79, 0.3);
+        }
+
+        .btn-enter-bi:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(45, 106, 79, 0.5);
+        }
+
+        .dimension-footer {
+            background: var(--paa-dark);
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="hero-paa">
+        <div class="hero-content">
+            <h1 class="hero-title">Mercado Institucional</h1>
+            <p>Conectando a produção da agricultura familiar com as necessidades da rede socioassistencial e escolar do Rio Grande do Norte.</p>
+            <a href="#comecar" class="btn-enter-bi">Explorar Diagnóstico <i class="fas fa-arrow-down"></i></a>
+        </div>
+    </header>
+
+    <section class="storytelling-section" id="comecar">
+        <div class="story-grid">
+            <div class="story-text">
+                <h2>Da Roça à Mesa Institucional</h2>
+                <p>
+                    O Programa de Aquisição de Alimentos (PAA) é o pilar central do mercado institucional para a agricultura familiar no RN. 
+                    Mais do que uma transação comercial, o programa garante a segurança alimentar de milhares de potiguares e gera renda direta 
+                    para as famílias que produzem o alimento.
+                </p>
+                <p>
+                    Neste dashboard, você encontrará a evolução histórica dos investimentos, a distribuição territorial por gênero 
+                    e o impacto socioeconômico em cada um dos 167 municípios do estado.
+                </p>
+                <a href="paa_dashboard.html" class="btn-enter-bi">Acessar Painel de Dados <i class="fas fa-chart-line"></i></a>
+            </div>
+            <div class="story-img">
+                <img src="assets/paa_impacto.png" alt="Impacto PAA" style="width: 100%; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.1);">
+            </div>
+        </div>
+    </section>
+
+    <footer class="dimension-footer">
+        <p>© 2026 Observatório do Trabalho e de Políticas Sociais — DIEESE / SETHAS RN</p>
+    </footer>
+
+</body>
+</html>

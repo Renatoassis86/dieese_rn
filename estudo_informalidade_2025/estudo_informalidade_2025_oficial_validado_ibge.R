@@ -1,0 +1,620 @@
+# ============================================================
+# PNADC – Indicadores de Informalidade e Subutilização (IBGE)
+# Versão robusta (retries de download, cache e documentação)
+# ============================================================
+
+rm(list = ls()); gc()
+
+suppressPackageStartupMessages({
+  library(PNADcIBGE)
+  library(dplyr)
+  library(srvyr)
+  library(survey)
+  library(purrr)
+  library(readr)
+  library(tidyr)
+  library(stringr)
+})
+
+options(survey.lonely.psu = "adjust")
+options(timeout = 3600)  # ↑ evita timeout em microdados grandes
+
+# =======================
+# DIRETÓRIOS E PERÍODOS
+# =======================
+dir_temp_base <- "D:/pnad_temp"  # cache local
+dir_out_base  <- "D:/repositorio_geral/pnad_continua"
+dir_out_new   <- file.path(dir_out_base, "estudo_informalidade_2025_validacao_IBGE")
+dir.create(dir_temp_base, showWarnings = FALSE, recursive = TRUE)
+dir.create(dir_out_new,   showWarnings = FALSE, recursive = TRUE)
+
+trimestres <- list(
+  list(tri = 4, ano = 2019),
+  list(tri = 4, ano = 2020),
+  list(tri = 4, ano = 2021),
+  list(tri = 4, ano = 2022),
+  list(tri = 4, ano = 2023),
+  list(tri = 4, ano = 2024),
+  list(tri = 2, ano = 2025)
+)
+
+# =======================
+# UTILITÁRIOS E RÓTULOS
+# =======================
+rotulo_tri   <- function(tri, ano) sprintf("%dº tri/%d", tri, ano)
+nordeste_ufs <- c(21,22,23,24,25,26,27,28,29)
+
+mapa_regioes_rn <- function(estrato) {
+  ce <- trunc(as.numeric(estrato) / 1000)
+  case_when(
+    ce == 2410 ~ "Natal(RN)",
+    ce == 2420 ~ "Entorno metropolitano de Natal(RN)",
+    ce == 2451 ~ "Agreste do RN",
+    ce == 2452 ~ "Oeste do RN",
+    ce == 2453 ~ "Central do RN",
+    TRUE ~ NA_character_
+  )
+}
+
+rotulos_vd4010 <- c(
+  "1"="Agricultura, pecuária, produção florestal, pesca e aquicultura",
+  "2"="Indústria geral",
+  "3"="Construção",
+  "4"="Comércio, reparação de veículos automotores e motocicletas",
+  "5"="Transporte, armazenagem e correio",
+  "6"="Alojamento e alimentação",
+  "7"="Informação, comunicação e atividades financeiras, imobiliárias, profissionais e administrativas",
+  "8"="Administração pública, defesa e seguridade social",
+  "9"="Educação, saúde humana e serviços sociais",
+  "10"="Outros Serviços",
+  "11"="Serviços domésticos",
+  "12"="Atividades mal definidas"
+)
+rotulos_vd4009 <- c(
+  "1" ="Empregado privado com carteira",
+  "2" ="Empregado privado sem carteira",
+  "3" ="Doméstico com carteira",
+  "4" ="Doméstico sem carteira",
+  "5" ="Empregado setor público com carteira",
+  "6" ="Empregado setor público sem carteira",
+  "7" ="Militar/estatutário",
+  "8" ="Empregador",
+  "9" ="Conta-própria",
+  "10"="Trabalhador familiar auxiliar"
+)
+
+lbl_sexo   <- function(v) ifelse(v == 1, "Homem", "Mulher")
+faixa_idade <- function(idade) case_when(
+  idade >= 14 & idade <= 24 ~ "14–24",
+  idade >= 25 & idade <= 39 ~ "25–39",
+  idade >= 40 & idade <= 59 ~ "40–59",
+  idade >= 60               ~ "60+",
+  TRUE ~ NA_character_
+)
+lbl_raca <- function(v) case_when(
+  v == 1 ~ "Branco",
+  v == 2 ~ "Preto",
+  v %in% c(3,4,5) ~ "Demais Raças",
+  TRUE ~ NA_character_
+)
+lbl_escolar <- function(vd3004) case_when(
+  vd3004 %in% c(1,2)   ~ "Fundamental ou menos",
+  vd3004 %in% c(3,4)   ~ "Médio",
+  vd3004 %in% c(5,6,7) ~ "Superior",
+  TRUE ~ NA_character_
+)
+
+# =======================
+# DESENHOS AMOSTRAIS
+# =======================
+faz_desenho_amostral_rep <- function(df){
+  des <- survey::svrepdesign(
+    data = df, weights = ~V1028, type = "bootstrap",
+    repweights = "V1028[0-9]+", mse = TRUE,
+    replicates = length(sprintf("V1028%03d", 1:200)),
+    df = length(sprintf("V1028%03d", 1:200))
+  )
+  srvyr::as_survey_rep(des)
+}
+faz_desenho_amostral_classic <- function(df){
+  df %>% srvyr::as_survey_design(ids = UPA, strata = Estrato, weights = V1028, nest = TRUE)
+}
+
+# =======================
+# IMPORTADOR ROBUSTO
+# =======================
+safe_get_pnadc <- function(ano, tri, vars, savedir, attempts = 3){
+  if (!dir.exists(savedir)) dir.create(savedir, recursive = TRUE, showWarnings = FALSE)
+  
+  # Se já tem TXT no cache, tenta ler sem baixar
+  txt_path <- file.path(savedir, sprintf("PNADC_%02d%d.txt", tri, ano))
+  if (file.exists(txt_path)) {
+    message(sprintf("› Reusando cache: %s", txt_path))
+    return(PNADcIBGE::get_pnadc(year=ano, quarter=tri, vars=vars, labels=FALSE, design=FALSE, savedir=savedir))
+  }
+  
+  last_err <- NULL
+  for (k in seq_len(attempts)) {
+    message(sprintf("› Download PNADC %dT%d (tentativa %d/%d)...", ano, tri, k, attempts))
+    tryCatch(
+      {
+        df <- PNADcIBGE::get_pnadc(year=ano, quarter=tri, vars=vars, labels=FALSE, design=FALSE, savedir=savedir)
+        return(df)
+      },
+      error = function(e){
+        last_err <<- e
+        Sys.sleep(5 * k) # backoff exponencial simples
+        invisible(NULL)
+      }
+    )
+  }
+  stop(sprintf("Falha ao obter PNADC %dT%d após %d tentativas: %s", ano, tri, attempts, last_err$message))
+}
+
+importa_pnad_design <- function(tri, ano, method = c("classic","rep")){
+  method <- match.arg(method)
+  vars <- c(
+    "Ano","Trimestre","UF","Estrato","UPA","V1028",
+    "V2007","V2009","V2010","VD3004",
+    "VD4001","VD4002","VD4003","VD4004A","VD4005",
+    "V4010","VD4009","V4012","V4019","V4029","VD4012",
+    "VD4016","VD4031","VD4035","Habitual"
+  )
+  savedir <- file.path(dir_temp_base, sprintf("PNADC_%02d%d", tri, ano))
+  
+  df <- safe_get_pnadc(ano, tri, vars, savedir, attempts = 4)
+  
+  if (!("Habitual" %in% names(df))) df$Habitual <- 1.0
+  
+  to_num <- intersect(vars, names(df))
+  df <- df %>%
+    mutate(across(all_of(to_num), suppressWarnings(as.numeric))) %>%
+    mutate(
+      regioes_rn  = mapa_regioes_rn(Estrato),
+      Rend_H_real = VD4016 * Habitual,
+      setor_lbl   = dplyr::recode(as.character(V4010), !!!rotulos_vd4010, .default = NA_character_),
+      pos_ocup    = dplyr::recode(as.character(VD4009), !!!rotulos_vd4009, .default = NA_character_)
+    )
+  
+  if (method == "rep") {
+    faz_desenho_amostral_rep(df)
+  } else {
+    c_drop <- intersect(names(df), sprintf("V1028%03d", 1:200))
+    if (length(c_drop)) df <- dplyr::select(df, -dplyr::all_of(c_drop))
+    faz_desenho_amostral_classic(df)
+  }
+}
+
+# =======================
+# REGRA DE INFORMALIDADE
+# =======================
+cria_informal <- function(dsg){
+  dsg %>% mutate(informal = case_when(
+    V4012 == 3 & V4029 == 2 ~ 1,  # empregado privado sem carteira
+    V4012 == 1 & V4029 == 2 ~ 1,  # doméstico sem carteira
+    V4012 == 5 & V4019 == 2 ~ 1,  # empregador sem CNPJ
+    V4012 == 6 & V4019 == 2 ~ 1,  # conta-própria sem CNPJ
+    V4012 == 7              ~ 1,  # trabalhador familiar auxiliar
+    TRUE ~ 0
+  ))
+}
+
+# =======================
+# FUNÇÕES DE MÉTRICAS
+# =======================
+calc_mercado_basico <- function(dsg, tri, ano){
+  dsg %>% summarise(
+    PIA  = survey_total(V2009 >= 14, na.rm=TRUE),
+    PEA  = survey_total(VD4001 == 1, na.rm=TRUE),
+    Ocup = survey_total(VD4002 == 1, na.rm=TRUE),
+    Deso = survey_total(VD4002 == 2, na.rm=TRUE)
+  ) %>%
+    transmute(trimestre=rotulo_tri(tri,ano),
+              PIA_k=round(PIA/1000,1), PEA_k=round(PEA/1000,1),
+              Ocup_k=round(Ocup/1000,1), Deso_k=round(Deso/1000,1),
+              tx_part=round(100*PEA/pmax(PIA,1),1),
+              tx_desoc=round(100*Deso/pmax(PEA,1),1),
+              def_PIA="V2009>=14", def_PEA="VD4001==1",
+              def_Ocup="VD4002==1", def_Deso="VD4002==2")
+}
+
+calc_inf_total_locais <- function(dsg, tri, ano){
+  monta <- function(subd, local){
+    subd %>% filter(VD4002==1) %>% cria_informal() %>%
+      summarise(ocup=survey_total(na.rm=TRUE), inf=survey_total(informal,na.rm=TRUE)) %>%
+      transmute(trimestre=rotulo_tri(tri,ano), local=local,
+                ocupados_k=round(ocup/1000,1), informais_k=round(inf/1000,1),
+                formais_k=round((ocup-inf)/1000,1),
+                tx_informalidade=round(100*inf/pmax(ocup,1),1),
+                def_ocup="VD4002==1", regra_informal="cria_informal()")
+  }
+  bind_rows(
+    monta(dsg, "Brasil"),
+    monta(dsg %>% filter(UF %in% nordeste_ufs), "Nordeste"),
+    monta(dsg %>% filter(UF == 24),             "Rio Grande do Norte")
+  )
+}
+
+calc_inf_por_grupo <- function(dsg, tri, ano, var=c("sexo","idade","raca","escolar")){
+  var <- match.arg(var)
+  add_group <- switch(var,
+                      sexo    = \(x) mutate(x, grupo = lbl_sexo(V2007)),
+                      idade   = \(x) mutate(x, grupo = faixa_idade(V2009)),
+                      raca    = \(x) mutate(x, grupo = lbl_raca(V2010)),
+                      escolar = \(x) mutate(x, grupo = lbl_escolar(VD3004))
+  )
+  lab <- switch(var, sexo="Sexo", idade="FaixaEtaria", raca="Raca", escolar="Escolaridade")
+  monta <- function(subd, local){
+    subd %>% filter(VD4002==1) %>% cria_informal() %>%
+      add_group() %>% filter(!is.na(grupo)) %>%
+      group_by(grupo) %>%
+      summarise(ocup=survey_total(na.rm=TRUE), inf=survey_total(informal,na.rm=TRUE), .groups="drop") %>%
+      transmute(trimestre=rotulo_tri(tri,ano), local=local, !!lab := grupo,
+                ocupados_k=round(ocup/1000,1), informais_k=round(inf/1000,1),
+                formais_k=round((ocup-inf)/1000,1),
+                tx_informalidade=round(100*inf/pmax(ocup,1),1),
+                def_ocup="VD4002==1", var_grupo=lab)
+  }
+  bind_rows(
+    monta(dsg, "Brasil"),
+    monta(dsg %>% filter(UF %in% nordeste_ufs), "Nordeste"),
+    monta(dsg %>% filter(UF == 24),             "Rio Grande do Norte")
+  )
+}
+
+calc_inf_por_setor <- function(dsg, tri, ano){
+  monta <- function(subd, local){
+    subd %>% filter(VD4002==1) %>% cria_informal() %>%
+      mutate(setor = ifelse(is.na(setor_lbl), as.character(V4010), setor_lbl)) %>%
+      group_by(setor) %>%
+      summarise(ocup=survey_total(na.rm=TRUE), inf=survey_total(informal,na.rm=TRUE), .groups="drop") %>%
+      transmute(trimestre=rotulo_tri(tri,ano), local=local, setor=setor,
+                ocupados_k=round(ocup/1000,1), informais_k=round(inf/1000,1),
+                tx_informalidade=round(100*inf/pmax(ocup,1),1),
+                def_setor="V4010", def_ocup="VD4002==1")
+  }
+  bind_rows(
+    monta(dsg, "Brasil"),
+    monta(dsg %>% filter(UF %in% nordeste_ufs), "Nordeste"),
+    monta(dsg %>% filter(UF == 24),             "Rio Grande do Norte")
+  )
+}
+
+calc_mix_setorial_informais <- function(dsg, tri, ano){
+  monta <- function(subd, local){
+    subd %>% filter(VD4002==1) %>% cria_informal() %>%
+      mutate(setor = ifelse(is.na(setor_lbl), as.character(V4010), setor_lbl)) %>%
+      group_by(setor) %>%
+      summarise(inf=survey_total(informal,na.rm=TRUE), .groups="drop_last") %>%
+      mutate(total_inf=sum(inf,na.rm=TRUE), part_pct=round(100*inf/pmax(total_inf,1),1)) %>%
+      transmute(trimestre=rotulo_tri(tri,ano), local=local, setor=setor,
+                informais_k=round(inf/1000,1), part_informais=part_pct,
+                def_setor="V4010", regra_informal="cria_informal()")
+  }
+  bind_rows(
+    monta(dsg, "Brasil"),
+    monta(dsg %>% filter(UF %in% nordeste_ufs), "Nordeste"),
+    monta(dsg %>% filter(UF == 24),             "Rio Grande do Norte")
+  )
+}
+
+calc_inf_regioesRN <- function(dsg, tri, ano){
+  dsg %>% filter(UF==24, !is.na(regioes_rn), VD4002==1) %>% cria_informal() %>%
+    group_by(regioes_rn) %>%
+    summarise(ocup=survey_total(na.rm=TRUE), inf=survey_total(informal,na.rm=TRUE), .groups="drop") %>%
+    transmute(trimestre=rotulo_tri(tri,ano), local=regioes_rn,
+              ocupados_k=round(ocup/1000,1), informais_k=round(inf/1000,1),
+              formais_k=round((ocup-inf)/1000,1),
+              tx_informalidade=round(100*inf/pmax(ocup,1),1),
+              def_regiao="Estrato→regioes_rn", def_ocup="VD4002==1")
+}
+
+# -------- SUBUTILIZAÇÃO (IBGE) ---------------------------------
+
+# G) Subocupação — duas taxas: sobre PEA (SIDRA) e sobre Ocupados (analítica)
+calc_subocupacao <- function(dsg, tri, ano){
+  monta <- function(subd, local){
+    subd %>% summarise(
+      PEA     = survey_total(VD4001==1,na.rm=TRUE),
+      Ocup    = survey_total(VD4002==1,na.rm=TRUE),
+      subocup = survey_total(VD4004A==1,na.rm=TRUE)
+    ) %>%
+      transmute(trimestre=rotulo_tri(tri,ano), local=local,
+                subocup_k=round(subocup/1000,1), PEA_k=round(PEA/1000,1), Ocup_k=round(Ocup/1000,1),
+                tx_subocup_PEA = round(100*subocup/pmax(PEA,1),1),
+                tx_subocup_Ocup= round(100*subocup/pmax(Ocup,1),1),
+                definicao_subocup="VD4004A==1", def_PEA="VD4001==1", def_Ocup="VD4002==1")
+  }
+  bind_rows(
+    monta(dsg,"Brasil"),
+    monta(dsg %>% filter(UF %in% nordeste_ufs),"Nordeste"),
+    monta(dsg %>% filter(UF==24),"Rio Grande do Norte")
+  )
+}
+
+# H) Fora da força de trabalho (FTP) e desalento
+calc_ftp_desalento <- function(dsg, tri, ano){
+  monta <- function(subd, local){
+    subd %>% summarise(
+      foraFT=survey_total(VD4001==2,na.rm=TRUE),
+      FTP   =survey_total(VD4003==1,na.rm=TRUE),
+      desal=survey_total(VD4005==1,na.rm=TRUE)
+    ) %>%
+      transmute(trimestre=rotulo_tri(tri,ano), local=local,
+                FTP_k=round(FTP/1000,1), foraFT_k=round(foraFT/1000,1),
+                desalento_k=round(desal/1000,1),
+                part_FTP_em_foraFT=round(100*FTP/pmax(foraFT+FTP,1),1),
+                definicao_FTP="VD4003==1", definicao_desalento="VD4005==1", definicao_foraFT="VD4001==2")
+  }
+  bind_rows(
+    monta(dsg,"Brasil"),
+    monta(dsg %>% filter(UF %in% nordeste_ufs),"Nordeste"),
+    monta(dsg %>% filter(UF==24),"Rio Grande do Norte")
+  )
+}
+
+# I) Taxa composta de subutilização (definição oficial)
+calc_tx_composta <- function(dsg, tri, ano){
+  monta <- function(subd, local){
+    subd %>% summarise(
+      desocup=survey_total(VD4002==2,na.rm=TRUE),
+      subocup=survey_total(VD4004A==1,na.rm=TRUE),
+      FTP    =survey_total(VD4003==1,na.rm=TRUE),
+      PEA    =survey_total(VD4001==1,na.rm=TRUE)
+    ) %>%
+      transmute(trimestre=rotulo_tri(tri,ano), local=local,
+                numerador_k=round((desocup+subocup+FTP)/1000,1),
+                denominador_k=round((PEA+FTP)/1000,1),
+                tx_composta=round(100*(desocup+subocup+FTP)/pmax(PEA+FTP,1),1),
+                num_formula="(VD4002==2)+(VD4004A==1)+(VD4003==1)",
+                den_formula="(VD4001==1)+(VD4003==1)")
+  }
+  bind_rows(
+    monta(dsg,"Brasil"),
+    monta(dsg %>% filter(UF %in% nordeste_ufs),"Nordeste"),
+    monta(dsg %>% filter(UF==24),"Rio Grande do Norte")
+  )
+}
+
+# Painel completo de subutilização (níveis + 4 taxas IBGE)
+calc_painel_subutilizacao <- function(dsg, tri, ano){
+  monta <- function(subd, local){
+    subd %>% summarise(
+      desocup = survey_total(VD4002==2, na.rm=TRUE),
+      subocup = survey_total(VD4004A==1, na.rm=TRUE),
+      ftp     = survey_total(VD4003==1, na.rm=TRUE),
+      FT      = survey_total(VD4001==1, na.rm=TRUE)
+    ) %>%
+      mutate(FTA = FT + ftp) %>%
+      transmute(
+        trimestre = rotulo_tri(tri,ano), local = local,
+        desocupados_k = round(desocup/1000,1),
+        subocup_insuf_horas_k = round(subocup/1000,1),
+        forca_trabalho_potencial_k = round(ftp/1000,1),
+        forca_trabalho_k = round(FT/1000,1),
+        forca_trabalho_ampliada_k = round(FTA/1000,1),
+        tx_desocupacao         = round(100*desocup/pmax(FT,1),1),
+        tx_comb_desoc_subocup  = round(100*(desocup+subocup)/pmax(FT,1),1),
+        tx_comb_desoc_ftp      = round(100*(desocup+ftp)/pmax(FTA,1),1),
+        tx_composta_subutil    = round(100*(desocup+subocup+ftp)/pmax(FTA,1),1),
+        def_desocupados="VD4002==2", def_subocup_insuf_horas="VD4004A==1",
+        def_forca_trabalho_potencial="VD4003==1", def_forca_trabalho="VD4001==1",
+        def_forca_trabalho_ampliada="(VD4001==1)+(VD4003==1)",
+        tx_desocup_formula_num="VD4002==2", tx_desocup_formula_den="VD4001==1",
+        tx_comb_ds_formula_num="(VD4002==2)+(VD4004A==1)", tx_comb_ds_formula_den="VD4001==1",
+        tx_comb_df_formula_num="(VD4002==2)+(VD4003==1)", tx_comb_df_formula_den="(VD4001==1)+(VD4003==1)",
+        tx_composta_formula_num="(VD4002==2)+(VD4004A==1)+(VD4003==1)",
+        tx_composta_formula_den="(VD4001==1)+(VD4003==1)"
+      )
+  }
+  bind_rows(
+    monta(dsg, "Brasil"),
+    monta(dsg %>% filter(UF %in% nordeste_ufs), "Nordeste"),
+    monta(dsg %>% filter(UF == 24), "Rio Grande do Norte")
+  )
+}
+
+# -------- Previdência / Renda / Horas e regionais RN ----------
+
+calc_previdencia <- function(dsg, tri, ano){
+  dsg_inf <- dsg %>% filter(VD4001==1, VD4002==1) %>% cria_informal()
+  monta <- function(subd, local, grupo){
+    subd %>% summarise(ocup=survey_total(na.rm=TRUE), contrib=survey_total(VD4012==1,na.rm=TRUE)) %>%
+      transmute(trimestre=rotulo_tri(tri,ano), local=local, grupo=grupo,
+                pct_contrib=round(100*contrib/pmax(ocup,1),1),
+                ocup_k=round(ocup/1000,1), contrib_k=round(contrib/1000,1),
+                def_contrib="VD4012==1", def_ocup="VD4001==1 & VD4002==1")
+  }
+  bind_rows(
+    monta(dsg %>% filter(VD4001==1,VD4002==1), "Brasil","Ocupados - Total"),
+    monta(dsg_inf %>% filter(informal==0),     "Brasil","Ocupados - Formais"),
+    monta(dsg_inf %>% filter(informal==1),     "Brasil","Ocupados - Informais"),
+    monta(dsg %>% filter(UF %in% nordeste_ufs, VD4001==1,VD4002==1), "Nordeste","Ocupados - Total"),
+    monta(dsg_inf %>% filter(UF %in% nordeste_ufs, informal==0), "Nordeste","Ocupados - Formais"),
+    monta(dsg_inf %>% filter(UF %in% nordeste_ufs, informal==1), "Nordeste","Ocupados - Informais"),
+    monta(dsg %>% filter(UF==24, VD4001==1,VD4002==1), "Rio Grande do Norte","Ocupados - Total"),
+    monta(dsg_inf %>% filter(UF==24, informal==0), "Rio Grande do Norte","Ocupados - Formais"),
+    monta(dsg_inf %>% filter(UF==24, informal==1), "Rio Grande do Norte","Ocupados - Informais")
+  )
+}
+
+calc_renda_formal_informal <- function(dsg, tri, ano){
+  dsg_inf <- dsg %>% cria_informal()
+  sumariza <- function(subd, local, grp){
+    subd %>% filter(VD4001==1, VD4002==1, !is.na(Rend_H_real), Rend_H_real>0) %>%
+      summarise(
+        media   = survey_mean(Rend_H_real, na.rm=TRUE),
+        mediana = survey_median(Rend_H_real, na.rm=TRUE),
+        n       = unweighted(n())
+      ) %>% transmute(trimestre=rotulo_tri(tri,ano), local=local, grupo=grp,
+                      media=round(media,0), mediana=round(mediana,0), n=n,
+                      def_renda="VD4016*Habitual>0", def_ocup="VD4001==1 & VD4002==1")
+  }
+  bind_rows(
+    sumariza(dsg_inf %>% filter(informal==0), "Brasil","Formais"),
+    sumariza(dsg_inf %>% filter(informal==1), "Brasil","Informais"),
+    sumariza(dsg_inf %>% filter(UF %in% nordeste_ufs, informal==0), "Nordeste","Formais"),
+    sumariza(dsg_inf %>% filter(UF %in% nordeste_ufs, informal==1), "Nordeste","Informais"),
+    sumariza(dsg_inf %>% filter(UF==24, informal==0), "Rio Grande do Norte","Formais"),
+    sumariza(dsg_inf %>% filter(UF==24, informal==1), "Rio Grande do Norte","Informais")
+  )
+}
+
+calc_horas_formal_informal <- function(dsg, tri, ano){
+  dsg_inf <- dsg %>% cria_informal()
+  sumariza <- function(subd, local, grp){
+    subd %>% filter(VD4001==1, VD4002==1) %>%
+      summarise(horas_hab=survey_mean(VD4031,na.rm=TRUE),
+                horas_eff=survey_mean(VD4035,na.rm=TRUE)) %>%
+      transmute(trimestre=rotulo_tri(tri,ano), local=local, grupo=grp,
+                horas_hab=round(horas_hab,1), horas_eff=round(horas_eff,1),
+                def_horas_hab="VD4031", def_horas_eff="VD4035")
+  }
+  bind_rows(
+    sumariza(dsg_inf %>% filter(informal==0), "Brasil","Formais"),
+    sumariza(dsg_inf %>% filter(informal==1), "Brasil","Informais"),
+    sumariza(dsg_inf %>% filter(UF %in% nordeste_ufs, informal==0), "Nordeste","Formais"),
+    sumariza(dsg_inf %>% filter(UF %in% nordeste_ufs, informal==1), "Nordeste","Informais"),
+    sumariza(dsg_inf %>% filter(UF==24, informal==0), "Rio Grande do Norte","Formais"),
+    sumariza(dsg_inf %>% filter(UF==24, informal==1), "Rio Grande do Norte","Informais")
+  )
+}
+
+calc_regioesRN_subocup <- function(dsg, tri, ano){
+  dsg %>% filter(UF==24, !is.na(regioes_rn)) %>% group_by(regioes_rn) %>%
+    summarise(PEA=survey_total(VD4001==1,na.rm=TRUE),
+              Ocup=survey_total(VD4002==1,na.rm=TRUE),
+              subocup=survey_total(VD4004A==1,na.rm=TRUE)) %>%
+    transmute(trimestre=rotulo_tri(tri,ano), local=regioes_rn,
+              subocup_k=round(subocup/1000,1), PEA_k=round(PEA/1000,1), Ocup_k=round(Ocup/1000,1),
+              tx_subocup_PEA=round(100*subocup/pmax(PEA,1),1),
+              tx_subocup_Ocup=round(100*subocup/pmax(Ocup,1),1),
+              definicao_subocup="VD4004A==1", definicao_PEA="VD4001==1", definicao_Ocup="VD4002==1")
+}
+
+calc_regioesRN_txcomp <- function(dsg, tri, ano){
+  dsg %>% filter(UF==24, !is.na(regioes_rn)) %>% group_by(regioes_rn) %>%
+    summarise(desocup=survey_total(VD4002==2,na.rm=TRUE),
+              subocup=survey_total(VD4004A==1,na.rm=TRUE),
+              FTP    =survey_total(VD4003==1,na.rm=TRUE),
+              PEA    =survey_total(VD4001==1,na.rm=TRUE)) %>%
+    transmute(trimestre=rotulo_tri(tri,ano), local=regioes_rn,
+              numerador_k=round((desocup+subocup+FTP)/1000,1),
+              denominador_k=round((PEA+FTP)/1000,1),
+              tx_composta=round(100*(desocup+subocup+FTP)/pmax(PEA+FTP,1),1),
+              num_formula="(VD4002==2)+(VD4004A==1)+(VD4003==1)",
+              den_formula="(VD4001==1)+(VD4003==1)")
+}
+
+calc_regioesRN_previdencia <- function(dsg, tri, ano){
+  dsg_inf <- dsg %>% cria_informal()
+  total <- dsg %>% filter(UF==24,!is.na(regioes_rn),VD4001==1,VD4002==1) %>%
+    group_by(regioes_rn) %>%
+    summarise(ocup=survey_total(na.rm=TRUE), contrib=survey_total(VD4012==1,na.rm=TRUE)) %>%
+    transmute(trimestre=rotulo_tri(tri,ano), local=regioes_rn, grupo="Ocupados - Total",
+              pct_contrib=round(100*contrib/pmax(ocup,1),1),
+              ocup_k=round(ocup/1000,1), contrib_k=round(contrib/1000,1))
+  form_inf <- dsg_inf %>% filter(UF==24,!is.na(regioes_rn),VD4001==1,VD4002==1) %>%
+    mutate(grupo=ifelse(informal==1,"Ocupados - Informais","Ocupados - Formais")) %>%
+    group_by(regioes_rn, grupo) %>%
+    summarise(ocup=survey_total(na.rm=TRUE), contrib=survey_total(VD4012==1,na.rm=TRUE), .groups="drop") %>%
+    transmute(trimestre=rotulo_tri(tri,ano), local=regioes_rn, grupo=grupo,
+              pct_contrib=round(100*contrib/pmax(ocup,1),1),
+              ocup_k=round(ocup/1000,1), contrib_k=round(contrib/1000,1))
+  bind_rows(total, form_inf)
+}
+
+# Gaps RN – Brasil
+calc_gap_RN_BR <- function(dsg, tri, ano, var=c("sexo","idade","raca","escolar")){
+  comp <- calc_inf_por_grupo(dsg, tri, ano, var = match.arg(var))
+  chave <- setdiff(names(comp),
+                   c("trimestre","local","ocupados_k","informais_k","formais_k","tx_informalidade"))[1]
+  wide <- comp %>% select(trimestre, local, !!chave, tx_informalidade) %>%
+    tidyr::pivot_wider(names_from = local, values_from = tx_informalidade)
+  if (!all(c("Brasil","Rio Grande do Norte") %in% names(wide))) return(tibble())
+  wide %>% mutate(gap_pp = `Rio Grande do Norte` - Brasil)
+}
+
+# =======================
+# EXECUÇÃO
+# =======================
+method_design <- "classic"
+
+run_tudo_trimestre <- function(tri, ano){
+  message(sprintf("=== Rodando %s ===", rotulo_tri(tri, ano)))
+  dsg <- importa_pnad_design(tri, ano, method = method_design)
+  on.exit({ rm(dsg); gc() }, add = TRUE)
+  
+  list(
+    # Núcleo
+    mercado_basico  = calc_mercado_basico(dsg, tri, ano),
+    inf_total_loc   = calc_inf_total_locais(dsg, tri, ano),
+    inf_sexo        = calc_inf_por_grupo(dsg, tri, ano, "sexo"),
+    inf_idade       = calc_inf_por_grupo(dsg, tri, ano, "idade"),
+    inf_raca        = calc_inf_por_grupo(dsg, tri, ano, "raca"),
+    inf_escolar     = calc_inf_por_grupo(dsg, tri, ano, "escolar"),
+    inf_setor       = calc_inf_por_setor(dsg, tri, ano),
+    mix_setor_inf   = calc_mix_setorial_informais(dsg, tri, ano),
+    rnreg_inf       = calc_inf_regioesRN(dsg, tri, ano),
+    
+    # Subutilização (IBGE)
+    subocup         = calc_subocupacao(dsg, tri, ano),
+    ftp_desalento   = calc_ftp_desalento(dsg, tri, ano),
+    tx_composta     = calc_tx_composta(dsg, tri, ano),
+    painel_subutil  = calc_painel_subutilizacao(dsg, tri, ano),
+    
+    # Previdência / Renda / Horas
+    previdencia     = calc_previdencia(dsg, tri, ano),
+    renda_form_inf  = calc_renda_formal_informal(dsg, tri, ano),
+    horas_form_inf  = calc_horas_formal_informal(dsg, tri, ano),
+    
+    # RN regionais
+    rnreg_subocup   = calc_regioesRN_subocup(dsg, tri, ano),
+    rnreg_txcomp    = calc_regioesRN_txcomp(dsg, tri, ano),
+    rnreg_previd    = calc_regioesRN_previdencia(dsg, tri, ano),
+    
+    # Gaps
+    gap_sexo        = calc_gap_RN_BR(dsg, tri, ano, "sexo"),
+    gap_idade       = calc_gap_RN_BR(dsg, tri, ano, "idade"),
+    gap_raca        = calc_gap_RN_BR(dsg, tri, ano, "raca"),
+    gap_escolar     = calc_gap_RN_BR(dsg, tri, ano, "escolar")
+  )
+}
+
+# Roda todos os trimestres
+res <- lapply(trimestres, \(t) run_tudo_trimestre(t$tri, t$ano))
+
+# =======================
+# EXPORTAÇÃO CSV (PASTA NOVA)
+# =======================
+w <- function(obj, name) readr::write_csv2(obj, file.path(dir_out_new, name))
+
+tb_inf_total     <- bind_rows(lapply(res, \(x) x$inf_total_loc));       w(tb_inf_total,     "T1_informalidade_total.csv")
+tb_inf_sexo      <- bind_rows(lapply(res, \(x) x$inf_sexo));            w(tb_inf_sexo,      "T1a_informalidade_por_sexo.csv")
+tb_inf_idade     <- bind_rows(lapply(res, \(x) x$inf_idade));           w(tb_inf_idade,     "T1b_informalidade_por_idade.csv")
+tb_inf_raca      <- bind_rows(lapply(res, \(x) x$inf_raca));            w(tb_inf_raca,      "T1c_informalidade_por_raca.csv")
+tb_inf_escolar   <- bind_rows(lapply(res, \(x) x$inf_escolar));         w(tb_inf_escolar,   "T1d_informalidade_por_escolaridade.csv")
+
+tb_inf_setor     <- bind_rows(lapply(res, \(x) x$inf_setor));           w(tb_inf_setor,     "T2_informalidade_por_setor.csv")
+tb_mix_setor_inf <- bind_rows(lapply(res, \(x) x$mix_setor_inf));       w(tb_mix_setor_inf, "T2b_mix_setorial_informais.csv")
+tb_rnreg_inf     <- bind_rows(lapply(res, \(x) x$rnreg_inf));           w(tb_rnreg_inf,     "T3_informalidade_regioes_RN.csv")
+
+tb_subocup       <- bind_rows(lapply(res, \(x) x$subocup));             w(tb_subocup,       "T4_subocupacao.csv")
+tb_ftp_desal     <- bind_rows(lapply(res, \(x) x$ftp_desalento));       w(tb_ftp_desal,     "T4b_forca_trabalho_potencial_e_desalento.csv")
+tb_tx_comp       <- bind_rows(lapply(res, \(x) x$tx_composta));         w(tb_tx_comp,       "T4c_taxa_composta_subutilizacao.csv")
+tb_painel_sub    <- bind_rows(lapply(res, \(x) x$painel_subutil));      w(tb_painel_sub,    "T4d_painel_subutilizacao_IBGE.csv")
+
+tb_renda         <- bind_rows(lapply(res, \(x) x$renda_form_inf));      w(tb_renda,         "T5_renda_formais_informais_deflacionada.csv")
+tb_horas         <- bind_rows(lapply(res, \(x) x$horas_form_inf));      w(tb_horas,         "T6_horas_formais_informais.csv")
+tb_prev          <- bind_rows(lapply(res, \(x) x$previdencia));         w(tb_prev,          "T7_previdencia_contribuicao.csv")
+
+tb_rnreg_subocup <- bind_rows(lapply(res, \(x) x$rnreg_subocup));       w(tb_rnreg_subocup, "T8a_RN_regioes_subocupacao.csv")
+tb_rnreg_txcomp  <- bind_rows(lapply(res, \(x) x$rnreg_txcomp));        w(tb_rnreg_txcomp,  "T8b_RN_regioes_tx_composta.csv")
+tb_rnreg_prev    <- bind_rows(lapply(res, \(x) x$rnreg_previd));        w(tb_rnreg_prev,    "T8c_RN_regioes_previdencia.csv")
+
+tb_gap_sexo      <- bind_rows(lapply(res, \(x) x$gap_sexo));            w(tb_gap_sexo,      "T9_gap_RN_BR_sexo.csv")
+tb_gap_idade     <- bind_rows(lapply(res, \(x) x$gap_idade));           w(tb_gap_idade,     "T9_gap_RN_BR_idade.csv")
+tb_gap_raca      <- bind_rows(lapply(res, \(x) x$gap_raca));            w(tb_gap_raca,      "T9_gap_RN_BR_raca.csv")
+tb_gap_escolar   <- bind_rows(lapply(res, \(x) x$gap_escolar));         w(tb_gap_escolar,   "T9_gap_RN_BR_escolaridade.csv")
+
+message(sprintf("✓ CSVs gravados em: %s", dir_out_new))

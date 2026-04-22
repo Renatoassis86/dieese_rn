@@ -13,18 +13,31 @@ const headers = {
 
 /**
  * Fetch Aggregated PAA Data for the Line Chart (Historical Series)
- * Uses view_paa_anual to avoid API limits and guarantee accurate totals.
+ * Points to the new paa_master table.
  */
 async function fetchPaaAnnual() {
-    const url = `${SUPABASE_URL}/rest/v1/view_paa_anual?select=ano,total_valor`;
+    // Aggregation via PostgREST is limited, but we can fetch and aggregate locally for small series
+    const url = `${SUPABASE_URL}/rest/v1/paa_master?select=ano,valor_pago,agricultores,mulheres&order=ano.asc`;
     
     try {
         const response = await fetch(url, { headers });
-        const data = await response.json();
+        const rawData = await response.json();
         
-        return data.map(d => ({
-            ano: d.ano,
-            valor: parseFloat(d.total_valor) / 1000000 // Convert to Mi R$
+        // Aggregate by year locally
+        const aggregated = {};
+        rawData.forEach(d => {
+            if (!aggregated[d.ano]) aggregated[d.ano] = { valor: 0, agricultores: 0, mulheres: 0 };
+            aggregated[d.ano].valor += parseFloat(d.valor_pago) || 0;
+            aggregated[d.ano].agricultores += parseInt(d.agricultores) || 0;
+            aggregated[d.ano].mulheres += parseInt(d.mulheres) || 0;
+        });
+
+        return Object.keys(aggregated).map(ano => ({
+            ano: parseInt(ano),
+            valor: aggregated[ano].valor / 1000000, // Mi
+            agricultores: aggregated[ano].agricultores,
+            mulheres: aggregated[ano].mulheres,
+            perc_mulheres: (aggregated[ano].mulheres / aggregated[ano].agricultores) * 100 || 0
         }));
     } catch (e) {
         console.error("Error fetching annual PAA:", e);
@@ -33,20 +46,27 @@ async function fetchPaaAnnual() {
 }
 
 /**
- * Fetch PAA by Territory for the Bar Chart
- * Uses view_paa_territorios filtered by current year.
+ * Fetch PAA by Territory
  */
-async function fetchPaaByTerritory() {
-    const url = `${SUPABASE_URL}/rest/v1/view_paa_territorios?ano=eq.2024&select=nome_territorio,total_beneficiados&order=total_beneficiados.desc`;
+async function fetchPaaByTerritory(year = 2024) {
+    const url = `${SUPABASE_URL}/rest/v1/paa_master?ano=eq.${year}&select=territorio,valor_pago,agricultores`;
     
     try {
         const response = await fetch(url, { headers });
         const data = await response.json();
         
-        return data.map(d => ({
-            nome: d.nome_territorio,
-            valor: parseInt(d.total_beneficiados)
-        }));
+        const aggregated = {};
+        data.forEach(d => {
+            if (!aggregated[d.territorio]) aggregated[d.territorio] = { valor: 0, agricultores: 0 };
+            aggregated[d.territorio].valor += parseFloat(d.valor_pago) || 0;
+            aggregated[d.territorio].agricultores += parseInt(d.agricultores) || 0;
+        });
+
+        return Object.keys(aggregated).map(t => ({
+            nome: t,
+            valor: aggregated[t].agricultores,
+            investimento: aggregated[t].valor / 1000000
+        })).sort((a, b) => b.valor - a.valor);
     } catch (e) {
         console.error("Error fetching territory PAA:", e);
         return [];
@@ -55,34 +75,22 @@ async function fetchPaaByTerritory() {
 
 /**
  * Fetch Filtered PAA Data for BI Canvas
- * Handles complex joins in the client or uses territorial views.
  */
 async function fetchFilteredPAA(filters = {}) {
-    let url = `${SUPABASE_URL}/rest/v1/paa_dados?sigla_uf=eq.RN`;
+    let url = `${SUPABASE_URL}/rest/v1/paa_master?select=*`;
     
     if (filters.year && filters.year !== 'todos') {
         url += `&ano=eq.${filters.year}`;
     }
-    
-    if (filters.limit) {
-        url += `&limit=${filters.limit}`;
-    } else {
-        url += `&limit=2000`; // Increase default limit for analysis
+    if (filters.territory && filters.territory !== 'todos') {
+        url += `&territorio=eq.${encodeURIComponent(filters.territory)}`;
     }
+    
+    url += `&limit=40000`;
 
     try {
         const response = await fetch(url, { headers });
-        let data = await response.json();
-        
-        // Filter by territory if specified
-        if (filters.territory && filters.territory !== 'todos') {
-            const terrRes = await fetch(`${SUPABASE_URL}/rest/v1/territorios_rn?nome_territorio=eq.${filters.territory}`, { headers });
-            const terrMapData = await terrRes.json();
-            const allowedIds = terrMapData.map(t => t.cod_municipio_ibge.toString());
-            data = data.filter(d => allowedIds.includes(d.cod_municipio_ibge.toString()));
-        }
-        
-        return data;
+        return await response.json();
     } catch (e) {
         console.error("BI Filter error:", e);
         return [];
@@ -97,17 +105,17 @@ window.API = {
     fetchPaaByTerritory,
     fetchFilteredPAA,
     
-    async exportPAA() {
-        console.log("📥 Preparando exportação de dados...");
-        const data = await this.fetchFilteredPAA({ limit: 10000 });
-        const csv = "Ano;Municipio;Valor;Beneficiarios\n" + 
-            data.map(d => `${d.ano};${d.nome_municipio};${d.val_executado};${d.qtd_beneficiados}`).join("\n");
+    async exportPAA(filters = {}) {
+        const data = await this.fetchFilteredPAA(filters);
+        const csv = "Ano;Municipio;Territorio;Valor_Pago;Agricultores;Mulheres\n" + 
+            data.map(d => `${d.ano};${d.municipio};${d.territorio};${d.valor_pago};${d.agricultores};${d.mulheres}`).join("\n");
         
         const blob = new Blob([csv], { type: 'text/csv' });
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `paa_dados_rn_${new Date().toISOString().split('T')[0]}.csv`;
+        a.download = `paa_master_rn_${new Date().toISOString().split('T')[0]}.csv`;
         a.click();
     }
 };
+
