@@ -134,6 +134,9 @@ data/silver/
 *.docx
 *.webp
 *.png
+!logo.png
+!assets/*.png
+!public/*.png
 !src/app/assets/*.png
 logs/
 .gemini/
