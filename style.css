@@ -60,16 +60,26 @@ a { text-decoration: none; }
 /* ══ NAVBAR ══ */
 .navbar {
     position: fixed; top: 0; left: 0; right: 0; z-index: 999;
-    background: var(--navy);
-    transition: box-shadow 0.3s;
+    background: rgba(1, 22, 39, 0.7); /* Deep Navy Glass */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    transition: background 0.3s, box-shadow 0.3s;
 }
-.navbar.scrolled { box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
+.navbar.scrolled { 
+    background: rgba(1, 22, 39, 0.95);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4); 
+}
+
 
 .navbar-inner {
     max-width: 1400px; margin: 0 auto; padding: 0 2.5rem;
     height: 66px;
-    display: flex; align-items: center; justify-content: space-between; gap: 1.5rem;
+    display: grid;
+    grid-template-columns: 100px 1fr 100px;
+    align-items: center;
 }
+.navbar-inner nav { display: flex; justify-content: center; }
 
 .logo { display: flex; align-items: center; gap: 0.75rem; }
 .logo-icon { font-size: 1.6rem; }
@@ -83,7 +93,8 @@ a { text-decoration: none; }
     color: rgba(255,255,255,0.45); letter-spacing: 0.08em; text-transform: uppercase;
 }
 
-.nav-links { display: flex; list-style: none; gap: 0; align-items: center; }
+/* Nav Links Standardized */
+.nav-links { display: flex; list-style: none; gap: 0.5rem; align-items: center; }
 .nav-links > li > a {
     display: block; padding: 0.5rem 0.9rem;
     font-family: 'Montserrat', sans-serif; font-weight: 500; font-size: 0.85rem;
@@ -91,20 +102,6 @@ a { text-decoration: none; }
     transition: all 0.2s;
 }
 .nav-links > li > a:hover { color: #fff; background: rgba(255,255,255,0.08); }
-
-/* Aba Estatísticas destaque */
-.nav-stat {
-    background: var(--amber) !important;
-    color: var(--navy) !important;
-    font-weight: 700 !important;
-    border-radius: 8px !important;
-    padding: 0.45rem 1rem !important;
-    transition: background 0.25s, transform 0.2s !important;
-}
-.nav-stat:hover {
-    background: var(--amber-dk) !important;
-    transform: translateY(-1px) !important;
-}
 
 /* Dropdown */
 .dropdown { position: relative; }
