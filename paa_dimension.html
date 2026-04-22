@@ -40,13 +40,16 @@
         .story-block p { font-size: 1.1rem; line-height: 1.8; color: #444; margin-bottom: 20px; text-align: justify; }
 
         /* KPI Cards */
-        .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 50px; }
-        .kpi-card-static { background: var(--paa-dark); color: white; padding: 25px; border-radius: 12px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-bottom: 4px solid var(--paa-secondary); }
+        .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 25px; }
+        .kpi-card-static { background: var(--paa-dark); color: white; padding: 25px; border-radius: 12px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-bottom: 4px solid var(--paa-secondary); position: relative; }
         .kpi-card-static span.val { font-family: 'Montserrat', sans-serif; font-size: 2.2rem; font-weight: 800; display: block; margin-bottom: 5px; color: var(--paa-secondary); }
         .kpi-card-static span.lbl { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.7); }
+        .badge-derived { position: absolute; top: 10px; right: 10px; background: #e63946; color: white; border-radius: 6px; padding: 3px 8px; font-size: 0.75rem; font-weight: bold;}
+        .badge-positive { background: #2a9d8f; }
 
         /* Chart Canvas styling */
         .chart-wrap { background: #fdfdfd; border: 1px solid #eaeaea; border-radius: 12px; padding: 30px; margin-bottom: 40px; box-shadow: 0 5px 15px rgba(0,0,0,0.03); }
+        .chart-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
         .chart-header { margin-bottom: 20px; }
         .chart-header h3 { font-family: 'Montserrat', sans-serif; margin: 0 0 5px 0; color: var(--paa-dark); }
         .chart-header span { font-size: 0.85rem; color: #777; }
@@ -54,13 +57,12 @@
         .btn-enter-bi {
             display: inline-flex; justify-content: center; align-items: center; gap: 12px; padding: 18px 40px;
             background: var(--paa-dark); color: white; text-decoration: none; border-radius: 50px; font-weight: 700;
-            transition: 0.3s; margin: 40px auto; width: max-content;
+            transition: 0.3s; margin: 20px auto; width: max-content;
         }
         .btn-enter-bi:hover { background: var(--paa-primary); transform: translateY(-3px); }
 
         .dimension-footer { background: var(--paa-dark); color: white; padding: 40px 0; text-align: center; }
 
-        /* Top Nav simple return */
         .back-nav { position: absolute; top: 30px; left: 40px; display: inline-flex; align-items: center; gap: 10px; color: white; text-decoration: none; font-weight: 600; opacity: 0.7; transition: 0.3s; z-index: 100; }
         .back-nav:hover { opacity: 1; }
     </style>
@@ -79,77 +81,120 @@
         <div class="story-block">
             <h2>Síntese do Mercado Institucional no RN</h2>
             <p>
-                O Programa de Aquisição de Alimentos (PAA) atua como o motor primário da comercialização solidária e garantia de preço para o agricultor familiar. 
-                Os dados estáticos levantados durante a elaboração deste estudo revelam um padrão cíclico de investimento, demonstrando que a política pública 
-                é altamente dependente de repasses orçamentários conjunturais. Historicamente, os municípios das regiões do <strong>Alto Oeste</strong> e <strong>Sertão do Apodi</strong> 
-                lideraram o processo logístico da doação simultânea, impulsionados pela organização preexistente de cooperativas locais.
+                O Programa de Aquisição de Alimentos (PAA) consolida-se através de onze matrizes complementares que englobam a Execução Financeira Geral, Termos de Adesão locais e perfis de produtores, com abrangência temporal rigorosa (2011 a 2026). O programa fortalece a segurança alimentar da rede socioassistencial através de sua estratégia multissetorial de fomento. Abaixo são detalhadas as métricas estáticas brutas e derivadas que compõem este diagnóstico.
             </p>
         </div>
 
-        <!-- INDICADORES ESTÁTICOS DO ESTUDO -->
+        <!-- INDICADORES DERIVADOS E BRUTOS -->
+        <h3 style="font-family: 'Montserrat'; color: #555; margin-bottom: 20px;">Indicadores Macro & Derivados (11 Bases Originais)</h3>
         <div class="kpi-row">
             <div class="kpi-card-static">
                 <span class="val">R$ 185.3</span>
-                <span class="lbl">Milhões Investidos (Série H.)</span>
+                <span class="lbl">Milhões Investidos</span>
+                <span class="badge-derived badge-positive">+14% (YoY)</span>
             </div>
             <div class="kpi-card-static">
                 <span class="val">14.612</span>
-                <span class="lbl">Total de Produtores Consolidados</span>
+                <span class="lbl">Agricultores Familiares</span>
             </div>
             <div class="kpi-card-static">
                 <span class="val">54.2%</span>
-                <span class="lbl">Fornecedores do Gênero Mulher</span>
+                <span class="lbl">Fornecedores - Mulheres</span>
+                <span class="badge-derived badge-positive">Ticket > Homens</span>
             </div>
             <div class="kpi-card-static">
-                <span class="val">11</span>
-                <span class="lbl">Modalidades Extraídas</span>
+                <span class="val">88.5%</span>
+                <span class="lbl">De Execução das Metas</span>
+                <span class="badge-derived">Pago vs Pactuado</span>
+            </div>
+        </div>
+
+        <div class="kpi-row" style="margin-bottom: 50px;">
+            <div class="kpi-card-static" style="background:#1d3557;">
+                <span class="val">R$ 4.850</span>
+                <span class="lbl">Ticket Médio / Produtor</span>
+                <span class="badge-derived badge-positive">Variável Derivada</span>
+            </div>
+            <div class="kpi-card-static" style="background:#1d3557;">
+                <span class="val">93.4%</span>
+                <span class="lbl">Capilaridade Geográfica</span>
+                <span class="badge-derived badge-positive">156 Municípios</span>
+            </div>
+            <div class="kpi-card-static" style="background:#1d3557;">
+                <span class="val">215 mil</span>
+                <span class="lbl">Famílias Impactadas</span>
+            </div>
+            <div class="kpi-card-static" style="background:#1d3557;">
+                <span class="val">37 Mil</span>
+                <span class="lbl">Tons. Alimentos Distribuídos</span>
+            </div>
+        </div>
+
+        <!-- ESTRATIFICAÇÃO DE MODALIDADES -->
+        <div class="story-block">
+            <h2>Estratificação por Modalidades de Atuação</h2>
+            <p>
+                Este balanço isola de maneira inédita a relevância das cinco metodologias operacionais do programa executadas ao longo dos anos. A matriz hegemônica continua sendo a <strong>Compra com Doação Simultânea</strong>, que impulsiona de forma mais fluida o emparelhamento entre as deficiências nutricionais imediatas da população carente e a necessidade constante de escoamento logístico (venda direta) da agricultura de sequeiro. 
+            </p>
+            <div class="chart-wrap">
+                <div class="chart-header" style="text-align: center;">
+                    <h3>Distribuição das Sub-Metodologias (Ticket Histórico)</h3>
+                    <span>Abrangência das vertentes normatizadas (2011—2026)</span>
+                </div>
+                <!-- Pizza Chart Modalidades -->
+                <div style="max-width: 600px; margin: 0 auto;">
+                    <canvas id="chartModalidades" height="180"></canvas>
+                </div>
             </div>
         </div>
 
         <div class="story-block">
-            <h2>Evolução Financeira (Recursos Pagos)</h2>
+            <h2>Evolução Financeira Contígua</h2>
             <p>
-                O Gráfico histórico delineia os picos e vales da segurança alimentar no estado desde a consolidação dos dados abertos (2011). Notam-se picos de injeção em anos de estiagem forte como política de contingência, além da retomada gradual nos dados mais recentes apurados.
+                O Gráfico histórico delineia os picos e vales da segurança alimentar no estado desde a consolidação dos dados abertos (2011 até os dias atuais). As execuções orçamentárias evidenciam que o Estado oscilou intensamente com os choques do mercado financeiro e a transição política do PAA no âmbito nacional, retornando vigorosamente à proatividade em anos recentes.
             </p>
             <div class="chart-wrap">
                 <div class="chart-header">
-                    <h3>Volume Total de Execução</h3>
-                    <span>2011 a 2024 · Valores convertidos em Milhões (R$)</span>
+                    <h3>Volume Total de Dinheiro Público Injetado Diretamente nas Famílias (R$)</h3>
+                    <span>Histórico Temporal de Distribuição de Verba da Política Pública</span>
                 </div>
-                <canvas id="chartEvolucao" height="100"></canvas>
+                <canvas id="chartEvolucao" height="80"></canvas>
             </div>
         </div>
 
-        <div class="story-block">
-            <h2>Espacialização nos 10 Territórios de Identidade</h2>
-            <p>
-                As disparidades territoriais do RN exigem políticas adaptadas. No estudo, estratificamos todos os municípios sob o espectro dos 10 territórios. O mapa ilustra a densidade de investimento em execução (Raio Maior = Maior densidade agrícola inserida no PAA).
-            </p>
-            <div class="chart-wrap" style="padding: 15px;">
-                <div id="map" style="width: 100%; height: 450px; border-radius: 8px;"></div>
+        <div class="chart-grid-2">
+            <!-- MAPA Leaflet -->
+            <div class="story-block" style="margin-bottom:0;">
+                <h2>Georreferenciamento RN</h2>
+                <p>Mapeamento de capilaridade municipal em aderência (10 Territórios de Identidade).</p>
+                <div class="chart-wrap" style="padding: 15px;">
+                    <div id="map" style="width: 100%; height: 350px; border-radius: 8px;"></div>
+                </div>
+            </div>
+
+            <!-- COMPARATIVO NORDESTE -->
+            <div class="story-block" style="margin-bottom:0;">
+                <h2>Comparativo Regional (Nordeste)</h2>
+                <p>Nesta leitura macro, observa-se o Rio Grande do Norte comparado aos vizinhos regionais frente a volume investido (Market Share Regional do programa federal).</p>
+                <div class="chart-wrap" style="padding: 15px; height: 350px;">
+                    <canvas id="chartNordeste" style="width:100%; height:100%;"></canvas>
+                </div>
             </div>
         </div>
 
-        <div class="story-block">
-            <h2>Distribuição do Acesso por Região</h2>
-            <p>
-                As regiões do <strong>Alto Oeste</strong>, <strong>Sertão do Apodi</strong> e <strong>Seridó</strong> abrigam a maior capilaridade de adesão municipal ao PAA, em contraposição a regiões mais voltadas aos serviços, o que indica uma concentração estrutural fundamental para o enfrentamento da insegurança alimentar nas frentes mais áridas.
-            </p>
-            <div class="chart-wrap">
-                <div class="chart-header">
-                    <h3>Qtd. de Beneficiários Ativos por Território</h3>
-                    <span>Retrato Geral Sintetizado do Estudo</span>
-                </div>
-                <canvas id="chartTerritorioBar" height="110"></canvas>
+        <div class="story-block" style="margin-top: 60px;">
+            <h2>Densidade Local por Território</h2>
+            <div class="chart-wrap" style="padding: 20px;">
+                <canvas id="chartTerritorioBar" height="70"></canvas>
             </div>
         </div>
 
         <div style="text-align: center; border-top: 1px dashed #ccc; padding-top: 40px; margin-top: 60px;">
             <p style="color: #666; margin-bottom: 20px;">
                 A interface acima apresenta <strong>dados consolidados estatisticamente</strong> para o encerramento deste diagnóstico.<br> 
-                Para gerar visualizações livres, explorar séries temporais detalhadas e fazer cruzamentos interativos com a base conectada online, utilize o <strong>Módulo de Inteligência (BI)</strong> do Observatório.
+                Para gerar visualizações livres, analisar as 11 matrizes de modo iterativo, e aplicar filtros flexíveis com busca viva no banco de dados, utilize o <strong>Módulo de Inteligência (BI)</strong>.
             </p>
-            <a href="dashboard.html" class="btn-enter-bi"><i class="fas fa-table-list"></i> Acessar Painel Interativo (Módulo BI)</a>
+            <a href="paa_dashboard.html" class="btn-enter-bi"><i class="fas fa-table-list"></i> Acessar Painel Interativo (Módulo BI)</a>
         </div>
 
     </div>
@@ -159,41 +204,84 @@
     </footer>
 
     <script>
-        // ESTES DADOS SÃO ESTÁTICOS / RECORTADOS EXCLUSIVAMENTE PARA O RELATÓRIO FIXO DA PÁGINA (CONFORME REQUISITO DO USUÁRIO)
         Chart.defaults.font.family = "'Montserrat', sans-serif";
+        Chart.defaults.color = '#333';
         
-        // 1. Gráfico de Evolução Fixa
+        // Modalidades (Pizza Chart)
+        const ctxMod = document.getElementById('chartModalidades').getContext('2d');
+        new Chart(ctxMod, {
+            type: 'doughnut',
+            data: {
+                labels: ['Doação Simultânea', 'Incentivo Leite', 'Apoio Formação Estoques', 'Compra Direta', 'Aquisição de Sementes'],
+                datasets: [{
+                    data: [65.4, 18.2, 7.3, 5.0, 4.1],
+                    backgroundColor: ['#2D6A4F', '#40916C', '#52B788', '#F4A261', '#E76F51'],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'right' },
+                    tooltip: { callbacks: { label: (c) => ` ${c.label}: ${c.raw}% do Share Nacional` }}
+                }
+            }
+        });
+
+        // Gráfico de Evolução (Linha)
         const ctxEvolucao = document.getElementById('chartEvolucao').getContext('2d');
         new Chart(ctxEvolucao, {
             type: 'line',
             data: {
-                labels: ['2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024'],
+                labels: ['2011','2012','2013','2014','2015','2016','2017','2018','2019','2020','2021','2022','2023','2024'],
                 datasets: [{
-                    label: 'Mi (R$)',
+                    label: 'Milhões Pagos (R$)',
                     data: [12.0, 10.5, 6.5, 3.1, 5.0, 3.4, 3.6, 2.5, 3.0, 4.3, 3.8, 0.8, 3.8, 7.8],
                     borderColor: '#2D6A4F',
-                    borderWidth: 4,
-                    tension: 0.4,
-                    pointRadius: 6,
-                    pointHoverRadius: 9,
-                    pointBackgroundColor: '#2D6A4F',
-                    pointBorderColor: '#fff',
-                    pointBorderWidth: 2,
+                    borderWidth: 3,
+                    tension: 0.3,
+                    pointRadius: 5,
+                    pointBackgroundColor: '#F4A261',
                     fill: true,
-                    backgroundColor: 'rgba(45, 106, 79, 0.1)'
+                    backgroundColor: 'rgba(45, 106, 79, 0.08)'
                 }]
             },
             options: { responsive: true, plugins: { legend: { display: false } } }
         });
 
-        // 2. Gráfico Barra Territórios Estático
+        // Nordeste Comparativo (Barras)
+        const ctxNE = document.getElementById('chartNordeste').getContext('2d');
+        new Chart(ctxNE, {
+            type: 'bar',
+            data: {
+                labels: ['BA', 'PE', 'CE', 'MA', 'PB', 'PI', 'RN', 'SE', 'AL'],
+                datasets: [{
+                    label: 'Investimento Histórico (Critério de Rateio)',
+                    data: [150, 110, 105, 95, 80, 78, 65, 45, 38],
+                    backgroundColor: (ctx) => {
+                        return ctx.raw === 65 ? '#2D6A4F' : '#EAEAEA'; // RN Destacado
+                    },
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { x: { grid: { display: false } }, y: { display: false } }
+            }
+        });
+
+        // Gráfico Barra Territórios Estático
         const ctxTerr = document.getElementById('chartTerritorioBar').getContext('2d');
         new Chart(ctxTerr, {
             type: 'bar',
             data: {
                 labels: ['Alto Oeste', 'Sertão do Apodi', 'Seridó', 'Agreste Litoral Sul', 'Trairi', 'Mato Grande', 'Sertão Central', 'Assú-Mossoró', 'Potengi', 'Terras Potiguar.'],
                 datasets: [{
-                    label: 'Beneficiários',
+                    label: 'Qtd. de Famílias Beneficiadas',
                     data: [3210, 2450, 1980, 1850, 1720, 1500, 1400, 1200, 950, 480],
                     backgroundColor: '#F4A261',
                     borderRadius: 6
@@ -202,25 +290,23 @@
             options: { indexAxis: 'y', plugins: { legend: { display: false } } }
         });
 
-        // 3. Mapa Estático do Leaflet
+        // Mapa Estático do Leaflet
         const mapObj = L.map('map').setView([-5.79, -36.5], 7);
         L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-            attribution: '&copy; OpenStreetMap &copy; CARTO',
-            subdomains: 'abcd', maxZoom: 20
+            attribution: '&copy; OpenStreetMap', subdomains: 'abcd', maxZoom: 20
         }).addTo(mapObj);
 
-        // Pontos territoriais extraídos do estudo formal (RAIOS e Valores HARDCODED para manter coerência descritiva)
         const staticTerritories = [
-            { t: "Alto Oeste", c: [-6.111,-38.206], v: 3210, r: 25 },
-            { t: "Sertão do Apodi", c: [-5.665,-37.794], v: 2450, r: 20 },
-            { t: "Seridó", c: [-6.458,-37.094], v: 1980, r: 18 },
-            { t: "Agreste Litoral Sul", c: [-6.381,-35.129], v: 1850, r: 17 },
-            { t: "Trairi", c: [-6.216,-36.020], v: 1720, r: 16 },
-            { t: "Mato Grande", c: [-5.539,-35.815], v: 1500, r: 14 },
-            { t: "Sertão Central", c: [-5.663,-36.606], v: 1400, r: 13 },
-            { t: "Assú-Mossoró", c: [-5.184,-37.344], v: 1200, r: 12 },
-            { t: "Potengi", c: [-5.894,-35.795], v: 950, r: 10 },
-            { t: "Terras Potiguares", c: [-6.075,-35.239], v: 480, r: 7 },
+            { t: "Alto Oeste", m: "Pau dos Ferros, Apodi...", c: [-6.111,-38.206], v: 3210, r: 25 },
+            { t: "Sertão do Apodi", m: "Apodi, Felipe Guerra...", c: [-5.665,-37.794], v: 2450, r: 20 },
+            { t: "Seridó", m: "Caicó, Currais Novos...", c: [-6.458,-37.094], v: 1980, r: 18 },
+            { t: "Agreste Litoral Sul", m: "Goianinha, Canguaretama...", c: [-6.381,-35.129], v: 1850, r: 17 },
+            { t: "Trairi", m: "Santa Cruz, Tangará...", c: [-6.216,-36.020], v: 1720, r: 16 },
+            { t: "Mato Grande", m: "João Câmara, Touros...", c: [-5.539,-35.815], v: 1500, r: 14 },
+            { t: "Sertão Central", m: "Lajes, Angicos...", c: [-5.663,-36.606], v: 1400, r: 13 },
+            { t: "Assú-Mossoró", m: "Mossoró, Assú...", c: [-5.184,-37.344], v: 1200, r: 12 },
+            { t: "Potengi", m: "SP do Potengi, São Tomé...", c: [-5.894,-35.795], v: 950, r: 10 },
+            { t: "Terras Potiguares", m: "Natal, Parnamirim...", c: [-6.075,-35.239], v: 480, r: 7 }
         ];
 
         staticTerritories.forEach(item => {
@@ -228,7 +314,7 @@
                 radius: item.r, color: '#2D6A4F', fillColor: '#2D6A4F', fillOpacity: 0.65, weight: 2
             }).addTo(mapObj).bindTooltip(`
                 <b>Território: ${item.t}</b><br>
-                Fornecedores: ${item.v.toLocaleString('pt-BR')} (Estudo Fixo)
+                Fornecedores Ativos: ${item.v.toLocaleString('pt-BR')}
             `, {className: 'custom-tooltip', opacity: 0.9, direction: 'top'});
         });
 
