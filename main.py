@@ -1,31 +1,45 @@
 from fastapi import FastAPI
 from fastapi.responses import FileResponse, HTMLResponse
-from fastapi.staticfiles import StaticFiles
 import os
 
 app = FastAPI()
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# Definitive Catch-all for Vercel Static Serving
+def find_file(path: str):
+    """
+    Highly resilient file finder that searches across all potential locations.
+    Handles 'assets/...' and 'public/...' paths by checking direct and subfolder matches.
+    """
+    if not path:
+        return None
+        
+    search_paths = [
+        os.path.join(BASE_DIR, path),
+        os.path.join(BASE_DIR, "src", "app", path),
+        os.path.join(BASE_DIR, "public", path),
+        os.path.join(BASE_DIR, "assets", path),
+        # Fallback for when path already contains assets/ or public/
+        os.path.join(BASE_DIR, path.replace("assets/", "").replace("public/", "")),
+    ]
+    
+    for p in search_paths:
+        if os.path.isfile(p):
+            return p
+    return None
+
+@app.get("/")
+async def read_root():
+    f = find_file("index.html")
+    if f: return FileResponse(f)
+    return HTMLResponse("index.html not found", status_code=404)
+
 @app.get("/{path:path}")
 async def catch_all(path: str):
-    # Try current directory
-    local_path = os.path.join(BASE_DIR, path if path else "index.html")
-    if os.path.isfile(local_path):
-        return FileResponse(local_path)
-    
-    # Try public folder
-    public_path = os.path.join(BASE_DIR, "public", path)
-    if os.path.isfile(public_path):
-        return FileResponse(public_path)
-
-    # Try assets folder
-    assets_path = os.path.join(BASE_DIR, "assets", path)
-    if os.path.isfile(assets_path):
-        return FileResponse(assets_path)
-
-    # Handle root /
     if not path:
-        return FileResponse(os.path.join(BASE_DIR, "index.html"))
-
+        return await read_root()
+        
+    f = find_file(path)
+    if f:
+        return FileResponse(f)
+        
     return HTMLResponse(f"File not found: {path}", status_code=404)
