@@ -105,7 +105,25 @@ async function fetchFilteredPAA(filters = {}) {
 window.API = {
     fetchPaaAnnual,
     fetchPaaByTerritory,
-    fetchFilteredPAA,
+    
+    async query(table, filters = {}) {
+        let url = `${SUPABASE_URL}/rest/v1/${table}?select=*`;
+        Object.entries(filters).forEach(([key, val]) => {
+            if (val) url += `&${key}=eq.${val}`;
+        });
+        url += `&limit=10000`; // Safety limit
+        
+        try {
+            const res = await fetch(url, { headers });
+            return await res.json();
+        } catch (e) {
+            console.error(`Error querying ${table}:`, e);
+            return [];
+        }
+    },
+
+    async fetchFilteredPAA(filters = {}) { return await this.query("paa_master", filters); },
+    async fetchPNAE(filters = {}) { return await this.query("pnae_master", filters); },
     
     async exportPAA(filters = {}) {
         const data = await this.fetchFilteredPAA(filters);
