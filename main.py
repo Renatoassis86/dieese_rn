@@ -1,38 +1,30 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi.templating import Jinja2Templates
 import os
 
-app = FastAPI(title="Observatório Rural RN")
-public_dir = os.path.join(os.path.dirname(__file__), "public")
-if os.path.exists(public_dir):
-    app.mount("/public", StaticFiles(directory=public_dir), name="public")
+app = FastAPI()
 
+# Mount static files correctly
+# Vercel handles static files automatically if they are in public/ or at root
+# But for local dev, we keep this.
+if os.path.exists("public"):
+    app.mount("/public", StaticFiles(directory="public"), name="public")
+if os.path.exists("assets"):
+    app.mount("/assets", StaticFiles(directory="assets"), name="assets")
 
-# Montar diretório de arquivos estáticos (CSS, JS, Imagens)
-# O caminho é relativo à localização do main.py
-static_dir = os.path.join(os.path.dirname(__file__), "src", "app")
+templates = Jinja2Templates(directory=".")
 
-if os.path.exists(static_dir):
-    app.mount("/static", StaticFiles(directory=static_dir), name="static")
+@app.get("/", response_class=HTMLResponse)
+async def read_root(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
 
-@app.get("/")
-async def read_index():
-    # Retorna o dashboard principal
-    index_path = os.path.join(static_dir, "index.html")
-    if os.path.exists(index_path):
-        return FileResponse(index_path)
-    return {"message": "DASHBOARD NÃO ENCONTRADO. Verifique src/app/index.html"}
+@app.get("/dashboard", response_class=HTMLResponse)
+async def read_dashboard(request: Request):
+    if os.path.exists("dashboard.html"):
+        return templates.TemplateResponse("dashboard.html", {"request": request})
+    return HTMLResponse("Dashboard file not found", status_code=404)
 
-@app.get("/logo.png")
-async def get_logo():
-    logo_path = os.path.join(os.path.dirname(__file__), "src", "app", "logo.png")
-    if os.path.exists(logo_path):
-        return FileResponse(logo_path)
-    return FileResponse(os.path.join(os.path.dirname(__file__), "public", "logo.png"))
-
-@app.get("/api/health")
-async def health_check():
-    return {"status": "online", "project": "Observatório Rural RN"}
-
-# Para rodar localmente: uvicorn main:app --reload
+# REMOVED /logo.png custom route to let Vercel serve it as a static file
+# This prevents Error 500 issues on the server side.

@@ -721,7 +721,8 @@ a { text-decoration: none; }
 /* Font visibility in dark sections */
 #estatisticas .bi-header p { color: rgba(255,255,255,0.8); }
 
-.footer p, .footer span { color: #ffffff !important; opacity: 0.8; }
+.footer p, .footer span { color: #ffffff !important; opacity: 0.9; }
+.section-dark .dim-content p, .section-dark .text-muted { color: #ffffff !important; opacity: 1 !important; }
 
 
 /* ── BI STATS MODULE (Landing Page) ── */
@@ -785,13 +786,15 @@ a { text-decoration: none; }
 
 /* ── CIRCULAR VIDEO MASK ── */
 .geometric-mask-v3 {
-    width: 450px;
+    width: 100%;
+    max-width: 450px;
     height: 450px;
-    border-radius: 50%;
+    border-radius: 40px 40px 120px 120px; /* Cidade Viva teardrop-ish shape */
     overflow: hidden;
     border: 8px solid rgba(255,255,255,0.05);
-    box-shadow: 0 0 50px rgba(0,0,0,0.3);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.4);
     margin: 0 auto;
+    background: var(--navy-mid);
 }
 
 @media (max-width: 768px) {

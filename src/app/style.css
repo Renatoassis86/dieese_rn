@@ -252,8 +252,12 @@ a { text-decoration: none; }
 .section-dark {
     background: var(--navy); padding: 5rem 0 3rem;
     text-align: center;
+    color: #fff;
 }
 .section-dark h2 { font-size: 2.2rem; color: #fff; margin: 0.5rem 0 1rem; }
+.section-dark .dim-content h2 { color: #fff !important; }
+.section-dark .dim-content p { color: rgba(255,255,255,0.85) !important; }
+.section-dark .base-tag { background: rgba(255,255,255,0.1); color: var(--amber); border-color: rgba(255,255,255,0.2); }
 
 /* ══ DIMENSÃO (padrão alternado) ══ */
 .dim-section { background: #fff; padding: 6rem 0; }
@@ -626,7 +630,7 @@ a { text-decoration: none; }
 .h-footer-container { display: flex; flex-direction: column; gap: 3rem; }
 .h-footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 4rem; }
 .h-footer-brand p { font-size: 0.9rem; color: rgba(255,255,255,0.7); margin-top: 1rem; max-width: 400px; }
-.footer-logo-img-h { height: 45px; width: auto; filter: brightness(0) invert(1); }
+.footer-logo-img-h { height: 45px; width: auto; margin-bottom: 1rem; }
 .link-group { display: flex; flex-direction: column; gap: 0.8rem; margin-bottom: 1.5rem; }
 .group-title { color: var(--amber); font-weight: 800; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; display: block; margin-bottom: 0.5rem; }
 .link-group a { color: #ffffff !important; opacity: 0.7; border-bottom: none;  font-size: 0.9rem; opacity: 0.8; transition: 0.3s; }
@@ -636,8 +640,9 @@ a { text-decoration: none; }
 .h-footer-bottom p { font-size: 0.8rem; color: rgba(255,255,255,0.5); }
 
 /* ── BI MODULE STYLES ────────────────── */
-.bi-section { padding: 8rem 0; background: #0D1B2A; color: #fff; }
-.bi-title { font-size: 2.8rem; font-weight: 900; letter-spacing: -0.02em; margin: 1rem 0; }
+.bi-section { padding: 8rem 0; background: #0D1B2A; color: #fff !important; }
+.bi-section h2, .bi-section p { color: #fff !important; }
+.bi-title { font-size: 2.8rem; font-weight: 900; letter-spacing: -0.02em; margin: 1rem 0; color: #fff !important; }
 .bi-date { font-weight: 600; color: var(--amber); font-size: 0.9rem; opacity: 0.9; }
 
 .bi-nav-icons { display: flex; justify-content: center; gap: 4rem; margin-top: 3rem; margin-bottom: 4rem; }
@@ -716,7 +721,8 @@ a { text-decoration: none; }
 /* Font visibility in dark sections */
 #estatisticas .bi-header p { color: rgba(255,255,255,0.8); }
 
-.footer p, .footer span { color: #ffffff !important; opacity: 0.8; }
+.footer p, .footer span { color: #ffffff !important; opacity: 0.9; }
+.section-dark .dim-content p, .section-dark .text-muted { color: #ffffff !important; opacity: 1 !important; }
 
 
 /* ── BI STATS MODULE (Landing Page) ── */
@@ -780,13 +786,15 @@ a { text-decoration: none; }
 
 /* ── CIRCULAR VIDEO MASK ── */
 .geometric-mask-v3 {
-    width: 450px;
+    width: 100%;
+    max-width: 450px;
     height: 450px;
-    border-radius: 50%;
+    border-radius: 40px 40px 120px 120px; /* Cidade Viva teardrop-ish shape */
     overflow: hidden;
     border: 8px solid rgba(255,255,255,0.05);
-    box-shadow: 0 0 50px rgba(0,0,0,0.3);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.4);
     margin: 0 auto;
+    background: var(--navy-mid);
 }
 
 @media (max-width: 768px) {
