@@ -249,7 +249,7 @@
     </main>
 
     <script>
-        let chart1, chart2;
+        let chart1, chart2, chartModal, chartExec;
         Chart.defaults.color = '#94a3b8';
         Chart.defaults.font.family = "'Montserrat', sans-serif";
 
@@ -288,6 +288,8 @@
             processKPIs(data, metric);
             renderMainChart(data, metric, year);
             renderTerritoryChart(data, metric, scope);
+            renderModalChart(data);
+            renderExecChart(data);
             renderTable(data, metric);
             generateInterpretation(data, metric);
             
@@ -347,6 +349,60 @@
                 options: { responsive: true, plugins: { legend: { display: false } } }
             });
             document.getElementById('title-main-chart').innerText = year === 'todos' ? 'Série Histórica Consolidada' : 'Fluxo Mensal de Execução';
+        }
+
+        function renderModalChart(data) {
+            if (chartModal) chartModal.destroy();
+            const ctx = document.getElementById('modalidadeChart').getContext('2d');
+            
+            const agg = {
+                'Doação Simultânea': data.reduce((acc, curr) => acc + (parseFloat(curr.mod_doacao_simultanea) || 0), 0),
+                'Incentivo Leite': data.reduce((acc, curr) => acc + (parseFloat(curr.mod_incentivo_leite) || 0), 0),
+                'Compra Direta': data.reduce((acc, curr) => acc + (parseFloat(curr.mod_compra_direta) || 0), 0),
+                'Formação Estoque': data.reduce((acc, curr) => acc + (parseFloat(curr.mod_formacao_estoque) || 0), 0),
+                'Sementes': data.reduce((acc, curr) => acc + (parseFloat(curr.mod_aquisicao_sementes) || 0), 0)
+            };
+
+            chartModal = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(agg),
+                    datasets: [{
+                        data: Object.values(agg),
+                        backgroundColor: ['#2D6A4F', '#40916C', '#52B788', '#F4A261', '#E76F51'],
+                        borderWidth: 0
+                    }]
+                },
+                options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+            });
+        }
+
+        function renderExecChart(data) {
+            if (chartExec) chartExec.destroy();
+            const ctx = document.getElementById('execPercChart').getContext('2d');
+            
+            const years = [...new Set(data.map(d => d.ano))].sort();
+            const values = years.map(y => {
+                const yearData = data.filter(d => d.ano === y);
+                const pactuado = yearData.reduce((acc, curr) => acc + (parseFloat(curr.valor_pactuado) || 0), 0);
+                const pago = yearData.reduce((acc, curr) => acc + (parseFloat(curr.valor_pago) || 0), 0);
+                return pactuado > 0 ? (pago / pactuado) * 100 : 0;
+            });
+
+            chartExec = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: years,
+                    datasets: [{
+                        label: 'Eficiência %',
+                        data: values,
+                        backgroundColor: 'rgba(74, 222, 128, 0.5)',
+                        borderColor: '#4ADE80',
+                        borderWidth: 2
+                    }]
+                },
+                options: { responsive: true, scales: { y: { beginAtZero: true, max: 100 } } }
+            });
         }
 
         function renderTerritoryChart(data, metric, scope) {

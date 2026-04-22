@@ -109,14 +109,18 @@ window.API = {
     
     async exportPAA(filters = {}) {
         const data = await this.fetchFilteredPAA(filters);
-        const csv = "Ano;Municipio;Territorio;Valor_Pago;Agricultores;Mulheres\n" + 
-            data.map(d => `${d.ano};${d.municipio};${d.territorio};${d.valor_pago};${d.agricultores};${d.mulheres}`).join("\n");
+        const headers = ["ID", "Ano", "Anomes", "Municipio", "Territorio", "UF", "Valor_Pago", "Valor_Pactuado", "Agricultores", "Mulheres", "Quilos_Alimentos", "Litros_Leite", "Mod_Doacao_Simultanea", "Mod_Incentivo_Leite", "Mod_Compra_Direta", "Mod_Formacao_Estoque", "Mod_Aquisicao_Sementes", "Status", "Origem", "Publico", "Plano", "Vigencia"];
+        
+        const csv = headers.join(";") + "\n" + 
+            data.map(d => [
+                d.id, d.ano, d.anomes_s, d.municipio, d.territorio, d.uf, d.valor_pago, d.valor_pactuado, d.agricultores, d.mulheres, d.quilos_alimentos, d.litros_leite, d.mod_doacao_simultanea, d.mod_incentivo_leite, d.mod_compra_direta, d.mod_formacao_estoque, d.mod_aquisicao_sementes, d.status_recurso, d.origem_orcamento, d.publico_atendido, d.n_plano_operacional, d.vigencia
+            ].join(";")).join("\n");
         
         const blob = new Blob([csv], { type: 'text/csv' });
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `paa_master_rn_${new Date().toISOString().split('T')[0]}.csv`;
+        a.download = `paa_master_completo_rn_${new Date().toISOString().split('T')[0]}.csv`;
         a.click();
     }
 };
