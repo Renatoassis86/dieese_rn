@@ -35,7 +35,7 @@
                     <a href="#" class="dropbtn">Dimensões &#9662;</a>
                     <div class="dropdown-content"><div class="dropdown-inner"><div class="dropdown-inner">
                         <a href="#ecosol">Economia Solidária</a>
-                        <a href="paa_dimension.html">Mercado Institucional</a>
+                        <a href="paa_dashboard.html">Mercado Institucional</a>
                         <a href="#agro">Estrutura Agropecuária</a>
                         <a href="#producao">Produção e Dinâmica</a>
                         <a href="#trabalho">Trabalho e Renda</a>
@@ -140,7 +140,7 @@
             <div class="dim-bases">
                 <div class="base-tag">📡 MiSocial (MDS) · PNAE (FNDE)</div>
             </div>
-            <a href="paa_dimension.html" class="btn-primary-sm">Ver Diagnóstico PAA ✓</a>
+            <a href="paa_dashboard.html" class="btn-primary-sm">Ir para os Indicadores (Dashboard) ✓</a>
         </div>
         <div class="dim-illust">
             <div class="illust-wrap">
@@ -396,7 +396,7 @@
                 <div class="link-group">
                     <span class="group-title">Eixos Rurais</span>
                     <a href="#ecosol">Economia Solidária</a>
-                    <a href="paa_dimension.html">Mercado Institucional</a>
+                    <a href="paa_dashboard.html">Mercado Institucional</a>
                     <a href="#agro">Estrutura Agropecuária</a>
                 </div>
 
@@ -474,8 +474,11 @@ async function initCharts() {
                     fill: true,
                     tension: 0.4,
                     borderWidth: 3,
-                    pointRadius: 4,
-                    pointBackgroundColor: '#fff'
+                    pointRadius: 6,
+                    pointHoverRadius: 9,
+                    pointBackgroundColor: '#F4A261',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2
                 }]
             },
             options: {

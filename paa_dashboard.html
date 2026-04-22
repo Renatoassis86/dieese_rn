@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="api.js"></script>
     <style>
         :root {
@@ -197,6 +199,12 @@
             Selecione os parâmetros e clique em gerar para iniciar a análise técnica baseada nos indicadores do DIEESE.
         </div>
 
+        <!-- ESPAÇO DO MAPA REGIONAL -->
+        <div class="chart-box-v2" style="margin-bottom: 30px;">
+            <h3 id="map-title">Geolocalização da Execução (10 Territórios do RN)</h3>
+            <div id="map" style="width: 100%; height: 400px; border-radius: 12px; z-index: 1;"></div>
+        </div>
+
         <!-- CHARTS -->
         <div class="chart-grid-v2">
             <div class="chart-box-v2">
@@ -282,6 +290,14 @@
             renderTerritoryChart(data, metric, scope);
             renderTable(data, metric);
             generateInterpretation(data, metric);
+            
+            // Render Map only if RN Scope
+            if (scope !== 'ne') {
+                renderMap(data, metric, year);
+                document.getElementById('map').parentElement.style.display = 'block';
+            } else {
+                document.getElementById('map').parentElement.style.display = 'none';
+            }
 
             loader.style.display = 'none';
         }
@@ -320,7 +336,10 @@
                         borderWidth: 4,
                         tension: 0.4,
                         pointRadius: 6,
+                        pointHoverRadius: 9,
                         pointBackgroundColor: '#F4A261',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
                         fill: true,
                         backgroundColor: 'rgba(244, 162, 97, 0.1)'
                     }]
@@ -406,8 +425,55 @@
             } else if (metric === 'quilos_alimentos') {
                 insight = "Volume físico é o indicador real de segurança alimentar fornecida à rede socioassistencial.";
             }
-            
             box.innerHTML = `<strong>💡 Design Thinking Insight:</strong> ${insight}${growthText} <br><br> <em>Total Consolidado: ${total.toLocaleString('pt-BR')} (Unidade da Métrica Selecionada)</em>`;
+        }
+
+        let mapObj = null;
+        const coordsTerr = {
+            "Seridó": [-6.458,-37.094], "Alto Oeste": [-6.111,-38.206],
+            "Agreste Litoral Sul": [-6.381,-35.129], "Mato Grande": [-5.539,-35.815],
+            "Assú-Mossoró": [-5.184,-37.344], "Potengi": [-5.894,-35.795],
+            "Trairi": [-6.216,-36.020], "Sertão Central Cabugi": [-5.663,-36.606],
+            "Sertão do Apodi": [-5.665,-37.794], "Terras Potiguares": [-6.075,-35.239]
+        };
+
+        function renderMap(data, metric, year) {
+            if (!mapObj) {
+                mapObj = L.map('map').setView([-5.79, -36.5], 7);
+                L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                    attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+                    subdomains: 'abcd', maxZoom: 20
+                }).addTo(mapObj);
+            }
+
+            // Clear previous markers
+            mapObj.eachLayer((layer) => {
+                if (layer instanceof L.CircleMarker) mapObj.removeLayer(layer);
+            });
+
+            // Aggregate by Territory
+            const agg = {};
+            data.forEach(d => {
+                if (!agg[d.territorio]) agg[d.territorio] = 0;
+                agg[d.territorio] += parseFloat(d[metric]) || 0;
+            });
+            
+            const maxVal = Math.max(...Object.values(agg), 1);
+
+            for (let t in agg) {
+                if (coordsTerr[t]) {
+                    const r = Math.max(8, (agg[t] / maxVal) * 35);
+                    const isCurrency = ['valor_pago', 'valor_pactuado'].includes(metric);
+                    const fmtVal = isCurrency ? `R$ ${agg[t].toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2})}` : agg[t].toLocaleString('pt-BR');
+                    
+                    L.circleMarker(coordsTerr[t], {
+                        radius: r, color: '#F4A261', fillColor: '#F4A261', fillOpacity: 0.7, weight: 2
+                    }).addTo(mapObj).bindTooltip(`
+                        <b>Território: ${t}</b><br>
+                        Métrica Agragada: ${fmtVal}
+                    `, {className: 'custom-tooltip', opacity: 0.9, direction: 'top'});
+                }
+            }
         }
 
         window.onload = generateDiagnosis;

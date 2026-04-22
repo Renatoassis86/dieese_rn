@@ -16,8 +16,8 @@ const headers = {
  * Points to the new paa_master table.
  */
 async function fetchPaaAnnual() {
-    // Aggregation via PostgREST is limited, but we can fetch and aggregate locally for small series
-    const url = `${SUPABASE_URL}/rest/v1/paa_master?select=ano,valor_pago,agricultores,mulheres&order=ano.asc`;
+    // Aggregated fetching: Must filter by UF and ensure year is valid
+    const url = `${SUPABASE_URL}/rest/v1/paa_master?uf=eq.RN&ano=not.is.null&select=ano,valor_pago,agricultores,mulheres&limit=40000`;
     
     try {
         const response = await fetch(url, { headers });
@@ -32,7 +32,9 @@ async function fetchPaaAnnual() {
             aggregated[d.ano].mulheres += parseInt(d.mulheres) || 0;
         });
 
-        return Object.keys(aggregated).map(ano => ({
+        return Object.keys(aggregated)
+            .filter(ano => parseInt(ano) >= 2011 && parseInt(ano) <= 2026)
+            .map(ano => ({
             ano: parseInt(ano),
             valor: aggregated[ano].valor / 1000000, // Mi
             agricultores: aggregated[ano].agricultores,
