@@ -39,6 +39,8 @@
         .story-block h2 { font-family: 'Montserrat', sans-serif; color: var(--paa-primary); font-size: 2rem; border-left: 5px solid var(--paa-secondary); padding-left: 15px; margin-bottom: 20px; }
         .story-block p { font-size: 1.1rem; line-height: 1.8; color: #444; margin-bottom: 20px; text-align: justify; }
 
+        .tag-year { background: rgba(255,255,255,0.2); color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; margin-left: 10px; border: 1px solid rgba(255,255,255,0.3); }
+        
         /* KPI Cards */
         .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 25px; }
         .kpi-card-static { background: var(--paa-dark); color: white; padding: 25px; border-radius: 12px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-bottom: 4px solid var(--paa-secondary); position: relative; }
@@ -81,26 +83,27 @@
         <div class="story-block">
             <h2>Síntese do Mercado Institucional no RN</h2>
             <p>
-                O Programa de Aquisição de Alimentos (PAA) consolida-se através de onze matrizes complementares que englobam a Execução Financeira Geral, Termos de Adesão locais e perfis de produtores, com abrangência temporal rigorosa (2011 a 2026). O programa fortalece a segurança alimentar da rede socioassistencial através de sua estratégia multissetorial de fomento. Abaixo são detalhadas as métricas estáticas brutas e derivadas que compõem este diagnóstico.
+                O Programa de Aquisição de Alimentos (PAA) consolida-se através de onze matrizes complementares que englobam a Execução Financeira Geral, Termos de Adesão locais e perfis de produtores, com abrangência temporal de 2011 a 2024. O programa fortalece a segurança alimentar da rede socioassistencial através de sua estratégia multissetorial de fomento. Abaixo são detalhadas as métricas brutas e variáves que compõem este diagnóstico.
             </p>
         </div>
 
         <!-- INDICADORES DERIVADOS E BRUTOS -->
-        <h3 style="font-family: 'Montserrat'; color: #555; margin-bottom: 20px;">Indicadores Macro & Derivados (11 Bases Originais)</h3>
+        <h3 style="font-family: 'Montserrat'; color: #555; margin-bottom: 20px;">Indicadores do Mercado Institucional (Base 11 Matrizes)</h3>
         <div class="kpi-row">
             <div class="kpi-card-static">
                 <span class="val">R$ 185.3</span>
                 <span class="lbl">Milhões Investidos</span>
-                <span class="badge-derived badge-positive">+14% (YoY)</span>
+                <span class="badge-derived badge-positive">2011 — 2024</span>
             </div>
             <div class="kpi-card-static">
                 <span class="val">14.612</span>
                 <span class="lbl">Agricultores Familiares</span>
+                <span class="badge-derived badge-positive">Ano 2024</span>
             </div>
             <div class="kpi-card-static">
                 <span class="val">54.2%</span>
                 <span class="lbl">Fornecedores - Mulheres</span>
-                <span class="badge-derived badge-positive">Ticket > Homens</span>
+                <span class="badge-derived badge-positive">Ano 2024</span>
             </div>
             <div class="kpi-card-static">
                 <span class="val">88.5%</span>
@@ -113,7 +116,7 @@
             <div class="kpi-card-static" style="background:#1d3557;">
                 <span class="val">R$ 4.850</span>
                 <span class="lbl">Ticket Médio / Produtor</span>
-                <span class="badge-derived badge-positive">Variável Derivada</span>
+                <span class="badge-derived">Ano 2024</span>
             </div>
             <div class="kpi-card-static" style="background:#1d3557;">
                 <span class="val">93.4%</span>
@@ -123,10 +126,12 @@
             <div class="kpi-card-static" style="background:#1d3557;">
                 <span class="val">215 mil</span>
                 <span class="lbl">Famílias Impactadas</span>
+                <span class="badge-derived">Acumulado</span>
             </div>
             <div class="kpi-card-static" style="background:#1d3557;">
                 <span class="val">37 Mil</span>
                 <span class="lbl">Tons. Alimentos Distribuídos</span>
+                <span class="badge-derived">Período Total</span>
             </div>
         </div>
 
@@ -134,12 +139,12 @@
         <div class="story-block">
             <h2>Estratificação por Modalidades de Atuação</h2>
             <p>
-                Este balanço isola de maneira inédita a relevância das cinco metodologias operacionais do programa executadas ao longo dos anos. A matriz hegemônica continua sendo a <strong>Compra com Doação Simultânea</strong>, que impulsiona de forma mais fluida o emparelhamento entre as deficiências nutricionais imediatas da população carente e a necessidade constante de escoamento logístico (venda direta) da agricultura de sequeiro. 
+                Este balanço isola a relevância das cinco metodologias operacionais do programa. O gráfico abaixo demonstra a <strong>Distribuição Média da Participação Orçamentária</strong> histórica. A matriz hegemônica continua sendo a <strong>Compra com Doação Simultânea</strong>, que impulsiona o emparelhamento entre as deficiências nutricionais e a necessidade de escoamento logístico (venda direta) da agricultura de sequeiro. 
             </p>
             <div class="chart-wrap">
                 <div class="chart-header" style="text-align: center;">
-                    <h3>Distribuição das Sub-Metodologias (Ticket Histórico)</h3>
-                    <span>Abrangência das vertentes normatizadas (2011—2026)</span>
+                    <h3>Distribuição das Sub-Metodologias (Média Orçamentária 2011—2024)</h3>
+                    <span>Abrangência das vertentes normatizadas</span>
                 </div>
                 <!-- Pizza Chart Modalidades -->
                 <div style="max-width: 600px; margin: 0 auto;">
@@ -151,14 +156,28 @@
         <div class="story-block">
             <h2>Evolução Financeira Contígua</h2>
             <p>
-                O Gráfico histórico delineia os picos e vales da segurança alimentar no estado desde a consolidação dos dados abertos (2011 até os dias atuais). As execuções orçamentárias evidenciam que o Estado oscilou intensamente com os choques do mercado financeiro e a transição política do PAA no âmbito nacional, retornando vigorosamente à proatividade em anos recentes.
+                O Gráfico histórico delineia os picos e vales da segurança alimentar no estado desde a consolidação dos dados abertos (2011 até o fechamento de 2024). As execuções orçamentárias evidenciam que o Estado oscilou intensamente com os choques do mercado financeiro e a transição política do PAA no âmbito nacional, retornando vigorosamente à proatividade em anos recentes.
             </p>
             <div class="chart-wrap">
                 <div class="chart-header">
                     <h3>Volume Total de Dinheiro Público Injetado Diretamente nas Famílias (R$)</h3>
-                    <span>Histórico Temporal de Distribuição de Verba da Política Pública</span>
+                    <span>Histórico Temporal de Distribuição de Verba da Política Pública (2011—2024)</span>
                 </div>
                 <canvas id="chartEvolucao" height="80"></canvas>
+            </div>
+        </div>
+
+        <div class="story-block">
+            <h2>Confluência entre Receitas e Volume Físico</h2>
+            <p>
+                Uma variável derivada essencial para o estudo é a relação entre o aporte financeiro (Receita do Agricultor) e o volume de alimentos efetivamente entregue (Toneladas). O gráfico abaixo demonstra como o programa otimizou a entrega física em relação ao capital investido, revelando ganhos de escala e gargalos logísticos.
+            </p>
+            <div class="chart-wrap">
+                <div class="chart-header">
+                    <h3>Evolução de Receitas (Financeiro) versus Volume (Físico)</h3>
+                    <span>Análise de Escopo: Real Gasto vs Toneladas Entregues</span>
+                </div>
+                <canvas id="chartReceitaVolume" height="100"></canvas>
             </div>
         </div>
 
@@ -175,7 +194,7 @@
             <!-- COMPARATIVO NORDESTE -->
             <div class="story-block" style="margin-bottom:0;">
                 <h2>Comparativo Regional (Nordeste)</h2>
-                <p>Nesta leitura macro, observa-se o Rio Grande do Norte comparado aos vizinhos regionais frente a volume investido (Market Share Regional do programa federal).</p>
+                <p>Nesta leitura macro, observa-se o Rio Grande do Norte comparado aos vizinhos regionais frente a volume investido (Posição relativa em 2024).</p>
                 <div class="chart-wrap" style="padding: 15px; height: 350px;">
                     <canvas id="chartNordeste" style="width:100%; height:100%;"></canvas>
                 </div>
@@ -225,30 +244,73 @@
                 maintainAspectRatio: false,
                 plugins: {
                     legend: { position: 'right' },
-                    tooltip: { callbacks: { label: (c) => ` ${c.label}: ${c.raw}% do Share Nacional` }}
+                    tooltip: { callbacks: { label: (c) => ` ${c.label}: ${c.raw}% da Participação Orçamentária` }}
                 }
             }
         });
 
-        // Gráfico de Evolução (Linha)
-        const ctxEvolucao = document.getElementById('chartEvolucao').getContext('2d');
-        new Chart(ctxEvolucao, {
+// Gráfico Receita vs Volume (Nova Variável Derivada)
+        const ctxRV = document.getElementById('chartReceitaVolume').getContext('2d');
+        new Chart(ctxRV, {
             type: 'line',
             data: {
-                labels: ['2011','2012','2013','2014','2015','2016','2017','2018','2019','2020','2021','2022','2023','2024'],
-                datasets: [{
-                    label: 'Milhões Pagos (R$)',
-                    data: [12.0, 10.5, 6.5, 3.1, 5.0, 3.4, 3.6, 2.5, 3.0, 4.3, 3.8, 0.8, 3.8, 7.8],
-                    borderColor: '#2D6A4F',
-                    borderWidth: 3,
-                    tension: 0.3,
-                    pointRadius: 5,
-                    pointBackgroundColor: '#F4A261',
-                    fill: true,
-                    backgroundColor: 'rgba(45, 106, 79, 0.08)'
-                }]
+                labels: ['2018','2019','2020','2021','2022','2023','2024'],
+                datasets: [
+                    {
+                        label: 'Investimento (R$ Mi)',
+                        data: [2.5, 3.0, 4.3, 3.8, 0.8, 3.8, 7.8],
+                        borderColor: '#2D6A4F',
+                        yAxisID: 'y',
+                        tension: 0.3
+                    },
+                    {
+                        label: 'Volume (Mil Tons)',
+                        data: [1.2, 1.5, 2.1, 1.9, 0.4, 2.0, 3.5],
+                        borderColor: '#F4A261',
+                        yAxisID: 'y1',
+                        tension: 0.3
+                    }
+                ]
             },
-            options: { responsive: true, plugins: { legend: { display: false } } }
+            options: {
+                responsive: true,
+                scales: {
+                    y: { type: 'linear', display: true, position: 'left', title: { display: true, text: 'R$ Milhões' } },
+                    y1: { type: 'linear', display: true, position: 'right', grid: { drawOnChartArea: false }, title: { display: true, text: 'Mil Toneladas' } }
+                }
+            }
+        });
+
+        // Gráfico Receita vs Volume (Nova Variável Derivada)
+        const ctxRV = document.getElementById('chartReceitaVolume').getContext('2d');
+        new Chart(ctxRV, {
+            type: 'line',
+            data: {
+                labels: ['2018','2019','2020','2021','2022','2023','2024'],
+                datasets: [
+                    {
+                        label: 'Investimento (R$ Mi)',
+                        data: [2.5, 3.0, 4.3, 3.8, 0.8, 3.8, 7.8],
+                        borderColor: '#2D6A4F',
+                        yAxisID: 'y',
+                        tension: 0.3
+                    },
+                    {
+                        label: 'Volume (Mil Tons)',
+                        data: [1.2, 1.5, 2.1, 1.9, 0.4, 2.0, 3.5],
+                        borderColor: '#F4A261',
+                        yAxisID: 'y1',
+                        tension: 0.3
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { type: 'linear', display: true, position: 'left', title: { display: true, text: 'R$ Milhões' } },
+                    y1: { type: 'linear', display: true, position: 'right', grid: { drawOnChartArea: false }, title: { display: true, text: 'Mil Toneladas' } }
+                }
+            }
         });
 
         // Nordeste Comparativo (Barras)
