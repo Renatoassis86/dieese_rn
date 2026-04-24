@@ -43,7 +43,14 @@
 
     <main class="container" style="padding-top: 3rem;">
         
-        <!-- 10 KPIs -->
+        <!-- Executive Narrative Section -->
+        <div id="pnae-narrative" style="margin-bottom: 2.5rem; background: rgba(16, 185, 129, 0.05); padding: 2rem; border-radius: 20px; border-left: 6px solid #10b981;">
+            <h3 style="font-family: 'Montserrat'; font-weight: 900; margin-top: 0; color: #10b981;">ALIMENTAÇÃO ESCOLAR</h3>
+            <p id="narrative-text" style="font-size: 1.05rem; line-height: 1.7; color: #cbd5e1; margin-bottom: 0;">
+                O Programa Nacional de Alimentação Escolar (PNAE) é o maior indutor de mercado para a agricultura familiar no Rio Grande do Norte. O cumprimento da **Meta dos 30%** é mais que uma obrigação legal: é uma ferramenta de transformação que conecta a saúde dos estudantes potiguares à sustentabilidade financeira dos pequenos produtores, garantindo alimentos frescos e culturalmente adequados nas escolas.
+            </p>
+        </div>
+
         <div class="kpi-gov-grid">
             <div class="kpi-gov-card"><span class="val">R$ 412 Mi</span><span class="lab">Compra Total (Acumulada)</span></div>
             <div class="kpi-gov-card"><span class="val">37,2%</span><span class="lab">% Compra AF (Meta 30%)</span></div>
@@ -67,19 +74,31 @@
             <div class="gov-viz-grid">
                 <div class="gov-viz-card">
                     <h5>Percentual de Compra da AF (Evolução %)</h5>
-                    <canvas id="chartPercentAF"></canvas>
+                    <div class="chart-wrapper-premium"><canvas id="chartPercentAF"></canvas></div>
+                    <div class="chart-insight">
+                        <strong>Cumprimento Legal:</strong> O RN mantém-se consistentemente acima da meta federal de 30%, demonstrando compromisso com o pequeno produtor.
+                    </div>
                 </div>
                 <div class="gov-viz-card">
                     <h5>Recursos Investidos no PNAE (Mi R$)</h5>
-                    <canvas id="chartResources"></canvas>
+                    <div class="chart-wrapper-premium"><canvas id="chartResources"></canvas></div>
+                    <div class="chart-insight">
+                        <strong>Capacidade Orçamentária:</strong> O aumento gradual nos repasses permite a inclusão de itens de maior valor agregado na merenda escolar.
+                    </div>
                 </div>
                 <div class="gov-viz-card">
                     <h5>Adesão dos Municípios à Meta dos 30%</h5>
-                    <canvas id="chartCompliance"></canvas>
+                    <div class="chart-wrapper-premium"><canvas id="chartCompliance"></canvas></div>
+                    <div class="chart-insight">
+                        <strong>Desafio da Gestão:</strong> A maioria das prefeituras cumpre a meta, mas persistem núcleos de baixa adesão que exigem assistência técnica.
+                    </div>
                 </div>
                 <div class="gov-viz-card">
                     <h5>Distribuição Geográfica da Execução</h5>
-                    <canvas id="chartGeoPnae"></canvas>
+                    <div class="chart-wrapper-premium"><canvas id="chartGeoPnae"></canvas></div>
+                    <div class="chart-insight">
+                        <strong>Impacto Local:</strong> Municípios polos atuam como grandes compradores, dinamizando a economia regional através da alimentação escolar.
+                    </div>
                 </div>
             </div>
         </div>
@@ -92,19 +111,31 @@
             <div class="gov-viz-grid">
                 <div class="gov-viz-card">
                     <h5>Mix de Alimentos: Grupos Principais</h5>
-                    <canvas id="chartFoodMix"></canvas>
+                    <div class="chart-wrapper-premium"><canvas id="chartFoodMix"></canvas></div>
+                    <div class="chart-insight">
+                        <strong>Qualidade Nutricional:</strong> O predomínio de 'Hortifruti' fresco garante o cumprimento das diretrizes de redução de ultraprocessados na escola.
+                    </div>
                 </div>
                 <div class="gov-viz-card">
                     <h5>Origem dos Fornecedores: Cooperativa x Individual</h5>
-                    <canvas id="chartSupplierType"></canvas>
+                    <div class="chart-wrapper-premium"><canvas id="chartSupplierType"></canvas></div>
+                    <div class="chart-insight">
+                        <strong>Força Coletiva:</strong> As cooperativas dominam o fornecimento, evidenciando o sucesso do associativismo no acesso a grandes contratos escolares.
+                    </div>
                 </div>
                 <div class="gov-viz-card">
                     <h5>Frequência de Entrega (Logística Escolar)</h5>
-                    <canvas id="chartDelivery"></canvas>
+                    <div class="chart-wrapper-premium"><canvas id="chartDelivery"></canvas></div>
+                    <div class="chart-insight">
+                        <strong>Habilidade Logística:</strong> A entrega semanal majoritária comprova a competência das famílias produtoras em gerenciar fluxos complexos de produtos perecíveis.
+                    </div>
                 </div>
                 <div class="gov-viz-card">
                     <h5>Participação de Mulheres Rural no PNAE</h5>
-                    <canvas id="chartGenderPnae"></canvas>
+                    <div class="chart-wrapper-premium"><canvas id="chartGenderPnae"></canvas></div>
+                    <div class="chart-insight">
+                        <strong>Inclusão Social:</strong> A curva ascendente de participação feminina reafirma o PNAE como via de empoderamento econômico para agricultoras.
+                    </div>
                 </div>
             </div>
         </div>
@@ -116,11 +147,17 @@
             <div class="gov-viz-grid">
                 <div class="gov-viz-card">
                     <h5>Radar de Eficiência PNAE (6 Eixos)</h5>
-                    <canvas id="chartRadarPnae"></canvas>
+                    <div class="chart-wrapper-premium"><canvas id="chartRadarPnae"></canvas></div>
+                    <div class="chart-insight">
+                        <strong>Score Global:</strong> Alta performance em 'Nutrição' e 'Adesão Legal', com oportunidades em 'Logística Reversa'.
+                    </div>
                 </div>
                 <div class="gov-viz-card">
                     <h5>Projeção de Sustentabilidade da Demanda</h5>
-                    <canvas id="chartProjection"></canvas>
+                    <div class="chart-wrapper-premium"><canvas id="chartProjection"></canvas></div>
+                    <div class="chart-insight">
+                        <strong>Previsibilidade:</strong> O cenário futuro aponta para uma demanda resiliente, essencial para o planejamento produtivo das famílias agricultoras.
+                    </div>
                 </div>
             </div>
         </div>
@@ -128,6 +165,10 @@
     </main>
 
     <script>
+        // Global Chart Defaults
+        Chart.defaults.responsive = true;
+        Chart.defaults.maintainAspectRatio = false;
+
         const colors = ['#f4a261', '#10b981', '#3b82f6', '#ef4444', '#a855f7'];
 
         new Chart(document.getElementById('chartPercentAF'), {

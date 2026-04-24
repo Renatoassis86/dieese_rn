@@ -43,6 +43,14 @@
     <main class="container" style="padding-top: 3rem;">
         
         <!-- Unified 10 KPIs Grid for Mobile Scroll -->
+        <!-- Executive Narrative Section -->
+        <div id="vulnerability-narrative" style="margin-bottom: 2.5rem; background: rgba(239, 68, 68, 0.05); padding: 2rem; border-radius: 20px; border-left: 6px solid #ef4444;">
+            <h3 style="font-family: 'Montserrat'; font-weight: 900; margin-top: 0; color: #ef4444;">MATRIZ DE VULNERABILIDADE</h3>
+            <p id="narrative-text" style="font-size: 1.05rem; line-height: 1.7; color: #cbd5e1; margin-bottom: 0;">
+                As vulnerabilidades rurais no Rio Grande do Norte são multidimensionais, conectando a **Precariedade Hídrica** histórica com a baixa **Proteção Social**. O cruzamento de dados revela que onde o analfabetismo funcional é maior, a dependência de transferências de renda se torna a única salvaguarda contra a pobreza extrema, exigindo intervenções integradas que unam infraestrutura e educação.
+            </p>
+        </div>
+
         <div class="kpi-gov-grid">
             <div class="kpi-gov-card"><span class="val" id="vul-kpi-1">--</span><span class="lab">Analfabetismo Rural</span></div>
             <div class="kpi-gov-card"><span class="val" id="vul-kpi-2">--</span><span class="lab">Informalidade Laboral</span></div>
@@ -64,19 +72,31 @@
             <div class="gov-viz-grid">
                 <div class="gov-viz-card">
                     <h5>Déficit de Infraestrutura Domiciliar Rural</h5>
-                    <canvas id="chartInfra"></canvas>
+                    <div class="chart-wrapper-premium"><canvas id="chartInfra"></canvas></div>
+                    <div class="chart-insight">
+                        <strong>Carência de Serviços:</strong> O alto déficit em esgotamento sanitário e lixo expõe a população rural a riscos epidemiológicos severos.
+                    </div>
                 </div>
                 <div class="gov-viz-card">
                     <h5>Evolução da Pobreza Rural (RN %)</h5>
-                    <canvas id="chartPovertyLine"></canvas>
+                    <div class="chart-wrapper-premium"><canvas id="chartPovertyLine"></canvas></div>
+                    <div class="chart-insight">
+                        <strong>Linha de Risco:</strong> O monitoramento da pobreza agropecuária mostra que choques climáticos aumentam instantaneamente a vulnerabilidade alimentar.
+                    </div>
                 </div>
                 <div class="gov-viz-card">
                     <h5>Analfabetismo Funcional por Faixa Etária</h5>
-                    <canvas id="chartIlliteracy"></canvas>
+                    <div class="chart-wrapper-premium"><canvas id="chartIlliteracy"></canvas></div>
+                    <div class="chart-insight">
+                        <strong>Histórico Educacional:</strong> O analfabetismo concentrado na população idosa reflete décadas de negligência escolar no campo potiguar.
+                    </div>
                 </div>
                 <div class="gov-viz-card">
                   <h5>Dependência de Transferências de Renda</h5>
-                  <canvas id="chartTransfer"></canvas>
+                  <div class="chart-wrapper-premium"><canvas id="chartTransfer"></canvas></div>
+                  <div class="chart-insight">
+                        <strong>Rede de Proteção:</strong> A dependência majoritária do Bolsa Família indica um mercado de trabalho incapaz de absorver a força produtiva local.
+                  </div>
                 </div>
             </div>
         </div>
@@ -88,11 +108,17 @@
             <div class="gov-viz-grid">
                 <div class="gov-viz-card">
                     <h5>Radar de Fragilidade Multidimensional</h5>
-                    <canvas id="chartRadarFragility"></canvas>
+                    <div class="chart-wrapper-premium"><canvas id="chartRadarFragility"></canvas></div>
+                    <div class="chart-insight">
+                        <strong>Síntese do Risco:</strong> O radar aponta que a fragilidade fundiária e hídrica são os principais vetores de insegurança do RN rural.
+                    </div>
                 </div>
                 <div class="gov-viz-card">
                   <h5>Cluster de Vulnerabilidade por Território</h5>
-                  <canvas id="chartClusters"></canvas>
+                  <div class="chart-wrapper-premium"><canvas id="chartClusters"></canvas></div>
+                  <div class="chart-insight">
+                        <strong>Regionalização do Risco:</strong> Diferenças territoriais marcantes mostram que o Alto Oeste e Mato Grande exigem políticas emergenciais de adaptação.
+                  </div>
               </div>
             </div>
         </div>
@@ -101,6 +127,10 @@
 
     <script src="api.js"></script>
     <script>
+        // Global Chart Defaults
+        Chart.defaults.responsive = true;
+        Chart.defaults.maintainAspectRatio = false;
+
         const colors = ['#ef4444', '#f59e0b', '#3b82f6', '#10b981'];
 
         async function initVulnerabilityDashboard() {

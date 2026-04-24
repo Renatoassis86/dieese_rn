@@ -980,7 +980,33 @@ a { text-decoration: none; }
     }
 }
 
+/* ══ PREMIUM BUSINESS INTELLIGENCE CHART SYSTEM ══ */
+.chart-wrapper-premium {
+    position: relative;
+    height: 300px;
+    width: 100%;
+}
+
+.chart-insight {
+    margin-top: 1.2rem;
+    padding: 0.8rem 1rem;
+    background: rgba(244, 162, 97, 0.08);
+    border-left: 3px solid var(--gold);
+    border-radius: 4px;
+    font-size: 0.82rem;
+    color: #cbd5e1;
+    line-height: 1.5;
+}
+
+.chart-insight strong {
+    color: var(--gold);
+    display: block;
+    margin-bottom: 0.2rem;
+}
+
 /* Fix for Chart.js tooltips on mobile */
 canvas {
     -webkit-tap-highlight-color: transparent;
+    display: block;
+    max-width: 100%;
 }

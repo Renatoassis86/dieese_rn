@@ -65,6 +65,14 @@
     <main class="container" style="padding-top: 3rem;">
         
         <!-- Unified 10 KPIs Grid for Mobile Scroll -->
+        <!-- Executive Narrative Section -->
+        <div id="social-narrative" style="margin-bottom: 2.5rem; background: rgba(16, 185, 129, 0.05); padding: 2rem; border-radius: 20px; border-left: 6px solid var(--emerald);">
+            <h3 style="font-family: 'Montserrat'; font-weight: 900; margin-top: 0; color: var(--emerald);">REALIDADE SOCIAL E TRABALHO</h3>
+            <p id="narrative-text" style="font-size: 1.05rem; line-height: 1.7; color: #cbd5e1; margin-bottom: 0;">
+                O mercado de trabalho rural no Rio Grande do Norte carrega as marcas da <strong>Informalidade Estrutural</strong> e da baixa cobertura da <strong>Segurança Social</strong>. A PNAD Contínua revela que a produção para próprio consumo continua sendo uma estratégia vital de sobrevivência, enquanto a evasão de jovens e o baixo rendimento médio persistem como barreiras ao desenvolvimento humano sustentável.
+            </p>
+        </div>
+
         <div class="kpi-gov-grid">
             <div class="kpi-gov-card"><span class="val" id="soc-kpi-1">--</span><span class="lab">Tx. Desocupação Rural</span></div>
             <div class="kpi-gov-card"><span class="val" id="soc-kpi-2">--</span><span class="lab">Tx. Informalidade</span></div>
@@ -86,21 +94,31 @@
             <div class="gov-viz-grid">
                 <div class="gov-viz-card">
                     <h5>Evolução da Taxa de Desocupação (%)</h5>
-                    <canvas id="chartUnemployment"></canvas>
+                    <div class="chart-wrapper-premium"><canvas id="chartUnemployment"></canvas></div>
+                    <div class="chart-insight">
+                        <strong>Pressão no Mercado:</strong> Oscilações na taxa de desocupação rural refletem a sazonalidade agrícola e a falta de diversificação econômica.
+                    </div>
+                </div>
                 <div class="gov-viz-card">
                     <h5>Ocupação na Produção para Próprio Consumo</h5>
-                    <canvas id="chartSelfConsumption"></canvas>
-                    <p class="note">Nota: Indicador de segurança alimentar e baixa integração mercantil.</p>
+                    <div class="chart-wrapper-premium"><canvas id="chartSelfConsumption"></canvas></div>
+                    <div class="chart-insight">
+                        <strong>Estratégia Vital:</strong> O crescimento desse indicador sinaliza uma retração do mercado formal e um refúgio da população na agricultura de subsistência.
+                    </div>
                 </div>
                 <div class="gov-viz-card">
                     <h5>Contribuição para Previdência Social (%)</h5>
-                    <canvas id="chartSocialSec"></canvas>
-                    <p class="note">Nota: Medida de desproteção futura e dependência de assistência.</p>
+                    <div class="chart-wrapper-premium"><canvas id="chartSocialSec"></canvas></div>
+                    <div class="chart-insight">
+                        <strong>Alerta Previdenciário:</strong> A baixa taxa de contribuição cria um exército de trabalhadores rurais desprotegidos contra riscos de invalidez e velhice.
+                    </div>
                 </div>
                 <div class="gov-viz-card">
                     <h5>Pirâmide Etária Rural: Distribuição de Força</h5>
-                    <canvas id="chartAgeGroup"></canvas>
-                    <p class="note">Nota: Mostra a maturidade da força de trabalho faimiliar no RN.</p>
+                    <div class="chart-wrapper-premium"><canvas id="chartAgeGroup"></canvas></div>
+                    <div class="chart-insight">
+                        <strong>Demografia:</strong> O envelhecimento do campo potiguar e a saída de jovens colocam em xeque a sucessão familiar nas unidades produtivas.
+                    </div>
                 </div>
             </div>
         </div>
@@ -114,11 +132,17 @@
             <div class="gov-viz-grid">
                 <div class="gov-viz-card">
                     <h5>Renda Média por Nível de Instrução</h5>
-                    <canvas id="chartEducationRenda"></canvas>
+                    <div class="chart-wrapper-premium"><canvas id="chartEducationRenda"></canvas></div>
+                    <div class="chart-insight">
+                        <strong>Retorno da Educação:</strong> O abismo salarial entre produtores sem instrução e com nível superior justifica investimentos massivos em qualificação técnica rural.
+                    </div>
                 </div>
                 <div class="gov-viz-card">
                     <h5>Radar de Bem-Estar Rural (6 Eixos)</h5>
-                    <canvas id="chartRadar"></canvas>
+                    <div class="chart-wrapper-premium"><canvas id="chartRadar"></canvas></div>
+                    <div class="chart-insight">
+                        <strong>Diagnóstico Multidimensional:</strong> Pontos de tensão em 'Internet' e 'Água' indicam o hiato de infraestrutura que separa o campo da cidade.
+                    </div>
                 </div>
             </div>
         </div>
@@ -130,6 +154,10 @@
     </footer>
 
     <script>
+        // Global Chart Defaults
+        Chart.defaults.responsive = true;
+        Chart.defaults.maintainAspectRatio = false;
+
         async function loadSocialDimension() {
             const data = await window.API.fetchPnadIndicadores();
             if (!data) return;

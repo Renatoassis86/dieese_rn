@@ -43,6 +43,14 @@
     <main class="container" style="padding-top: 3rem;">
         
         <!-- Unified 10 KPIs Grid for Mobile Scroll -->
+        <!-- Executive Narrative Section -->
+        <div id="ecosol-narrative" style="margin-bottom: 2.5rem; background: rgba(59, 130, 246, 0.05); padding: 2rem; border-radius: 20px; border-left: 6px solid #3b82f6;">
+            <h3 style="font-family: 'Montserrat'; font-weight: 900; margin-top: 0; color: #3b82f6;">ECONOMIA SOLIDÁRIA</h3>
+            <p id="narrative-text" style="font-size: 1.05rem; line-height: 1.7; color: #cbd5e1; margin-bottom: 0;">
+                A Economia Solidária no Rio Grande do Norte manifesta-se através de uma malha capilar de **Empreendimentos Econômicos Solidários (EES)** que priorizam a autogestão e a cooperação sobre o lucro. Com forte base rural e protagonismo feminino, esses grupos são os principais artífices dos mercados institucionais, transformando a produção familiar em desenvolvimento territorial sustentável.
+            </p>
+        </div>
+
         <div class="kpi-gov-grid">
             <div class="kpi-gov-card"><span class="val" id="eco-kpi-1">--</span><span class="lab">Empreendimentos Ativos (EES)</span></div>
             <div class="kpi-gov-card"><span class="val" id="eco-kpi-2">--</span><span class="lab">Municípios com EES</span></div>
@@ -64,20 +72,32 @@
             <div class="gov-viz-grid">
                 <div class="gov-viz-card">
                     <h5>Natureza Jurídica dos EES (%)</h5>
-                    <canvas id="chartEesType"></canvas>
+                    <div class="chart-wrapper-premium"><canvas id="chartEesType"></canvas></div>
+                    <div class="chart-insight">
+                        <strong>Perfil Organizacional:</strong> Predomínio de associações comunitárias e grupos informais, evidenciando a necessidade de apoio à transição para cooperativas.
+                    </div>
                 </div>
                 <div class="gov-viz-card">
                     <h5>Setores de Atividade Econômica</h5>
-                    <canvas id="chartActivities"></canvas>
+                    <div class="chart-wrapper-premium"><canvas id="chartActivities"></canvas></div>
+                    <div class="chart-insight">
+                        <strong>Diversificação:</strong> Embora o setor 'Agro' lidere, o avanço no artesanato e serviços indica uma economia solidária cada vez mais diversa.
+                    </div>
                 </div>
                 <div class="gov-viz-card">
                     <h5>Grau de Formalização Jurídica</h5>
-                    <canvas id="chartFormalization"></canvas>
+                    <div class="chart-wrapper-premium"><canvas id="chartFormalization"></canvas></div>
+                    <div class="chart-insight">
+                        <strong>Segurança Institucional:</strong> O avanço do CNPJ próprio permite que os EES acessem mercados mais complexos e editais de fomento direto.
+                    </div>
                 </div>
                 <div class="gov-viz-card">
-                  <h5>Evolução de Novos EES por Ano</h5>
-                  <canvas id="chartGrowth"></canvas>
-              </div>
+                    <h5>Evolução de Novos EES por Ano</h5>
+                    <div class="chart-wrapper-premium"><canvas id="chartGrowth"></canvas></div>
+                    <div class="chart-insight">
+                        <strong>Histórico de Expansão:</strong> Ciclos de crescimento vinculados a políticas de incentivo estadual e federal ao cooperativismo.
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -88,19 +108,31 @@
             <div class="gov-viz-grid">
                 <div class="gov-viz-card">
                     <h5>Concentração de EES por Território</h5>
-                    <canvas id="chartEesTerritory"></canvas>
+                    <div class="chart-wrapper-premium"><canvas id="chartEesTerritory"></canvas></div>
+                    <div class="chart-insight">
+                        <strong>Territorialidade:</strong> Microrregiões com forte tradição associativa, como o Seridó, lideram a densidade de empreendimentos solidários.
+                    </div>
                 </div>
                 <div class="gov-viz-card">
                     <h5>Média de Sócios por Tipo de EES</h5>
-                    <canvas id="chartSocios"></canvas>
+                    <div class="chart-wrapper-premium"><canvas id="chartSocios"></canvas></div>
+                    <div class="chart-insight">
+                        <strong>Impacto Social:</strong> Cooperativas agrárias e grupos de catadores apresentam os maiores quadros sociais, maximizando o benefício coletivo.
+                    </div>
                 </div>
                 <div class="gov-viz-card">
                   <h5>Radar de Maturidade Solidária</h5>
-                  <canvas id="chartRadarMaturity"></canvas>
+                  <div class="chart-wrapper-premium"><canvas id="chartRadarMaturity"></canvas></div>
+                  <div class="chart-insight">
+                        <strong>Desempenho:</strong> Alta maturidade em 'Autogestão' contrasta com desafios em 'Gestão Financeira' e 'Acesso a Mercados'.
+                  </div>
                 </div>
                 <div class="gov-viz-card">
                   <h5>Distribuição de EES por Cadeia de Valor</h5>
-                  <canvas id="chartValueChain"></canvas>
+                  <div class="chart-wrapper-premium"><canvas id="chartValueChain"></canvas></div>
+                  <div class="chart-insight">
+                        <strong>Cadeias Prioritárias:</strong> O mel e o leite formam os eixos estruturantes da economia solidária no semiárido potiguar.
+                  </div>
               </div>
             </div>
         </div>
@@ -109,6 +141,10 @@
 
     <script src="api.js"></script>
     <script>
+        // Global Chart Defaults
+        Chart.defaults.responsive = true;
+        Chart.defaults.maintainAspectRatio = false;
+
         const colors = ['#f4a261', '#10b981', '#3b82f6', '#ef4444', '#a855f7', '#0c4a6e'];
 
         async function initEcoSolDashboard() {

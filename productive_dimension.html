@@ -56,6 +56,14 @@
             <div class="kpi-gov-card" style="border-color: var(--gold);"><span class="val" id="kpi-10" style="color:var(--gold);">--</span><span class="lab">Vocação Produtiva Principal</span></div>
         </div>
 
+        <!-- Executive Narrative Section -->
+        <div id="agro-narrative" style="margin-bottom: 2.5rem; background: rgba(244, 162, 97, 0.05); padding: 2rem; border-radius: 20px; border-left: 6px solid var(--gold);">
+            <h3 style="font-family: 'Montserrat'; font-weight: 900; margin-top: 0; color: var(--gold);">DINÂMICA PRODUTIVA</h3>
+            <p id="narrative-text" style="font-size: 1.05rem; line-height: 1.7; color: #cbd5e1; margin-bottom: 0;">
+                A estrutura agrária do Rio Grande do Norte reflete uma coexistência entre a <strong>Agricultura Familiar</strong> predominante em termos numéricos e o <strong>Agronegócio de Exportação</strong> concentrado em polos específicos. O Censo Agropecuário revela desafios históricos de acesso a tecnologias e terra, enquanto o valor da produção demonstra resiliência frente aos ciclos climáticos.
+            </p>
+        </div>
+
         <div class="policy-chapter">
             <div class="chapter-title-box">
                 <h2>I. Estrutura Agrária e Território</h2>
@@ -64,19 +72,31 @@
             <div class="gov-viz-grid">
                 <div class="gov-viz-card">
                     <h5>Estabelecimentos por Condição Legal (%)</h5>
-                    <canvas id="chartLegal"></canvas>
+                    <div class="chart-wrapper-premium"><canvas id="chartLegal"></canvas></div>
+                    <div class="chart-insight">
+                        <strong>Análise Técnica:</strong> A predominância de proprietários indica estabilidade jurídica, porém o percentual de ocupantes sinaliza áreas de vulnerabilidade fundiária.
+                    </div>
                 </div>
                 <div class="gov-viz-card">
                     <h5>Área Ocupada por Classe de Tamanho</h5>
-                    <canvas id="chartAreaClass"></canvas>
+                    <div class="chart-wrapper-premium"><canvas id="chartAreaClass"></canvas></div>
+                    <div class="chart-insight">
+                        <strong>Insight:</strong> A concentração de terra é evidente: poucos estabelecimentos detêm a maior parte da área produtiva do estado (índice de Gini elevado).
+                    </div>
                 </div>
                 <div class="gov-viz-card">
                     <h5>Uso da Terra: Distribuição da Área</h5>
-                    <canvas id="chartLandUse"></canvas>
+                    <div class="chart-wrapper-premium"><canvas id="chartLandUse"></canvas></div>
+                    <div class="chart-insight">
+                        <strong>Interpretação:</strong> O equilíbrio entre pastagens e lavouras define a ocupação do solo potiguar, com espaço para expansão de técnicas sustentáveis.
+                    </div>
                 </div>
                 <div class="gov-viz-card">
                     <h5>Escolaridade do Produtor Rural</h5>
-                    <canvas id="chartEducation"></canvas>
+                    <div class="chart-wrapper-premium"><canvas id="chartEducation"></canvas></div>
+                    <div class="chart-insight">
+                        <strong>Nota Social:</strong> Baixos níveis de escolaridade correlacionam-se com maior dificuldade de acesso a editais e crédito governamental.
+                    </div>
                 </div>
             </div>
         </div>
@@ -89,19 +109,31 @@
             <div class="gov-viz-grid">
                 <div class="gov-viz-card">
                     <h5>Evolução do Valor da Produção (Mi R$)</h5>
-                    <canvas id="chartHistoryValue"></canvas>
+                    <div class="chart-wrapper-premium"><canvas id="chartHistoryValue"></canvas></div>
+                    <div class="chart-insight">
+                        <strong>Série Temporal:</strong> Crescimento nominal impulsionado pela fruticultura irrigada e valorização de commodities no mercado externo.
+                    </div>
                 </div>
                 <div class="gov-viz-card">
                     <h5>Top 5 Produtos por Valor (PAM)</h5>
-                    <canvas id="chartTopProducts"></canvas>
+                    <div class="chart-wrapper-premium"><canvas id="chartTopProducts"></canvas></div>
+                    <div class="chart-insight">
+                        <strong>Destaque:</strong> Melão e Castanha de Caju mantêm o RN como protagonista nacional, evidenciando o potencial das cadeias produtivas de exportação.
+                    </div>
                 </div>
                 <div class="gov-viz-card">
                     <h5>Composição do Rebanho Potiguar</h5>
-                    <canvas id="chartLivestock"></canvas>
+                    <div class="chart-wrapper-premium"><canvas id="chartLivestock"></canvas></div>
+                    <div class="chart-insight">
+                        <strong>Perfil Pecuário:</strong> Os rebanhos de caprinos e ovinos reforçam a vocação do Semiárido para a pecuária de pequeno porte resiliente.
+                    </div>
                 </div>
                 <div class="gov-viz-card">
-                    <h5>Distribuição Viral por Território</h5>
-                    <canvas id="chartTerritoryValue"></canvas>
+                    <h5>Distribuição Valor por Território</h5>
+                    <div class="chart-wrapper-premium"><canvas id="chartTerritoryValue"></canvas></div>
+                    <div class="chart-insight">
+                        <strong>Regionalização:</strong> Concentração de valor nos polos do Mato Grande e Vale do Açu, reforçando a as desigualdades territoriais internas.
+                    </div>
                 </div>
             </div>
         </div>
@@ -113,11 +145,17 @@
             <div class="gov-viz-grid">
                 <div class="gov-viz-card">
                     <h5>Acesso a Máquinas e Implementos</h5>
-                    <canvas id="chartTech"></canvas>
+                    <div class="chart-wrapper-premium"><canvas id="chartTech"></canvas></div>
+                    <div class="chart-insight">
+                        <strong>Modernização:</strong> Baixo acesso a tratores na AF demonstra o gap tecnológico que impede ganhos de produtividade em larga escala.
+                    </div>
                 </div>
                 <div class="gov-viz-card">
                     <h5>Origem do Financiamento Rural</h5>
-                    <canvas id="chartCredit"></canvas>
+                    <div class="chart-wrapper-premium"><canvas id="chartCredit"></canvas></div>
+                    <div class="chart-insight">
+                        <strong>Bancarização:</strong> A dependência de bancos públicos reforça a necessidade de políticas como o Pronaf para a sustentabilidade do campo.
+                    </div>
                 </div>
             </div>
         </div>
@@ -126,6 +164,10 @@
 
     <script src="api.js"></script>
     <script>
+        // Global Chart Defaults
+        Chart.defaults.responsive = true;
+        Chart.defaults.maintainAspectRatio = false;
+
         const colors = ['#f4a261', '#10b981', '#3b82f6', '#ef4444', '#a855f7', '#0c4a6e', '#1e293b', '#2d6a4f'];
 
         async function initDashboard() {
