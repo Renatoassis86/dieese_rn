@@ -36,10 +36,10 @@
                     <div class="dropdown-content"><div class="dropdown-inner"><div class="dropdown-inner">
                         <a href="#ecosol">Economia Solidária</a>
                         <a href="paa_dimension.html">Mercado Institucional</a>
-                        <a href="#agro">Estrutura Agropecuária</a>
-                        <a href="#producao">Produção e Dinâmica</a>
-                        <a href="#trabalho">Trabalho e Renda</a>
-                        <a href="#vulnerabilidades">Vulnerabilidades</a>
+                        <a href="productive_dimension.html">Estrutura Agropecuária</a>
+                        <a href="productive_dimension.html">Produção e Dinâmica</a>
+                        <a href="social_dimension.html">Trabalho e Renda</a>
+                        <a href="vulnerabilities_dimension.html">Vulnerabilidades</a>
                     </div></div></div>
                 </li>
                 <li><a href="#territorios">Territórios</a></li>
@@ -125,7 +125,7 @@
             <div class="dim-bases">
                 <div class="base-tag"><i class="fas fa-tower-broadcast" style="margin-right: 6px;"></i>Novo CADSOL / Cadastros EES</div>
             </div>
-            <span class="badge-dev"><i class="fas fa-tools" style="margin-right: 5px;"></i>Em desenvolvimento</span>
+            <a href="ecosol_dimension.html" class="btn-primary-sm">Explorar EES no RN ✓</a>
         </div>
     </div>
 </section>
@@ -140,7 +140,7 @@
             <div class="dim-bases">
                 <div class="base-tag">📡 MiSocial (MDS) · PNAE (FNDE)</div>
             </div>
-            <a href="paa_dimension.html" class="btn-primary-sm">Ir para os Indicadores do Estudo ✓</a>
+            <a href="paa_dimension.html" class="btn-primary-sm">Acessar Indicadores PAA/PNAE ✓</a>
         </div>
         <div class="dim-illust">
             <div class="illust-wrap">
@@ -167,7 +167,7 @@
             <div class="dim-bases">
                 <div class="base-tag"><i class="fas fa-tower-broadcast" style="margin-right: 6px;"></i>Censo Agropecuário (IBGE)</div>
             </div>
-            <span class="badge-dev"><i class="fas fa-tools" style="margin-right: 5px;"></i>Em desenvolvimento</span>
+            <a href="productive_dimension.html" class="btn-primary-sm">Explorar Estrutura Agropecuária ✓</a>
         </div>
     </div>
 </section>
@@ -182,7 +182,7 @@
             <div class="dim-bases">
                 <div class="base-tag"><i class="fas fa-tower-broadcast" style="margin-right: 6px;"></i>PAM / PPM (IBGE)</div>
             </div>
-            <span class="badge-dev"><i class="fas fa-tools" style="margin-right: 5px;"></i>Em desenvolvimento</span>
+            <a href="productive_dimension.html" class="btn-primary-sm">Ver Dinâmica da Produção ✓</a>
         </div>
         <div class="dim-illust">
             <div class="illust-wrap">
@@ -209,7 +209,7 @@
             <div class="dim-bases">
                 <div class="base-tag"><i class="fas fa-tower-broadcast" style="margin-right: 6px;"></i>PNADC / RAIS / CAGED</div>
             </div>
-            <span class="badge-dev"><i class="fas fa-tools" style="margin-right: 5px;"></i>Em desenvolvimento</span>
+            <a href="social_dimension.html" class="btn-primary-sm">Acessar Diagnóstico Social PNAD ✓</a>
         </div>
     </div>
 </section>
@@ -224,7 +224,7 @@
             <div class="dim-bases">
                 <div class="base-tag"><i class="fas fa-tower-broadcast" style="margin-right: 6px;"></i>CadÚnico / Índices Sociais</div>
             </div>
-            <span class="badge-dev"><i class="fas fa-tools" style="margin-right: 5px;"></i>Em desenvolvimento</span>
+            <a href="vulnerabilities_dimension.html" class="btn-primary-sm">Mapa de Vulnerabilidades Rural ✓</a>
         </div>
         <div class="dim-illust">
             <div class="illust-wrap">
@@ -252,7 +252,9 @@
             <span class="chip">Sertão do Apodi</span>
             <span class="chip">Terras Potiguares</span>
         </div>
-        <span class="badge-dev"><i class=\"fas fa-tools\"></i> Mapas interativos em desenvolvimento</span>
+        <div class="mt-4">
+            <a href="dashboard.html" class="btn-primary-sm">Ver Geo-Análise Completa <i class="fas fa-map-location-dot"></i></a>
+        </div>
     </div>
 </section>
 
@@ -297,29 +299,29 @@
     <div class="container">
         <p class="kicker centered">— INDICADORES SELECIONADOS —</p>
         <h2 class="ind-title">Dados em números</h2>
-        <p class="ind-sub">Evolução histórica e comparativo do Programa de Aquisição de Alimentos no Rio Grande do Norte e no Nordeste.</p>
+        <p class="ind-sub">Evolução histórica (2011-2024) e comparativo do Programa de Aquisição de Alimentos no Rio Grande do Norte integrado ao SISAN.</p>
 
         <!-- KPI Cards animados -->
         <div class="kpi-row">
             <div class="kpi-card">
-                <span class="kpi-val" data-target="48.8">0</span>
+                <span class="kpi-val" id="kpi-investido" data-target="0">0</span>
                 <span class="kpi-unit">Mi R$</span>
-                <span class="kpi-label">Total investido no RN (2024)</span>
+                <span class="kpi-label">Volume Total (2024)</span>
             </div>
             <div class="kpi-card">
-                <span class="kpi-val" data-target="6840">0</span>
-                <span class="kpi-unit">agricultores</span>
-                <span class="kpi-label">Beneficiários no RN (2024)</span>
+                <span class="kpi-val" id="kpi-familias" data-target="0">0</span>
+                <span class="kpi-unit">famílias</span>
+                <span class="kpi-label">Agricultores no RN (2024)</span>
             </div>
             <div class="kpi-card">
-                <span class="kpi-val" data-target="167">0</span>
-                <span class="kpi-unit">municípios</span>
-                <span class="kpi-label">Municípios atendidos</span>
+                <span class="kpi-val" id="kpi-alimentos" data-target="0">0</span>
+                <span class="kpi-unit">toneladas</span>
+                <span class="kpi-label">Volume de Alimentos (Total)</span>
             </div>
             <div class="kpi-card">
-                <span class="kpi-val" data-target="5240">0</span>
+                <span class="kpi-val" id="kpi-ticket" data-target="0">0</span>
                 <span class="kpi-unit">R$</span>
-                <span class="kpi-label">Ticket médio por agricultor</span>
+                <span class="kpi-label">Ticket Médio (2024)</span>
             </div>
         </div>
 
@@ -448,119 +450,155 @@ async function initCharts() {
     if (chartsInit) return;
     chartsInit = true;
     
-    console.log("📊 Carregando dados do Supabase...");
+    console.log("📊 Carregando dados da página inicial...");
     
     // Global defaults
     Chart.defaults.font.family = "'Montserrat', sans-serif";
     Chart.defaults.color = '#4A5568';
 
-    // Fetch real data from API
-    const [paaAnual, paaTerrit] = await Promise.all([
+    // Fetch data for 2024 (latest full year) and historical
+    const [paaAnual, paaTerrit, paaRecent] = await Promise.all([
         window.API.fetchPaaAnnual(),
-        window.API.fetchPaaByTerritory()
+        window.API.fetchPaaByTerritory(2024),
+        window.API.query("paa_master", { ano: 2024 })
     ]);
 
     // 1. LINHA — Evolução PAA
     if (paaAnual.length > 0) {
+        // Filtrar anos com dados significativos e ordenar
+        const paaFiltrado = paaAnual.filter(d => d.valor > 0.01 && d.ano <= 2024).sort((a,b) => a.ano - b.ano);
+
         new Chart(document.getElementById('chartLinha'), {
             type: 'line',
             data: {
-                labels: paaAnual.map(d => d.ano),
+                labels: paaFiltrado.map(d => d.ano),
                 datasets: [{
-                    label: 'Execução PAA (Milhões R$)',
-                    data: paaAnual.map(d => d.valor),
+                    label: 'Investimento PAA (Milhões R$)',
+                    data: paaFiltrado.map(d => d.valor),
                     borderColor: GREEN,
                     backgroundColor: 'rgba(45, 106, 79, 0.1)',
                     fill: true,
-                    tension: 0.4,
+                    tension: 0.3, 
                     borderWidth: 3,
-                    pointRadius: 6,
-                    pointHoverRadius: 9,
-                    pointBackgroundColor: '#F4A261',
-                    pointBorderColor: '#fff',
-                    pointBorderWidth: 2
+                    pointRadius: 5,
+                    pointBackgroundColor: AMBER
                 }]
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 plugins: { 
                     legend: { display: false },
-                    tooltip: { callbacks: { label: ctx => ` R$ ${ctx.parsed.y.toFixed(1)} Mi` } }
+                    tooltip: { 
+                        backgroundColor: '#0D1B2A',
+                        titleFont: { size: 14 },
+                        bodyFont: { size: 14 },
+                        callbacks: { label: ctx => ` Investimento: R$ ${ctx.parsed.y.toFixed(2)} Mi` } 
+                    }
                 },
                 scales: {
-                    y: { beginAtZero: true, ticks: { callback: v => `R$ ${v}Mi` } }
+                    y: { 
+                        beginAtZero: true, 
+                        grid: { color: 'rgba(0,0,0,0.05)' },
+                        ticks: { callback: v => `R$ ${v}M` } 
+                    },
+                    x: { grid: { display: false } }
                 }
             }
         });
         
-        // Update KPIs based on data
-        const total = paaAnual.reduce((acc, curr) => acc + curr.valor, 0);
-        const kpiTotal = document.querySelector('[data-target="12.7"]');
-        if (kpiTotal) {
-            kpiTotal.dataset.target = total.toFixed(1);
-            // Counter will trigger via intersection observer in index.html
+        // Update KPIs for 2024
+        const data2024 = paaFiltrado.find(d => d.ano === 2024) || paaFiltrado[paaFiltrado.length-1];
+        if (data2024) {
+            document.getElementById('kpi-investido').dataset.target = data2024.valor.toFixed(1);
+            document.getElementById('kpi-familias').dataset.target = data2024.agricultores;
+            document.getElementById('kpi-ticket').dataset.target = data2024.agricultores > 0 ? (data2024.valor * 1000000 / data2024.agricultores).toFixed(0) : 0;
         }
+
+        // Alimentos KPI (Total histórico ou aproximado)
+        const totalKg = paaRecent.reduce((acc, curr) => acc + (parseFloat(curr.quilos_alimentos) || 0), 0);
+        document.getElementById('kpi-alimentos').dataset.target = (totalKg / 1000).toFixed(0);
+
+        // Start animations
+        document.querySelectorAll('.kpi-val').forEach(el => animateCounter(el));
     }
 
     // 2. BARRAS — Territórios
     if (paaTerrit.length > 0) {
-        const topTerrit = paaTerrit.slice(0, 8);
+        // Ordenar por valor para ranking mais bonito
+        const terrFiltrado = paaTerrit.filter(t => t.total_agricultores > 0).sort((a,b) => b.total_agricultores - a.total_agricultores);
+
         new Chart(document.getElementById('chartTerrit'), {
             type: 'bar',
             data: {
-                labels: topTerrit.map(d => d.nome),
+                labels: terrFiltrado.map(d => d.territorio || d.nome),
                 datasets: [{
                     label: 'Agricultores Beneficiários',
-                    data: topTerrit.map(d => d.valor),
-                    backgroundColor: GREENS,
-                    borderRadius: 8
+                    data: terrFiltrado.map(d => d.total_agricultores || d.valor),
+                    backgroundColor: GREEN,
+                    borderRadius: 6,
+                    hoverBackgroundColor: AMBER
                 }]
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 plugins: { 
                     legend: { display: false },
-                    tooltip: { callbacks: { label: ctx => ` ${ctx.parsed.y.toLocaleString('pt-BR')} agricultores` } }
+                    tooltip: { 
+                        backgroundColor: '#0D1B2A',
+                        callbacks: { label: ctx => ` ${ctx.parsed.y} Agricultores` } 
+                    }
                 },
-                scales: {
-                    y: { beginAtZero: true },
-                    x: { ticks: { font: { size: 10 } } }
+                scales: { 
+                    y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } },
+                    x: { grid: { display: false } }
                 }
             }
         });
     }
 
-    initStaticCharts();
-}
-
-function initStaticCharts() {
-    // 3. RANKING NE (Manual reference)
+    // 3. RANKING NE (Manual reference context)
     new Chart(document.getElementById('chartRanking'), {
         type: 'bar',
         data: {
             labels: ['BA', 'PE', 'CE', 'MA', 'PI', 'RN', 'PB', 'AL', 'SE'],
             datasets: [{
                 label: 'Ticket Médio (R$)',
-                data: [6850, 5920, 5240, 4810, 4200, 3980, 3650, 3420, 3100],
+                data: [7200, 6150, 5400, 4900, 4350, 4120, 3800, 3500, 3200],
                 backgroundColor: ['#2D6A4F','#2D6A4F','#2D6A4F','#2D6A4F','#2D6A4F','#F4A261','#2D6A4F','#2D6A4F','#2D6A4F'],
-                borderRadius: 6
+                borderRadius: 4
             }]
         },
-        options: { indexAxis: 'y', plugins: { legend: { display: false } } }
+        options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
     });
 
-    // 4. DONUT (Modalidades)
-    new Chart(document.getElementById('chartModalidade'), {
-        type: 'doughnut',
-        data: {
-            labels: ['CDS (Alimentos)', 'PAA Leite', 'Sementes', 'Form. Estoque'],
-            datasets: [{
-                data: [62, 25, 8, 5],
-                backgroundColor: ['#2D6A4F','#40916C','#F4A261','#0D1B2A']
-            }]
-        },
-        options: { cutout: '65%', plugins: { legend: { position: 'bottom' } } }
-    });
+    // 4. DONUT (Modalidades - Real de 2024)
+    if (paaRecent.length > 0) {
+        const mods = {
+            'Doação Simultânea': paaRecent.reduce((acc, curr) => acc + (parseFloat(curr.mod_doacao_simultanea) || 0), 0),
+            'Leite': paaRecent.reduce((acc, curr) => acc + (parseFloat(curr.mod_incentivo_leite) || 0), 0),
+            'Sementes': paaRecent.reduce((acc, curr) => acc + (parseFloat(curr.mod_aquisicao_sementes) || 0), 0),
+            'Outras': paaRecent.reduce((acc, curr) => acc + (parseFloat(curr.mod_form_estoque) || parseFloat(curr.mod_compra_direta) || 0), 0)
+        };
+
+        new Chart(document.getElementById('chartModalidade'), {
+            type: 'doughnut',
+            data: {
+                labels: Object.keys(mods),
+                datasets: [{
+                    data: Object.values(mods),
+                    backgroundColor: [GREEN, '#40916C', AMBER, NAVY]
+                }]
+            },
+            options: { 
+                responsive: true, 
+                maintainAspectRatio: false, 
+                cutout: '65%', 
+                plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } } } 
+            }
+        });
+    }
 }
 // ── KPI Counter animado ───────────────
 function animateCounter(el) {

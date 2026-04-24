@@ -91,6 +91,7 @@
                     <label>Dimensão do Estudo</label>
                     <select id="filter-dim" class="select-bi">
                         <option value="mercado">Mercado Institucional (PAA/PNAE)</option>
+                        <option value="socio">Socio-Laboral (PNAD 2025)</option>
                         <option value="ecosol">Economia Solidária</option>
                         <option value="agro">Estrutura Agropecuária</option>
                         <option value="trabalho">Trabalho e Renda</option>
@@ -178,23 +179,28 @@
             placeholder.style.display = 'flex';
             chartArea.style.display = 'none';
             placeholder.innerHTML = '<div class="spinner-bi"></div><p>Sincronizando com Supabase...</p>';
+            placeholder.appendChild(document.createElement('br'));
+            placeholder.append(`Carregando eito: ${dim}`);
 
-            const data = await window.API.fetchFilteredPAA({ year, territory: terr });
+            const data = await window.API.fetchDimensionData(dim, terr, year);
             
             if (!data || data.length === 0) {
-                placeholder.innerHTML = '<p>⚠️ Nenhum dado encontrado para os filtros selecionados.</p>';
+                placeholder.innerHTML = `<p>⚠️ Nenhum dado encontrado para ${dim} em ${terr}.</p>`;
                 return;
             }
 
             placeholder.style.display = 'none';
             chartArea.style.display = 'block';
-            renderBICharts(data);
+            
+            if (dim === 'mercado') renderPAACharts(data);
+            else if (dim === 'socio') renderSocioCharts(data);
+            else renderAgroCharts(data);
         }
 
-        function renderBICharts(data) {
+        function renderPAACharts(data) {
             const years = [...new Set(data.map(d => d.ano))].sort();
             const annualSum = years.map(y => 
-                data.filter(d => d.ano === y).reduce((acc, curr) => acc + parseFloat(curr.val_executado), 0) / 1000000
+                data.filter(d => d.ano === y).reduce((acc, curr) => acc + parseFloat(curr.val_executado || curr.valor_pago || 0), 0) / 1000000
             );
 
             if (biLine) biLine.destroy();
@@ -203,23 +209,22 @@
                 data: {
                     labels: years,
                     datasets: [{
-                        label: 'Investimento (Mi R$)',
+                        label: 'Investimento PAA (Mi R$)',
                         data: annualSum,
                         borderColor: '#2D6A4F',
                         backgroundColor: 'rgba(45, 106, 79, 0.05)',
                         tension: 0.4,
-                        fill: true,
-                        borderWidth: 3
+                        fill: true
                     }]
-                },
-                options: { responsive: true, plugins: { legend: { display: false } } }
+                }
             });
 
             const munData = {};
             data.forEach(d => {
-                munData[d.nome_municipio] = (munData[d.nome_municipio] || 0) + parseFloat(d.val_executado);
+                const name = d.nome_municipio || d.municipio;
+                munData[name] = (munData[name] || 0) + parseFloat(d.val_executado || d.valor_pago || 0);
             });
-            const topMun = Object.entries(munData).sort((a,b) => b[1]-a[1]).slice(0, 8);
+            const topMun = Object.entries(munData).sort((a,b) => b[1]-a[1]).slice(0, 10);
 
             if (biBar) biBar.destroy();
             biBar = new Chart(document.getElementById('chartBI-Bar'), {
@@ -227,18 +232,58 @@
                 data: {
                     labels: topMun.map(m => m[0]),
                     datasets: [{
+                        label: 'Valor (Mil R$)',
                         data: topMun.map(m => m[1] / 1000),
-                        backgroundColor: '#F4A261',
-                        borderRadius: 8
+                        backgroundColor: '#F4A261'
                     }]
                 },
-                options: { 
-                    indexAxis: 'y', 
-                    responsive: true,
-                    plugins: { 
-                        legend: { display: false },
-                        tooltip: { callbacks: { label: ctx => `R$ ${ctx.parsed.x.toFixed(1)} mil` } }
-                    } 
+                options: { indexAxis: 'y' }
+            });
+        }
+
+        function renderSocioCharts(data) {
+            if (biLine) biLine.destroy();
+            biLine = new Chart(document.getElementById('chartBI-Line'), {
+                type: 'line',
+                data: {
+                    labels: data.map(d => d.ano),
+                    datasets: [
+                        { label: 'Informalidade (%)', data: data.map(d => d.taxa_informalidade * 100), borderColor: '#ef4444' },
+                        { label: 'Desocupação (%)', data: data.map(d => d.taxa_desocupacao * 100), borderColor: '#3b82f6' }
+                    ]
+                }
+            });
+            
+            if (biBar) biBar.destroy();
+            biBar = new Chart(document.getElementById('chartBI-Bar'), {
+                type: 'bar',
+                data: {
+                    labels: data.map(d => d.ano),
+                    datasets: [{ label: 'Renda Real', data: data.map(d => d.renda_media_real), backgroundColor: '#10b981' }]
+                }
+            });
+        }
+
+        function renderAgroCharts(data) {
+            const indicators = [...new Set(data.map(d => d.indicador))];
+            const firstInd = indicators[0];
+            const indData = data.filter(d => d.indicador === firstInd);
+            
+            if (biLine) biLine.destroy();
+            biLine = new Chart(document.getElementById('chartBI-Line'), {
+                type: 'bar',
+                data: {
+                    labels: indData.slice(0, 15).map(d => d.municipio),
+                    datasets: [{ label: firstInd, data: indData.slice(0, 15).map(d => d.valor), backgroundColor: '#f4a261' }]
+                }
+            });
+
+            if (biBar) biBar.destroy();
+            biBar = new Chart(document.getElementById('chartBI-Bar'), {
+                type: 'pie',
+                data: {
+                    labels: indicators.slice(0, 5),
+                    datasets: [{ data: indicators.slice(0, 5).map(i => data.filter(d => d.indicador === i).length), backgroundColor: ['#f4a261','#10b981','#3b82f6','#ef4444','#a855f7'] }]
                 }
             });
         }

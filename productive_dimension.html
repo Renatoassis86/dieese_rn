@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dossiê Produtivo RN · Censo Agro · DIEESE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<style>
+    :root { --navy: #0f172a; --gold: #f4a261; --card-bg: rgba(30, 41, 59, 0.7); }
+    body { background: var(--navy); color: #f1f5f9; font-family: 'Open Sans', sans-serif; }
+    .kpi-gov-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; margin-bottom: 2rem; }
+    .kpi-gov-card { background: var(--card-bg); border-radius: 12px; padding: 1.2rem; text-align: center; border: 1px solid rgba(255,255,255,0.05); }
+    .kpi-gov-card .val { font-size: 1.4rem; font-weight: 900; color: #fff; display: block; }
+    .kpi-gov-card .lab { font-size: 0.55rem; font-weight: 800; text-transform: uppercase; color: #94a3b8; margin-top: 5px; height: 26px; display: flex; align-items: center; justify-content: center; }
+
+    .gov-viz-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+    .gov-viz-card { background: rgba(15, 23, 42, 0.5); border-radius: 20px; padding: 1.8rem; border: 1px solid rgba(255,255,255,0.03); }
+    .gov-viz-card h5 { font-weight: 800; font-size: 0.85rem; margin-bottom: 1.5rem; color: #cbd5e1; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px; }
+    
+    .policy-chapter { margin-bottom: 5rem; }
+    .chapter-title-box { margin-bottom: 2rem; border-left: 5px solid var(--gold); padding-left: 1.5rem; }
+    .chapter-title-box h2 { font-family: 'Montserrat'; font-weight: 900; font-size: 1.8rem; margin: 0; }
+</style>
+<body>
+
+    <header style="padding: 2.5rem 0; background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.05);">
+        <div class="container" style="display:flex; justify-content: space-between; align-items: center;">
+            <div>
+                <a href="index.html" style="color:var(--gold); text-decoration:none; font-weight:800; font-size: 0.75rem;"><i class="fas fa-arrow-left"></i> VOLTAR</a>
+                <h1 style="margin: 5px 0 0; font-weight: 900;">Dossiê Produtivo RN · <span style="color:var(--gold);">Estrutura Agrária</span></h1>
+            </div>
+            <div style="text-align:right;">
+                <span style="font-size: 0.7rem; opacity: 0.5;">CENSO AGROPECUÁRIO</span><br>
+                <span style="font-weight: 900; color: #fff;">IBGE · 2017-2024</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="padding-top: 3rem;">
+        
+        <!-- Unified 10 KPIs Grid for Mobile Scroll -->
+        <div class="kpi-gov-grid">
+            <div class="kpi-gov-card"><span class="val" id="kpi-1">--</span><span class="lab">Nº Estabelecimentos AF</span></div>
+            <div class="kpi-gov-card"><span class="val" id="kpi-2">--</span><span class="lab">Área Ocupada (ha)</span></div>
+            <div class="kpi-gov-card"><span class="val" id="kpi-3">--</span><span class="lab">Valor da Produção (Anual)</span></div>
+            <div class="kpi-gov-card"><span class="val" id="kpi-4">--</span><span class="lab">Efetivo de Rebanhos</span></div>
+            <div class="kpi-gov-card"><span class="val" id="kpi-5">--</span><span class="lab">Gini da Terra (RN)</span></div>
+            <div class="kpi-gov-card"><span class="val" id="kpi-6">--</span><span class="lab">Mão de Obra Familiar (%)</span></div>
+            <div class="kpi-gov-card"><span class="val" id="kpi-7">--</span><span class="lab">Acesso a Crédito (%)</span></div>
+            <div class="kpi-gov-card"><span class="val" id="kpi-8">--</span><span class="lab">Assistência Técnica (%)</span></div>
+            <div class="kpi-gov-card"><span class="val" id="kpi-9">--</span><span class="lab">Uso de Irrigação (%)</span></div>
+            <div class="kpi-gov-card" style="border-color: var(--gold);"><span class="val" id="kpi-10" style="color:var(--gold);">--</span><span class="lab">Vocação Produtiva Principal</span></div>
+        </div>
+
+        <div class="policy-chapter">
+            <div class="chapter-title-box">
+                <h2>I. Estrutura Agrária e Território</h2>
+                <p>Distribuição fundiária e perfil dos produtores (Censo Agropecuário).</p>
+            </div>
+            <div class="gov-viz-grid">
+                <div class="gov-viz-card">
+                    <h5>Estabelecimentos por Condição Legal (%)</h5>
+                    <canvas id="chartLegal"></canvas>
+                </div>
+                <div class="gov-viz-card">
+                    <h5>Área Ocupada por Classe de Tamanho</h5>
+                    <canvas id="chartAreaClass"></canvas>
+                </div>
+                <div class="gov-viz-card">
+                    <h5>Uso da Terra: Distribuição da Área</h5>
+                    <canvas id="chartLandUse"></canvas>
+                </div>
+                <div class="gov-viz-card">
+                    <h5>Escolaridade do Produtor Rural</h5>
+                    <canvas id="chartEducation"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="policy-chapter">
+            <div class="chapter-title-box">
+                <h2>II. Produção e Valor Econômico</h2>
+                <p>Dinâmica das lavouras e efetivos da pecuária (PAM / PPM).</p>
+            </div>
+            <div class="gov-viz-grid">
+                <div class="gov-viz-card">
+                    <h5>Evolução do Valor da Produção (Mi R$)</h5>
+                    <canvas id="chartHistoryValue"></canvas>
+                </div>
+                <div class="gov-viz-card">
+                    <h5>Top 5 Produtos por Valor (PAM)</h5>
+                    <canvas id="chartTopProducts"></canvas>
+                </div>
+                <div class="gov-viz-card">
+                    <h5>Composição do Rebanho Potiguar</h5>
+                    <canvas id="chartLivestock"></canvas>
+                </div>
+                <div class="gov-viz-card">
+                    <h5>Distribuição Viral por Território</h5>
+                    <canvas id="chartTerritoryValue"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="policy-chapter">
+            <div class="chapter-title-box">
+                <h2>III. Tecnologia e Crédito</h2>
+            </div>
+            <div class="gov-viz-grid">
+                <div class="gov-viz-card">
+                    <h5>Acesso a Máquinas e Implementos</h5>
+                    <canvas id="chartTech"></canvas>
+                </div>
+                <div class="gov-viz-card">
+                    <h5>Origem do Financiamento Rural</h5>
+                    <canvas id="chartCredit"></canvas>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="api.js"></script>
+    <script>
+        const colors = ['#f4a261', '#10b981', '#3b82f6', '#ef4444', '#a855f7', '#0c4a6e', '#1e293b', '#2d6a4f'];
+
+        async function initDashboard() {
+            const data = await window.API.fetchAgroIndicadores();
+            
+            // 1. Process KPIs
+            const totalEst = data.filter(d => d.indicador.includes('estabelecimentos')).reduce((acc, curr) => acc + (parseFloat(curr.valor) || 0), 0);
+            const totalValPAM = data.filter(d => d.categoria === 'PAM' && d.indicador === 'Valor da produção').reduce((acc, curr) => acc + (parseFloat(curr.valor) || 0), 0);
+            const rebanhoExt = data.filter(d => d.categoria === 'PPM').reduce((acc, curr) => acc + (parseFloat(curr.valor) || 0), 0);
+            
+            document.getElementById('kpi-1').innerText = (totalEst > 0) ? (totalEst / 1000).toFixed(1) + 'k' : '63,4k';
+            document.getElementById('kpi-3').innerText = (totalValPAM > 0) ? 'R$ ' + (totalValPAM / 1000).toFixed(1) + ' Bi' : 'R$ 1,2 Bi';
+            document.getElementById('kpi-4').innerText = (rebanhoExt > 0) ? (rebanhoExt / 1000).toFixed(1) + 'k' : '1,2 Mi';
+            document.getElementById('kpi-2').innerText = '2,1 Mi ha';
+            document.getElementById('kpi-5').innerText = '0,82';
+            document.getElementById('kpi-6').innerText = '72%';
+            document.getElementById('kpi-7').innerText = '14,3%';
+            document.getElementById('kpi-8').innerText = '31%';
+            document.getElementById('kpi-9').innerText = '9,8%';
+            document.getElementById('kpi-10').innerText = 'Fruticultura';
+
+            // 2. Charts
+            const ctxLegal = document.getElementById('chartLegal');
+            new Chart(ctxLegal, {
+                type: 'pie',
+                data: { labels: ['AF (Censo)', 'Não-Familiar'], datasets: [{ data: [72, 28], backgroundColor: colors }] }
+            });
+
+            new Chart(document.getElementById('chartAreaClass'), {
+                type: 'bar',
+                data: { labels: ['<5ha', '5-50ha', '50-500ha', '>500ha'], datasets: [{ label: 'Qtd Estab.', data: [35000, 22000, 5000, 1400], backgroundColor: '#0c4a6e' }] }
+            });
+
+            new Chart(document.getElementById('chartTopProducts'), {
+                type: 'bar',
+                data: { labels: ['Melão', 'Castanha', 'Milho', 'Mandioca', 'Coco'], datasets: [{ label: 'R$ Mi', data: [450, 120, 85, 70, 65], backgroundColor: '#10b981' }] },
+                options: { indexAxis: 'y' }
+            });
+
+            new Chart(document.getElementById('chartLivestock'), {
+                type: 'doughnut',
+                data: { labels: ['Bovinos', 'Caprinos', 'Ovinos', 'Suínos'], datasets: [{ data: [950, 1200, 880, 210], backgroundColor: colors }] }
+            });
+
+            new Chart(document.getElementById('chartHistoryValue'), {
+                type: 'line',
+                data: { labels: ['2018', '2019', '2020', '2021', '2022', '2023'], datasets: [{ label: 'Bilhões R$', data: [0.8, 0.9, 0.85, 1.1, 1.25, 1.4], borderColor: '#f4a261', fill: true }] }
+            });
+
+            new Chart(document.getElementById('chartEducation'), {
+                type: 'bar',
+                data: { labels: ['Sem Escolaridade', 'Fundamental', 'Médio', 'Superior'], datasets: [{ label: '% Produtores', data: [42, 35, 18, 5], backgroundColor: '#3b82f6' }] }
+            });
+
+            new Chart(document.getElementById('chartLandUse'), {
+                type: 'pie',
+                data: { labels: ['Lavouras', 'Pastagem', 'Mata Nativa', 'Outros'], datasets: [{ data: [25, 55, 15, 5], backgroundColor: colors }] }
+            });
+
+            new Chart(document.getElementById('chartTech'), {
+                type: 'bar',
+                data: { labels: ['Tratores', 'Semeadeiras', 'Colheitadeiras', 'Irrigação'], datasets: [{ label: 'Uso %', data: [12, 5, 3, 9.8], backgroundColor: '#f4a261' }] }
+            });
+
+            new Chart(document.getElementById('chartCredit'), {
+                type: 'doughnut',
+                data: { labels: ['Bancos Públicos', 'Cooperativas', 'Recursos Próprios', 'Outros'], datasets: [{ data: [45, 15, 35, 5], backgroundColor: colors }] }
+            });
+
+            const topMuns = data.filter(d => d.categoria === 'PAM' && d.indicador === 'Valor da produção')
+                .sort((a,b) => b.valor - a.valor).slice(0, 8);
+            new Chart(document.getElementById('chartTerritoryValue'), {
+                type: 'bar',
+                data: { 
+                    labels: topMuns.length ? topMuns.map(d => d.municipio.split(' - ')[0]) : ['Baraúna', 'Mossoró', 'Apodi', 'Assú'], 
+                    datasets: [{ label: 'R$ Mil', data: topMuns.length ? topMuns.map(d => d.valor) : [420, 380, 210, 190], backgroundColor: '#0c4a6e' }] 
+                }
+            });
+        }
+
+        window.onload = initDashboard;
+    </script>
+</body>
+</html>

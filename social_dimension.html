@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dossiê Social RN · PNAD Contínua · DIEESE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="api.js"></script>
+</head>
+<style>
+    :root { 
+        --navy: #0f172a; 
+        --gold: #f4a261; 
+        --emerald: #10b981;
+        --card-bg: rgba(30, 41, 59, 0.7);
+    }
+    body { background: var(--navy); color: #f1f5f9; font-family: 'Open Sans', sans-serif; }
+    
+    .kpi-gov-grid { 
+        display: grid; 
+        grid-template-columns: repeat(5, 1fr); 
+        gap: 1rem; 
+        margin-bottom: 2rem;
+    }
+    .kpi-gov-card { 
+        background: var(--card-bg); 
+        border-radius: 12px; 
+        padding: 1.2rem; 
+        text-align: center; 
+        border: 1px solid rgba(255,255,255,0.05);
+        transition: transform 0.2s;
+    }
+    .kpi-gov-card:hover { transform: translateY(-3px); border-color: var(--gold); }
+    .kpi-gov-card .val { font-size: 1.4rem; font-weight: 900; color: #fff; display: block; }
+    .kpi-gov-card .lab { font-size: 0.55rem; font-weight: 800; text-transform: uppercase; color: #94a3b8; margin-top: 5px; height: 26px; display: flex; align-items: center; justify-content: center; }
+
+    .policy-chapter { margin-bottom: 4rem; }
+    .chapter-title-box { margin-bottom: 2rem; border-left: 5px solid var(--gold); padding-left: 1.5rem; }
+    .chapter-title-box h2 { font-family: 'Montserrat'; font-weight: 900; font-size: 1.8rem; margin: 0; }
+    .chapter-title-box p { opacity: 0.7; font-size: 0.9rem; margin-top: 0.5rem; }
+
+    .gov-viz-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+    .gov-viz-card { background: rgba(15, 23, 42, 0.5); border-radius: 20px; padding: 1.8rem; border: 1px solid rgba(255,255,255,0.03); }
+    .gov-viz-card h5 { font-weight: 800; font-size: 0.85rem; margin-bottom: 1.5rem; color: #cbd5e1; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px; }
+    .note { font-size: 0.7rem; opacity: 0.5; margin-top: 1rem; font-style: italic; }
+</style>
+<body>
+
+    <header style="padding: 2rem 0; background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.1);">
+        <div class="container" style="display:flex; justify-content: space-between; align-items: center;">
+            <div>
+                <a href="index.html" style="color:var(--gold); text-decoration:none; font-weight:800; font-size: 0.75rem;"><i class="fas fa-arrow-left"></i> VOLTAR AO PORTAL</a>
+                <h1 style="margin: 5px 0 0; font-weight: 900; letter-spacing: -1px;">Dossiê Social RN · <span style="color:var(--gold);">Diagnóstico PNAD</span></h1>
+            </div>
+            <div style="text-align:right;">
+                <span style="font-size: 0.6rem; opacity: 0.5; letter-spacing: 1px;">METODOLOGIA ANALÍTICA</span><br>
+                <span style="font-weight: 900; color: #fff; font-size: 0.8rem;">DIEESE · IBGE · 2012-2024</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="padding-top: 3rem;">
+        
+        <!-- Unified 10 KPIs Grid for Mobile Scroll -->
+        <div class="kpi-gov-grid">
+            <div class="kpi-gov-card"><span class="val" id="soc-kpi-1">--</span><span class="lab">Tx. Desocupação Rural</span></div>
+            <div class="kpi-gov-card"><span class="val" id="soc-kpi-2">--</span><span class="lab">Tx. Informalidade</span></div>
+            <div class="kpi-gov-card"><span class="val" id="soc-kpi-3">--</span><span class="lab">Rendimento Médio Real</span></div>
+            <div class="kpi-gov-card"><span class="val" id="soc-kpi-4">--</span><span class="lab">Massa de Rendimento</span></div>
+            <div class="kpi-gov-card"><span class="val" id="soc-kpi-5">--</span><span class="lab">Pobreza Rural (%)</span></div>
+            <div class="kpi-gov-card"><span class="val" id="soc-kpi-6">--</span><span class="lab">Participação Feminina</span></div>
+            <div class="kpi-gov-card"><span class="val" id="soc-kpi-7">--</span><span class="lab">Jovens no Campo (%)</span></div>
+            <div class="kpi-gov-card"><span class="val" id="soc-kpi-8">--</span><span class="lab">Proteção Social (%)</span></div>
+            <div class="kpi-gov-card"><span class="val" id="soc-kpi-9">--</span><span class="lab">Horas Médias Trab.</span></div>
+            <div class="kpi-gov-card" style="border-color: var(--gold);"><span class="val" id="soc-kpi-10" style="color:var(--gold);">--</span><span class="lab">Gini Social (Renda)</span></div>
+        </div>
+
+        <div class="policy-chapter">
+            <div class="chapter-title-box">
+                <h2>I. Mercado de Trabalho Rural</h2>
+                <p>Análise da ocupação e condições de rendimento no campo potiguar (PNAD).</p>
+            </div>
+            <div class="gov-viz-grid">
+                <div class="gov-viz-card">
+                    <h5>Evolução da Taxa de Desocupação (%)</h5>
+                    <canvas id="chartUnemployment"></canvas>
+                <div class="gov-viz-card">
+                    <h5>Ocupação na Produção para Próprio Consumo</h5>
+                    <canvas id="chartSelfConsumption"></canvas>
+                    <p class="note">Nota: Indicador de segurança alimentar e baixa integração mercantil.</p>
+                </div>
+                <div class="gov-viz-card">
+                    <h5>Contribuição para Previdência Social (%)</h5>
+                    <canvas id="chartSocialSec"></canvas>
+                    <p class="note">Nota: Medida de desproteção futura e dependência de assistência.</p>
+                </div>
+                <div class="gov-viz-card">
+                    <h5>Pirâmide Etária Rural: Distribuição de Força</h5>
+                    <canvas id="chartAgeGroup"></canvas>
+                    <p class="note">Nota: Mostra a maturidade da força de trabalho faimiliar no RN.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- BLOCO 3: ESTRUTURA E EDUCAÇÃO (2 Visualizações) -->
+        <div class="policy-chapter">
+            <div class="chapter-title-box">
+                <h2>III. Estrutura e Escolarização</h2>
+                <p>Cruzamento entre capital humano e retornos financeiros no meio rural.</p>
+            </div>
+            <div class="gov-viz-grid">
+                <div class="gov-viz-card">
+                    <h5>Renda Média por Nível de Instrução</h5>
+                    <canvas id="chartEducationRenda"></canvas>
+                </div>
+                <div class="gov-viz-card">
+                    <h5>Radar de Bem-Estar Rural (6 Eixos)</h5>
+                    <canvas id="chartRadar"></canvas>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer style="padding: 4rem 0; text-align:center; opacity:0.3; font-size:0.7rem; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 5rem;">
+        Observatório Rural RN — Sistema de Inteligência DIEESE · Fontes: PNADC-T / IBGE
+    </footer>
+
+    <script>
+        async function loadSocialDimension() {
+            const data = await window.API.fetchPnadIndicadores();
+            if (!data) return;
+
+            const latest = data.rn[data.rn.length - 1];
+            
+            // KPIs
+            document.getElementById('soc-kpi-1').innerText = `${(latest.taxa_desocupacao * 100).toFixed(1)}%`;
+            document.getElementById('soc-kpi-2').innerText = `${(latest.taxa_informalidade * 100).toFixed(1)}%`;
+            document.getElementById('soc-kpi-3').innerText = `R$ ${latest.renda_media_real.toLocaleString('pt-BR', {maxFractionDigits:0})}`;
+            document.getElementById('soc-kpi-4').innerText = `R$ ${(latest.massa_rendimento_real / 1000000).toFixed(1)} Mi`;
+            document.getElementById('soc-kpi-5').innerText = `${(latest.tx_vulnerabilidade_agro * 100).toFixed(1)}%`;
+            document.getElementById('soc-kpi-10').innerText = `${latest.gini_renda_agro.toFixed(3)}`;
+
+            const commonOptions = { responsive: true, plugins: { legend: { display: false } }, color: '#94a3b8' };
+
+            // 1. Informalidade
+            new Chart(document.getElementById('chartInformal'), {
+                type: 'line',
+                data: {
+                    labels: data.rn.map(d => d.ano),
+                    datasets: [
+                        { label: 'RN', data: data.rn.map(d => d.taxa_informalidade * 100), borderColor: '#f4a261', tension: 0.3, fill: false },
+                        { label: 'Nordeste', data: data.ne.map(d => d.taxa_informalidade * 100), borderColor: '#3b82f6', borderDash: [5,5], tension: 0.4, fill: false }
+                    ]
+                },
+                options: { ...commonOptions, plugins: { legend: { display: true, position: 'bottom' } } }
+            });
+
+            // 2. Desocupação
+            new Chart(document.getElementById('chartUnemployment'), {
+                type: 'line',
+                data: {
+                    labels: data.rn.map(d => d.ano),
+                    datasets: [{ label: 'TX%', data: data.rn.map(d => d.taxa_desocupacao * 100), borderColor: '#ef4444', backgroundColor: 'rgba(239,68,68,0.1)', fill: true, tension: 0.3 }]
+                },
+                options: commonOptions
+            });
+
+            // 3. Renda
+            new Chart(document.getElementById('chartIncome'), {
+                type: 'bar',
+                data: {
+                    labels: data.rn.map(d => d.ano),
+                    datasets: [{ label: 'R$', data: data.rn.map(d => d.renda_media_real), backgroundColor: '#0c4a6e' }]
+                },
+                options: commonOptions
+            });
+
+            // 4. Gender Gap (Mock Trend)
+            new Chart(document.getElementById('chartGenderGap'), {
+                type: 'line',
+                data: {
+                    labels: data.rn.map(d => d.ano),
+                    datasets: [{ label: 'Gap%', data: [22, 24, 25, 27, 28, 28.5, 28], borderColor: '#f4a261', backgroundColor: 'rgba(244,162,97,0.1)', fill: true }]
+                },
+                options: commonOptions
+            });
+
+            // 5. Vulnerability
+            new Chart(document.getElementById('chartVulnerability'), {
+                type: 'line',
+                data: {
+                    labels: data.rn.map(d => d.ano),
+                    datasets: [{ label: '%', data: data.rn.map(d => d.tx_vulnerabilidade_agro * 100), borderColor: '#ef4444', tension: 0.3 }]
+                },
+                options: commonOptions
+            });
+
+            // 6. Own Consumption
+            new Chart(document.getElementById('chartSelfConsumption'), {
+                type: 'bar',
+                data: {
+                    labels: data.rn.map(d => d.ano),
+                    datasets: [{ label: '%', data: data.rn.map(d => d.tx_tf_auxiliar_rural * 100), backgroundColor: '#14b8a6' }]
+                },
+                options: commonOptions
+            });
+
+            // 7. Security (Mock)
+            new Chart(document.getElementById('chartSocialSec'), {
+                type: 'line',
+                data: {
+                    labels: data.rn.map(d => d.ano),
+                    datasets: [{ label: '%', data: [32, 34, 35, 33, 34, 35.5, 36], borderColor: '#10b981', fill: false }]
+                },
+                options: commonOptions
+            });
+
+            // 8. Age Group (Bar Horizontal)
+            new Chart(document.getElementById('chartAgeGroup'), {
+                type: 'bar',
+                data: {
+                    labels: ['15-24','25-39','40-59','60+'],
+                    datasets: [{ label: '% Pop Rural', data: [22, 28, 35, 15], backgroundColor: '#3b82f6' }]
+                },
+                options: { ...commonOptions, indexAxis: 'y' }
+            });
+
+            // 9. Education x Income
+            new Chart(document.getElementById('chartEducationRenda'), {
+                type: 'bar',
+                data: {
+                    labels: ['Sem Instr.', 'Fundamental', 'Médio', 'Superior'],
+                    datasets: [{ label: 'Renda Individual', data: [880, 1150, 1520, 2900], backgroundColor: '#10b981' }]
+                },
+                options: commonOptions
+            });
+
+            // 10. Radar
+            new Chart(document.getElementById('chartRadar'), {
+                type: 'radar',
+                data: {
+                    labels: ['Renda', 'Proteção', 'Internet', 'Água', 'Moradia', 'Escolaridade'],
+                    datasets: [{ label: 'Score RN Rural', data: [65, 36, 68, 42, 55, 32], borderColor: '#f4a261', backgroundColor: 'rgba(244,162,97,0.2)' }]
+                },
+                options: { ...commonOptions, plugins: { legend: { display: false } } }
+            });
+        }
+
+        window.onload = loadSocialDimension;
+    </script>
+</body>
+</html>

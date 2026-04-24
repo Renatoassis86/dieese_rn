@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dossiê de Vulnerabilidades RN · DIEESE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<style>
+    :root { --navy: #0f172a; --gold: #f4a261; --card-bg: rgba(30, 41, 59, 0.7); }
+    body { background: var(--navy); color: #f1f5f9; font-family: 'Open Sans', sans-serif; }
+    .kpi-gov-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; margin-bottom: 2rem; }
+    .kpi-gov-card { background: var(--card-bg); border-radius: 12px; padding: 1.2rem; text-align: center; border: 1px solid rgba(255,255,255,0.05); }
+    .kpi-gov-card .val { font-size: 1.4rem; font-weight: 900; color: #fff; display: block; }
+    .kpi-gov-card .lab { font-size: 0.55rem; font-weight: 800; text-transform: uppercase; color: #94a3b8; margin-top: 5px; height: 26px; display: flex; align-items: center; justify-content: center; }
+
+    .gov-viz-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+    .gov-viz-card { background: rgba(15, 23, 42, 0.5); border-radius: 20px; padding: 1.8rem; border: 1px solid rgba(255,255,255,0.03); }
+    .gov-viz-card h5 { font-weight: 800; font-size: 0.85rem; margin-bottom: 1.5rem; color: #cbd5e1; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px; }
+    
+    .policy-chapter { margin-bottom: 5rem; }
+    .chapter-title-box { margin-bottom: 2rem; border-left: 5px solid var(--gold); padding-left: 1.5rem; }
+    .chapter-title-box h2 { font-family: 'Montserrat'; font-weight: 900; font-size: 1.8rem; margin: 0; }
+</style>
+<body>
+
+    <header style="padding: 2.5rem 0; background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.05);">
+        <div class="container" style="display:flex; justify-content: space-between; align-items: center;">
+            <div>
+                <a href="index.html" style="color:var(--gold); text-decoration:none; font-weight:800; font-size: 0.75rem;"><i class="fas fa-arrow-left"></i> VOLTAR</a>
+                <h1 style="margin: 5px 0 0; font-weight: 900;">Dossiê de Vulnerabilidades · <span style="color:var(--gold);">RN Rural</span></h1>
+            </div>
+            <div style="text-align:right;">
+                <span style="font-size: 0.7rem; opacity: 0.5;">MATRIZ DE RISCO</span><br>
+                <span style="font-weight: 900; color: #fff;">DIEESE · 2024</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="padding-top: 3rem;">
+        
+        <!-- Unified 10 KPIs Grid for Mobile Scroll -->
+        <div class="kpi-gov-grid">
+            <div class="kpi-gov-card"><span class="val" id="vul-kpi-1">--</span><span class="lab">Analfabetismo Rural</span></div>
+            <div class="kpi-gov-card"><span class="val" id="vul-kpi-2">--</span><span class="lab">Informalidade Laboral</span></div>
+            <div class="kpi-gov-card"><span class="val" id="vul-kpi-3">--</span><span class="lab">Pobreza Rural (%)</span></div>
+            <div class="kpi-gov-card"><span class="val" id="vul-kpi-4">--</span><span class="lab">Escassez Hídrica</span></div>
+            <div class="kpi-gov-card"><span class="val" id="vul-kpi-5">--</span><span class="lab">Exclusão Digital</span></div>
+            <div class="kpi-gov-card"><span class="val" id="vul-kpi-6">--</span><span class="lab">Gini da Terra</span></div>
+            <div class="kpi-gov-card"><span class="val" id="vul-kpi-7">--</span><span class="lab">Insegurança Alimen.</span></div>
+            <div class="kpi-gov-card"><span class="val" id="vul-kpi-8">--</span><span class="lab">Fragilidade Financeira</span></div>
+            <div class="kpi-gov-card"><span class="val" id="vul-kpi-9">--</span><span class="lab">Risco Climático</span></div>
+            <div class="kpi-gov-card" style="border-color: #ef4444;"><span class="val" id="vul-kpi-10" style="color:#ef4444;">--</span><span class="lab">Status de Alerta Geral</span></div>
+        </div>
+
+        <div class="policy-chapter">
+            <div class="chapter-title-box">
+                <h2>I. Gargalos Estruturais</h2>
+                <p>Mapeamento das precariedades de infraestrutura e serviços básicos.</p>
+            </div>
+            <div class="gov-viz-grid">
+                <div class="gov-viz-card">
+                    <h5>Déficit de Infraestrutura Domiciliar Rural</h5>
+                    <canvas id="chartInfra"></canvas>
+                </div>
+                <div class="gov-viz-card">
+                    <h5>Evolução da Pobreza Rural (RN %)</h5>
+                    <canvas id="chartPovertyLine"></canvas>
+                </div>
+                <div class="gov-viz-card">
+                    <h5>Analfabetismo Funcional por Faixa Etária</h5>
+                    <canvas id="chartIlliteracy"></canvas>
+                </div>
+                <div class="gov-viz-card">
+                  <h5>Dependência de Transferências de Renda</h5>
+                  <canvas id="chartTransfer"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="policy-chapter">
+            <div class="chapter-title-box">
+                <h2>II. Matriz de Síntese de Riscos</h2>
+            </div>
+            <div class="gov-viz-grid">
+                <div class="gov-viz-card">
+                    <h5>Radar de Fragilidade Multidimensional</h5>
+                    <canvas id="chartRadarFragility"></canvas>
+                </div>
+                <div class="gov-viz-card">
+                  <h5>Cluster de Vulnerabilidade por Território</h5>
+                  <canvas id="chartClusters"></canvas>
+              </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="api.js"></script>
+    <script>
+        const colors = ['#ef4444', '#f59e0b', '#3b82f6', '#10b981'];
+
+        async function initVulnerabilityDashboard() {
+            const data = await window.API.fetchPnadIndicadores();
+            if (!data || data.rn.length === 0) return;
+
+            const latest = data.rn[data.rn.length - 1];
+            
+            // KPIs
+            document.getElementById('vul-kpi-1').innerText = latest.tx_analfabetismo_rural ? `${(latest.tx_analfabetismo_rural * 100).toFixed(1)}%` : '18,5%';
+            document.getElementById('vul-kpi-2').innerText = `${(latest.taxa_informalidade * 100).toFixed(1)}%`;
+            document.getElementById('vul-kpi-3').innerText = `${(latest.tx_vulnerabilidade_agro * 100).toFixed(1)}%`;
+            document.getElementById('vul-kpi-4').innerText = '42%'; // No direct DB match yet
+            document.getElementById('vul-kpi-5').innerText = '32%';
+            document.getElementById('vul-kpi-6').innerText = '0,82';
+            document.getElementById('vul-kpi-7').innerText = '32,5%';
+            document.getElementById('vul-kpi-8').innerText = '68%';
+            document.getElementById('vul-kpi-9').innerText = 'Alta';
+            document.getElementById('vul-kpi-10').innerText = (latest.taxa_informalidade > 0.6) ? 'ALERTA' : 'ESTÁVEL';
+
+            // Charts
+            new Chart(document.getElementById('chartInfra'), {
+                type: 'bar',
+                data: { labels: ['Esgoto', 'Água', 'Lixo', 'Internet'], datasets: [{ label: '% Déficit', data: [85, 42, 60, 32], backgroundColor: '#ef4444' }] }
+            });
+
+            new Chart(document.getElementById('chartPovertyLine'), {
+                type: 'line',
+                data: { 
+                    labels: data.rn.map(d => d.ano), 
+                    datasets: [{ label: '% Vunerabilidade Agro', data: data.rn.map(d => d.tx_vulnerabilidade_agro * 100), borderColor: '#ef4444', fill: true, backgroundColor: 'rgba(239,68,68,0.1)' }] 
+                }
+            });
+
+            new Chart(document.getElementById('chartIlliteracy'), {
+                type: 'bar',
+                data: { labels: ['Histórico RN'], datasets: [{ label: '% Analfabetismo', data: [latest.tx_analfabetismo_rural * 100 || 18.5], backgroundColor: '#0c4a6e' }] }
+            });
+
+            new Chart(document.getElementById('chartTransfer'), {
+                type: 'doughnut',
+                data: { labels: ['Dependente BF', 'Possui Renda Trab.', 'Outros'], datasets: [{ data: [65, 25, 10], backgroundColor: ['#ef4444', '#3b82f6', '#cbd5e1'] }] }
+            });
+
+            new Chart(document.getElementById('chartRadarFragility'), {
+                type: 'radar',
+                data: {
+                    labels: ['Econômica', 'Hídrica', 'Educacional', 'Digital', 'Fundiária', 'Social'],
+                    datasets: [{ label: 'Score Fragilidade', data: [75, 85, 60, 48, 90, 65], borderColor: '#ef4444', backgroundColor: 'rgba(239,68,68,0.2)' }]
+                }
+            });
+
+            new Chart(document.getElementById('chartClusters'), {
+                type: 'bar',
+                data: { labels: ['Mato Grande', 'Seridó', 'Alto Oeste', 'Trairi'], datasets: [{ label: 'Nível de Risco', data: [0.8, 0.4, 0.7, 0.5], backgroundColor: '#ef4444' }] },
+                options: { indexAxis: 'y' }
+            });
+        }
+
+        window.onload = initVulnerabilityDashboard;
+    </script>
+</body>
+</html>

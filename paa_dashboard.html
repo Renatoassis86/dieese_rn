@@ -316,39 +316,36 @@
             document.getElementById('kpi-4-val').innerText = `${munis} mun`;
         }
 
-        function renderMainChart(data, metric, year) {
+        async function renderMainChart(data, metric, year) {
             if (chart1) chart1.destroy();
             const ctx = document.getElementById('mainChart').getContext('2d');
             
-            // Agrupar por Ano
-            const years = [...new Set(data.map(d => d.ano))].sort();
-            const values = years.map(y => {
-                const yearData = data.filter(d => d.ano === y);
-                return yearData.reduce((acc, curr) => acc + (parseFloat(curr[metric]) || 0), 0);
-            });
-
-            chart1 = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: years,
-                    datasets: [{
-                        label: 'Evolução Temporal',
-                        data: values,
-                        borderColor: '#F4A261',
-                        borderWidth: 4,
-                        tension: 0.4,
-                        pointRadius: 6,
-                        pointHoverRadius: 9,
-                        pointBackgroundColor: '#F4A261',
-                        pointBorderColor: '#fff',
-                        pointBorderWidth: 2,
-                        fill: true,
-                        backgroundColor: 'rgba(244, 162, 97, 0.1)'
-                    }]
-                },
-                options: { responsive: true, plugins: { legend: { display: false } } }
-            });
-            document.getElementById('title-main-chart').innerText = year === 'todos' ? 'Série Histórica Consolidada' : 'Fluxo Mensal de Execução';
+            // Se for série histórica, usamos o RPC já consolidado
+            if (year === 'todos') {
+                const hist = await window.API.fetchPaaAnnual();
+                chart1 = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: hist.map(h => h.ano),
+                        datasets: [{
+                            label: 'Evolução Global (Mi R$)',
+                            data: hist.map(h => h.valor),
+                            borderColor: '#F4A261',
+                            fill: true,
+                            backgroundColor: 'rgba(244, 162, 97, 0.1)',
+                            tension: 0.4
+                        }]
+                    }
+                });
+            } else {
+                // Se for ano específico, fazemos agregação local do que foi filtrado
+                const years = [...new Set(data.map(d => d.ano))].sort();
+                const values = years.map(y => data.filter(d => d.ano === y).reduce((acc, curr) => acc + (parseFloat(curr[metric]) || 0), 0));
+                chart1 = new Chart(ctx, {
+                    type: 'line',
+                    data: { labels: years, datasets: [{ label: 'Execução Mensal', data: values, borderColor: '#F4A261' }] }
+                });
+            }
         }
 
         function renderModalChart(data) {
@@ -381,12 +378,13 @@
             if (chartExec) chartExec.destroy();
             const ctx = document.getElementById('execPercChart').getContext('2d');
             
+            // Como 'pactuado' está vazio, vamos mostrar GÊNERO (Evolução Mulheres %)
             const years = [...new Set(data.map(d => d.ano))].sort();
             const values = years.map(y => {
                 const yearData = data.filter(d => d.ano === y);
-                const pactuado = yearData.reduce((acc, curr) => acc + (parseFloat(curr.valor_pactuado) || 0), 0);
-                const pago = yearData.reduce((acc, curr) => acc + (parseFloat(curr.valor_pago) || 0), 0);
-                return pactuado > 0 ? (pago / pactuado) * 100 : 0;
+                const total = yearData.reduce((acc, curr) => acc + (parseInt(curr.agricultores) || 0), 0);
+                const fem = yearData.reduce((acc, curr) => acc + (parseInt(curr.mulheres) || 0), 0);
+                return total > 0 ? (fem / total) * 100 : 0;
             });
 
             chartExec = new Chart(ctx, {
@@ -394,15 +392,14 @@
                 data: {
                     labels: years,
                     datasets: [{
-                        label: 'Eficiência %',
+                        label: 'Participação Feminina %',
                         data: values,
-                        backgroundColor: 'rgba(74, 222, 128, 0.5)',
-                        borderColor: '#4ADE80',
-                        borderWidth: 2
+                        backgroundColor: '#F4A261'
                     }]
                 },
                 options: { responsive: true, scales: { y: { beginAtZero: true, max: 100 } } }
             });
+            document.getElementById('execPercChart').parentElement.querySelector('h3').innerText = 'Participação de Gênero (%)';
         }
 
         function renderTerritoryChart(data, metric, scope) {
