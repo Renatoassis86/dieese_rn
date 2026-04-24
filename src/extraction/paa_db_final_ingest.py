@@ -51,9 +51,9 @@ def ingest_master():
     existing_cols = [c for c in valid_cols if c in df.columns]
     df = df[existing_cols]
 
-    # Manter só os municípios do Nordeste (21-29)
+    # Manter só os municípios do Rio Grande do Norte (24)
     df['uf_code'] = df['codigo_ibge'].astype(str).str[:2]
-    df = df[df['uf_code'].isin(['21','22','23','24','25','26','27','28','29'])]
+    df = df[df['uf_code'] == '24']
 
     # Fill NaNs and cast types
     int_cols = ['ano', 'agricultores', 'mulheres', 'indicador_adesao']
@@ -97,7 +97,9 @@ def ingest_master():
             "Content-Type": "application/json",
             "Prefer": "resolution=merge-duplicates"
         }
-        r = requests.post(f"{SUPABASE_URL}/rest/v1/paa_master", headers=headers, json=batch)
+        # Correct UPSERT syntax for PostgREST with multiple-column unique constraint
+        url = f"{SUPABASE_URL}/rest/v1/paa_master?on_conflict=codigo_ibge,anomes_s"
+        r = requests.post(url, headers=headers, json=batch)
         if r.status_code >= 400:
             print(f"   ❌ Erro no lote {i}: {r.text}")
 

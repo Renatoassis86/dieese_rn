@@ -48,14 +48,23 @@ def fetch_and_consolidate():
             # Limpeza
             df['ano'] = df['anomes_s'].astype(str).str[:4] if 'anomes_s' in df.columns else None
             df.to_excel(writer, sheet_name=name[:31], index=False)
+            print(f"      → {name}: {len(df)} registros processados.")
             
             # Merge Progressivo na Master (por IBGE e AnoMes)
             if 'codigo_ibge' in df.columns and 'anomes_s' in df.columns:
+                print(f"      → Integrando {name} na Master...")
                 if master_df is None:
                     master_df = df
                 else:
+                    # Garantir que codigo_ibge e anomes_s sejam strings para merge seguro
+                    df['codigo_ibge'] = df['codigo_ibge'].astype(str)
+                    df['anomes_s'] = df['anomes_s'].astype(str)
+                    master_df['codigo_ibge'] = master_df['codigo_ibge'].astype(str)
+                    master_df['anomes_s'] = master_df['anomes_s'].astype(str)
+
                     cols_to_use = [c for c in df.columns if c not in master_df.columns or c in ['codigo_ibge', 'anomes_s']]
                     master_df = pd.merge(master_df, df[cols_to_use], on=['codigo_ibge', 'anomes_s'], how='outer')
+                print(f"      → Master atual: {len(master_df)} registros.")
         except Exception as e:
             print(f"   ❌ Erro em {name}: {e}")
 

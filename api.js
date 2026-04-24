@@ -46,13 +46,18 @@ const headers = {
             const data = await res.json();
             return data.map(d => ({
                 ano: d.ano,
-                valor: parseFloat(d.total_pago) / 1000000,
-                pactuado: parseFloat(d.total_pactuado) / 1000000,
-                agricultores: parseInt(d.total_agricultores),
-                mulheres: parseInt(d.total_mulheres),
+                valor: parseFloat(d.total_pago || 0) / 1000000,
+                pactuado: parseFloat(d.total_pactuado || 0) / 1000000,
+                agricultores: parseInt(d.total_agricultores || 0),
+                mulheres: parseInt(d.total_mulheres || 0),
                 perc_mulheres: d.total_agricultores > 0 ? (parseInt(d.total_mulheres) / parseInt(d.total_agricultores)) * 100 : 0,
                 total_kg: parseFloat(d.total_kg || 0),
-                total_litros: parseFloat(d.total_litros || 0)
+                total_litros: parseFloat(d.total_litros || 0),
+                doacao: parseFloat(d.total_doacao || 0) / 1000000,
+                leite: parseFloat(d.total_leite || 0) / 1000000,
+                direta: parseFloat(d.mod_direta || 0) / 1000000,
+                estoque: parseFloat(d.mod_estoque || 0) / 1000000,
+                sementes: parseFloat(d.mod_sementes || 0) / 1000000
             }));
         } catch (e) {
             console.error("RPC Annual error:", e);
