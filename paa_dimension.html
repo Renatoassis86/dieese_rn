@@ -21,9 +21,12 @@
     .kpi-gov-card .lab { font-size: 0.55rem; font-weight: 800; text-transform: uppercase; color: #94a3b8; margin-top: 5px; height: 26px; display: flex; align-items: center; justify-content: center; }
 
     .gov-viz-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; }
-    .gov-viz-card { background: rgba(15, 23, 42, 0.5); border-radius: 20px; padding: 1.8rem; border: 1px solid rgba(255,255,255,0.03); }
-    .gov-viz-card h5 { font-weight: 800; font-size: 0.85rem; margin-bottom: 1.5rem; color: #cbd5e1; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px; }
+    .gov-viz-card { background: rgba(15, 23, 42, 0.5); border-radius: 20px; padding: 1.8rem; border: 1px solid rgba(255,255,255,0.03); display: flex; flex-direction: column; }
+    .gov-viz-card h5 { font-weight: 800; font-size: 0.85rem; margin-bottom: 1.5rem; color: #cbd5e1; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px; flex-shrink: 0; }
     
+    .chart-wrapper { position: relative; height: 280px; width: 100%; flex-grow: 1; min-height: 0; }
+    canvas { max-width: 100%; display: block; }
+
     .policy-chapter { margin-bottom: 5rem; }
     .chapter-title-box { margin-bottom: 2rem; border-left: 5px solid var(--gold); padding-left: 1.5rem; }
     .chapter-title-box h2 { font-family: 'Montserrat'; font-weight: 900; font-size: 1.8rem; margin: 0; }
@@ -75,19 +78,19 @@
             <div class="gov-viz-grid">
                 <div class="gov-viz-card">
                     <h5>Recursos Investidos (Série Histórica Mi R$)</h5>
-                    <canvas id="chartHistory"></canvas>
+                    <div class="chart-wrapper"><canvas id="chartHistory"></canvas></div>
                 </div>
                 <div class="gov-viz-card">
                     <h5>Distribuição por Modalidade de Compra</h5>
-                    <canvas id="chartModalities"></canvas>
+                    <div class="chart-wrapper"><canvas id="chartModalities"></canvas></div>
                 </div>
                 <div class="gov-viz-card">
                     <h5>Execução Anual (%) vs Pactuado</h5>
-                    <canvas id="chartExecution"></canvas>
+                    <div class="chart-wrapper"><canvas id="chartExecution"></canvas></div>
                 </div>
                 <div class="gov-viz-card">
                   <h5>Participação Feminina na Série (%)</h5>
-                  <canvas id="chartGênero"></canvas>
+                  <div class="chart-wrapper"><canvas id="chartGênero"></canvas></div>
                 </div>
             </div>
         </div>
@@ -99,19 +102,19 @@
           <div class="gov-viz-grid">
               <div class="gov-viz-card">
                   <h5>Consolidado por Território de Identidade (Nº Produtores)</h5>
-                  <canvas id="chartTerritory"></canvas>
+                  <div class="chart-wrapper"><canvas id="chartTerritory"></canvas></div>
               </div>
               <div class="gov-viz-card">
                   <h5>Mix de Fornecimento: Top 5 Categorias</h5>
-                  <canvas id="chartMix"></canvas>
+                  <div class="chart-wrapper"><canvas id="chartMix"></canvas></div>
               </div>
               <div class="gov-viz-card">
                   <h5>Concentração por Município (Lorentz)</h5>
-                  <canvas id="chartLorentz"></canvas>
+                  <div class="chart-wrapper"><canvas id="chartLorentz"></canvas></div>
               </div>
               <div class="gov-viz-card">
                   <h5>Ranking Top 10 Municípios (Investimento)</h5>
-                  <canvas id="chartRanking"></canvas>
+                  <div class="chart-wrapper"><canvas id="chartRanking"></canvas></div>
               </div>
           </div>
       </div>
@@ -123,11 +126,11 @@
           <div class="gov-viz-grid">
               <div class="gov-viz-card" style="grid-column: span 1;">
                   <h5>Mapa de Calor da Execução RN</h5>
-                  <div id="map" style="height: 300px; border-radius: 12px;"></div>
+                  <div id="map" style="height: 280px; border-radius: 12px;"></div>
               </div>
               <div class="gov-viz-card" style="grid-column: span 1;">
                 <h5>Eixos de Impacto do Programa (Radar)</h5>
-                <canvas id="chartRadarImpact"></canvas>
+                <div class="chart-wrapper"><canvas id="chartRadarImpact"></canvas></div>
             </div>
           </div>
       </div>
@@ -135,6 +138,10 @@
     </main>
 
     <script>
+        // Global Chart.js Defaults to prevent stretching
+        Chart.defaults.responsive = true;
+        Chart.defaults.maintainAspectRatio = false;
+
         async function loadPAADimension() {
             const rawData = await window.API.fetchPaaAnnual();
             const terr = await window.API.fetchPaaByTerritory(2024);

@@ -64,11 +64,16 @@ def ingest_master():
         'mod_formacao_estoque', 'mod_aquisicao_sementes'
     ]
     
+    # Calculate 'ano' from 'anomes_s' to ensure full series coverage
+    df['anomes_s'] = df['anomes_s'].astype(str)
+    df['ano'] = df['anomes_s'].str[:4].apply(lambda x: int(x) if x.isdigit() else 0)
+
     for c in int_cols:
-        if c in df.columns:
-            df[c] = pd.to_numeric(df[c], errors='coerce').fillna(0).astype(int)
-        else:
-            df[c] = 0
+        if c != 'ano': # already calculated
+            if c in df.columns:
+                df[c] = pd.to_numeric(df[c], errors='coerce').fillna(0).astype(int)
+            else:
+                df[c] = 0
             
     for c in numeric_cols:
         if c in df.columns:
@@ -78,7 +83,24 @@ def ingest_master():
     
     # Replace any remaining Inf/-Inf/NaN across the whole dataframe
     df = df.fillna(0)
-    
+
+    # Handle UF derivation for historical rows missing sigla_uf
+    def derive_uf(row):
+        code = str(row['codigo_ibge'])
+        if code.startswith('21'): return 'MA'
+        if code.startswith('22'): return 'PI'
+        if code.startswith('23'): return 'CE'
+        if code.startswith('24'): return 'RN'
+        if code.startswith('25'): return 'PB'
+        if code.startswith('26'): return 'PE'
+        if code.startswith('27'): return 'AL'
+        if code.startswith('28'): return 'SE'
+        if code.startswith('29'): return 'BA'
+        current_uf = row.get('uf', '0')
+        return current_uf if current_uf not in [0, '0', None] else '0'
+
+    df['uf'] = df.apply(derive_uf, axis=1)
+
     # Drop temporary filtering column
     if 'uf_code' in df.columns: df = df.drop(columns=['uf_code'])
 
